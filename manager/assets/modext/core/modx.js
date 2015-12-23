@@ -2,6 +2,20 @@ Ext.namespace('MODx');
 Ext.apply(Ext,{
     isFirebug: (window.console && window.console.firebug)
 });
+/* work around IE9 createContextualFragment bug
+   http://www.sencha.com/forum/showthread.php?125869-Menu-shadow-probolem-in-IE9
+ */
+if ((typeof Range !== "undefined") && !Range.prototype.createContextualFragment)
+{
+	Range.prototype.createContextualFragment = function(html)
+	{
+		var frag = document.createDocumentFragment(),
+		div = document.createElement("div");
+		frag.appendChild(div);
+		div.outerHTML = html;
+		return frag;
+	};
+}
 /**
  * @class MODx
  * @extends Ext.Component
@@ -17,27 +31,48 @@ MODx = function(config) {
 Ext.extend(MODx,Ext.Component,{
     config: {}
     ,util:{},window:{},panel:{},tree:{},form:{},grid:{},combo:{},toolbar:{},page:{},msg:{}
+    ,expandHelp: true
+    ,defaultState: []
 
     ,startup: function() {
         this.initQuickTips();
         this.request = this.getURLParameters();
         this.Ajax = this.load({ xtype: 'modx-ajax' });
         Ext.override(Ext.form.Field,{
-            defaultAutoCreate: {tag: "input", type: "text", size: "20", autocomplete: "on" }
+            defaultAutoCreate: {tag: "input", type: "text", size: "20", autocomplete: "on", msgTarget: 'under' }
         });
+
+        Ext.Ajax.on('requestexception',this.onAjaxException,this);
         Ext.menu.Menu.prototype.enableScrolling = false;
         this.addEvents({
             beforeClearCache: true
             ,beforeLogout: true
             ,beforeReleaseLocks: true
+            ,beforeLoadPage: true
             ,afterClearCache: true
             ,afterLogout: true
             ,afterReleaseLocks: true
             ,ready: true
         });
-        Ext.state.Manager.setProvider(new Ext.state.CookieProvider({
-            expires: new Date(new Date().getTime()+(1000*60*60*24))
-        }));
+    }
+
+    /**
+     * Add the given component to the modx-content container
+     *
+     * @param {String|Object} cmp Either a component xtype (string) or an object/configuration
+     *
+     * @return void
+     */
+    ,add: function(cmp) {
+        if (typeof cmp === 'string') {
+            cmp = { xtype: cmp }
+        }
+        var ctr = Ext.getCmp('modx-content');
+        if (ctr) {
+            ctr.removeAll();
+            ctr.add(cmp);
+            ctr.doLayout();
+        }
     }
 
     ,load: function() {
@@ -62,7 +97,7 @@ Ext.extend(MODx,Ext.Component,{
 
     ,getURLParameters: function() {
         var arg = {};
-        var href = document.location.href;
+        var href = window.location.search;
 
         if (href.indexOf('?') !== -1) {
             var params = href.split('?')[1];
@@ -74,36 +109,73 @@ Ext.extend(MODx,Ext.Component,{
         return arg;
     }
 
+    ,onAjaxException: function(conn,r,opt,e) {
+        try {
+            r = Ext.decode(r.responseText);
+        } catch (e) {
+            var text, matched = r.responseText.match(/<body[^>]*>([\w|\W]*)<\/body>/im);
+            if (typeof(matched[1] !== 'undefined')) {
+                text = '<p>'+e.message+':</p>'+matched[1];
+            } else {
+                text = e.message+': '+ r.responseText;
+            }
+            Ext.MessageBox.show({
+                title: _('error')
+                ,msg: text
+                ,buttons: Ext.MessageBox.OK
+                ,cls: 'modx-js-parse-error'
+                ,minWidth: 600
+                ,maxWidth: 750
+                ,modal: false
+                ,width: 600
+            });
+        }
+        if (r && (r.code == 401 || (r.object && r.object.code == 401))) {
+            if (!MODx.loginWindow) {
+                MODx.loginWindow = MODx.load({
+                    xtype: 'modx-window-login'
+                    ,username: MODx.user.username
+                });
+            }
+            MODx.loginWindow.show();
+        }
+    }
+
     ,loadAccordionPanels: function() { return []; }
 
     ,clearCache: function() {
         if (!this.fireEvent('beforeClearCache')) { return false; }
 
         var topic = '/clearcache/';
-        if (this.console == null || this.console == undefined) {
-            this.console = MODx.load({
-               xtype: 'modx-console'
-               ,register: 'mgr'
-               ,topic: topic
-               ,show_filename: 0
-               ,listeners: {
-                    'shutdown': {fn:function() {
-                        if (this.fireEvent('afterClearCache')) {
-                            if (MODx.config.clear_cache_refresh_trees == 1) {
-                                Ext.getCmp('modx-layout').refreshTrees();
-                            }
+        this.console = MODx.load({
+           xtype: 'modx-console'
+           ,register: 'mgr'
+           ,topic: topic
+           ,clear: true
+           ,show_filename: 0
+           ,listeners: {
+                'shutdown': {fn:function() {
+                    if (this.fireEvent('afterClearCache')) {
+                        if (MODx.config.clear_cache_refresh_trees == 1) {
+                            Ext.getCmp('modx-layout').refreshTrees();
                         }
-                    },scope:this}
-               }
-            });
-        } else {
-            this.console.setRegister('mgr',topic);
-        }
+                    }
+                },scope:this}
+           }
+        });
+
         this.console.show(Ext.getBody());
 
         MODx.Ajax.request({
-            url: MODx.config.connectors_url+'system/index.php'
-            ,params: { action: 'clearCache',register: 'mgr' ,topic: topic }
+            url: MODx.config.connector_url
+            ,params: {
+                action: 'system/clearcache'
+                ,register: 'mgr'
+                ,topic: topic
+                ,media_sources: true
+                ,menu: true
+                ,action_map: true
+            }
             ,listeners: {
                 'success':{fn:function() {
                     this.console.fireEvent('complete');
@@ -113,12 +185,35 @@ Ext.extend(MODx,Ext.Component,{
         return true;
     }
 
+    ,refreshURIs: function() {
+        var topic = '/refreshuris/';
+        MODx.Ajax.request({
+            url: MODx.config.connector_url
+            ,params: {
+                action: 'system/refreshuris'
+                ,register: 'mgr'
+                ,topic: topic
+                ,menu: true
+            }
+            ,listeners: {
+                'success':{fn:function(r) {
+                    MODx.msg.status({
+                        title: _('success')
+                        ,message: r.message || _('refresh_success')
+                        ,dontHide: false
+                    });
+                    this.clearCache();
+                },scope:this}
+            }
+        });
+        return true;
+    }
     ,releaseLock: function(id) {
         if (this.fireEvent('beforeReleaseLocks')) {
             MODx.Ajax.request({
-                url: MODx.config.connectors_url+'resource/locks.php'
+                url: MODx.config.connector_url
                 ,params: {
-                    action: 'release'
+                    action: 'resource/locks/release'
                     ,id: id
                 }
                 ,listeners: {
@@ -142,9 +237,9 @@ Ext.extend(MODx,Ext.Component,{
             MODx.msg.confirm({
                 title: _('logout')
                 ,text: _('logout_confirm')
-                ,url: MODx.config.connectors_url+'security/logout.php'
+                ,url: MODx.config.connector_url
                 ,params: {
-                    action: 'logout'
+                    action: 'security/logout'
                     ,login_context: 'mgr'
                 }
                 ,listeners: {
@@ -160,22 +255,31 @@ Ext.extend(MODx,Ext.Component,{
 
     ,getPageStructure: function(v,c) {
         c = c || {};
-        if (MODx.config.manager_use_tabs) {
-            Ext.applyIf(c,{xtype: 'modx-tabs',itemId: 'tabs' ,style: 'margin-top: .5em;',items: v});
-        } else {
-            Ext.applyIf(c,{xtype:'portal',itemId: 'tabs' ,items:[{columnWidth:1,items: v,forceLayout: true}]});
-        }
+        Ext.applyIf(c,{
+            xtype: 'modx-tabs'
+            ,itemId: 'tabs'
+            ,items: v
+			,cls: 'structure-tabs'
+        });
         return c;
     }
 
+    ,helpUrl: false
     ,loadHelpPane: function(b) {
-        var url = MODx.config.help_url;
-        if (!url) { return false; }
+        var url = MODx.helpUrl || MODx.config.help_url || '';
+        if (!url || !url.length) { return false; }
+
+        if (url.substring(0, 4) !== 'http') {
+            url = MODx.config.base_help_url + url;
+        }
+
         MODx.helpWindow = new Ext.Window({
             title: _('help')
             ,width: 850
             ,height: 500
-            ,modal: Ext.isIE ? false : true
+            ,resizable: true
+            ,maximizable: true
+            ,modal: false
             ,layout: 'fit'
             ,html: '<iframe src="' + url + '" width="100%" height="100%" frameborder="0"></iframe>'
         });
@@ -185,31 +289,43 @@ Ext.extend(MODx,Ext.Component,{
 
     ,addTab: function(tbp,opt) {
         var tabs = Ext.getCmp(tbp);
-        Ext.applyIf(opt,{
-            id: 'modx-'+Ext.id()+'-tab'
-            ,layout: 'form'
-            ,cls: 'modx-resource-tab'
-            ,bodyStyle: 'padding: 15px;'
-            ,autoHeight: true
-            ,defaults: {
-                border: false
-                ,msgTarget: 'side'
-                ,width: 400
-            }
-        });
-        tabs.add(opt);
-        tabs.doLayout();
-        tabs.setActiveTab(0);
+        if (tabs) {
+            Ext.applyIf(opt,{
+                id: 'modx-'+Ext.id()+'-tab'
+                ,layout: 'form'
+                ,labelAlign: 'top'
+                ,cls: 'modx-resource-tab'
+                ,bodyStyle: 'padding: 15px;'
+                ,autoHeight: true
+                ,defaults: {
+                    border: false
+                    ,msgTarget: 'side'
+                    ,width: 400
+                }
+            });
+            tabs.add(opt);
+            tabs.doLayout();
+            tabs.setActiveTab(0);
+        }
     }
     ,hiddenTabs: []
-    ,hideTab: function(ct,tab) {
+    ,hideTab: function(ct,tab) {this.hideRegion(ct,tab);}
+    ,hideRegion: function(ct,tab) {
         var tp = Ext.getCmp(ct);
-        if (!tp) return false;
-        
-        tp.hideTabStripItem(tab);
-        MODx.hiddenTabs.push(tab);
-        var idx = this._getNextActiveTab(tp,tab);
-        tp.setActiveTab(idx);
+        if (tp) {
+            var tabObj = tp.getItem(tab);
+            if (tabObj) {
+                var z = tp.hideTabStripItem(tab);
+                MODx.hiddenTabs.push(tab);
+                var idx = this._getNextActiveTab(tp,tab);
+                tp.setActiveTab(idx);
+            } else {
+                var region = Ext.getCmp(tab);
+                if (region) {
+                    region.hide();
+                }
+            }
+        }
     }
     ,_getNextActiveTab: function(tp,tab) {
         if (MODx.hiddenTabs.indexOf(tab) != -1) {
@@ -229,7 +345,7 @@ Ext.extend(MODx,Ext.Component,{
 
         for (var i=0;i<tvs.length;i++) {
             var tr = Ext.get(tvs[i]+'-tr');
-            
+
             if (!tr) { return; }
             var fp = Ext.getCmp(tab);
             if (!fp) { return; }
@@ -247,15 +363,17 @@ Ext.extend(MODx,Ext.Component,{
     }
     ,hideTV: function(tvs) {
         if (!Ext.isArray(tvs)) { tvs = [tvs]; }
-        MODx.on("ready",function() { this.hideTVs(tvs); },this);
+        this.hideTVs(tvs);
     }
     ,hideTVs: function(tvs) {
         if (!Ext.isArray(tvs)) { tvs = [tvs]; }
         var el;
         for (var i=0;i<tvs.length;i++) {
             el = Ext.get(tvs[i]+'-tr');
-            el.setVisibilityMode(Ext.Element.DISPLAY);
-            el.hide();
+            if (el) {
+                el.setVisibilityMode(Ext.Element.DISPLAY);
+                el.hide();
+            }
         }
     }
     ,renameLabel: function(ct,flds,vals) {
@@ -263,7 +381,13 @@ Ext.extend(MODx,Ext.Component,{
         if (ct == 'modx-panel-resource' && flds.indexOf('modx-resource-content') != -1) {
             cto = Ext.getCmp('modx-resource-content');
             if (cto) {
-                cto.setTitle(vals[0]);
+                if (cto.setTitle) {
+                    cto.setTitle(vals[0]);
+                } else if (cto.setLabel) {
+                    cto.setLabel(flds,vals);
+                } else {
+                    cto.label.update(vals[0]);
+                }
             }
         } else {
             cto = Ext.getCmp(ct);
@@ -272,8 +396,24 @@ Ext.extend(MODx,Ext.Component,{
             }
         }
     }
+    ,renameTab: function(tb,title) {
+        var tab = Ext.getCmp(tb);
+        if (tab) {
+            tab.setTitle(title);
+        }
+    }
+    ,hideField: function(ct,flds) {
+        ct = Ext.getCmp(ct);
+        if (ct) {
+            ct.hideField(flds);
+        }
+    }
     ,preview: function() {
-        window.open(MODx.config.site_url);
+        var url = MODx.config.site_url;
+        if (MODx.config.default_site_url) {
+            url = MODx.config.default_site_url;
+        }
+        window.open(url);
     }
     ,makeDroppable: function(fld,h,p) {
         if (!fld) return false;
@@ -299,6 +439,10 @@ Ext.extend(MODx,Ext.Component,{
             console.log(msg);
         }
     }
+
+    ,isEmpty: function(v) {
+        return Ext.isEmpty(v) || v === false || v === 'false' || v === 'FALSE' || v === '0' || v === 0;
+    }
 });
 Ext.reg('modx',MODx);
 
@@ -312,43 +456,37 @@ Ext.reg('modx',MODx);
  */
 MODx.Ajax = function(config) {
     config = config || {};
-    MODx.Ajax.superclass.constructor.call(this,config);
-    this.addEvents({
-        'success': true
-        ,'failure': true
-    });
+    MODx.Ajax.superclass.constructor.call(this, config);
 };
 Ext.extend(MODx.Ajax,Ext.Component,{
     request: function(config) {
-        this.purgeListeners();
-        if (config.listeners) {
-            for (var i in config.listeners) {
-              if (config.listeners.hasOwnProperty(i)) {
-                var l = config.listeners[i];
-                this.on(i,l.fn,l.scope || this,l.options || {});
-              }
-            }
-        }
-
         Ext.apply(config,{
             success: function(r,o) {
                 r = Ext.decode(r.responseText);
-                if (!r) { return false; }
+                if (!r) {
+                    return false;
+                }
                 r.options = o;
                 if (r.success) {
-                    this.fireEvent('success',r);
-                } else if (this.fireEvent('failure',r)) {
+                    if (config.listeners.success && config.listeners.success.fn) {
+                        this._runCallback(config.listeners.success, [r]);
+                    }
+                } else if (config.listeners.failure && config.listeners.failure.fn) {
+                    this._runCallback(config.listeners.failure, [r]);
                     MODx.form.Handler.errorJSON(r);
                 }
                 return true;
             }
-            ,failure: function(r,o) {
-            	r = Ext.decode(r.responseText);
-                if (!r) { return false; }
-            	r.options = o;
-            	if (this.fireEvent('failure',r)) {
+            ,failure: function(r, o) {
+                r = Ext.decode(r.responseText);
+                if (!r) {
+                    return false;
+                }
+                r.options = o;
+                if (config.listeners.failure && config.listeners.failure.fn) {
+                    this._runCallback(config.listeners.failure, [r]);
                     MODx.form.Handler.errorJSON(r);
-            	}
+                }
                 return true;
             }
             ,scope: this
@@ -358,6 +496,21 @@ Ext.extend(MODx.Ajax,Ext.Component,{
             }
         });
         Ext.Ajax.request(config);
+    }
+    /**
+     * Execute the listener callback
+     *
+     * @param {Object} config - The listener configuration (ie.failure/success)
+     * @param {Array} args - An array of arguments to pass to the callback
+     */
+    ,_runCallback: function(config, args) {
+        var scope = window
+            ,fn = config.fn;
+
+        if (config.scope) {
+            scope = config.scope;
+        }
+        fn.apply(scope || window, args);
     }
 });
 Ext.reg('modx-ajax',MODx.Ajax);
@@ -384,7 +537,10 @@ Ext.extend(MODx.form.Handler,Ext.Component,{
 
     ,highlightField: function(f) {
         if (f.id !== undefined && f.id !== 'forEach' && f.id !== '') {
-            Ext.get(f.id).dom.style.border = '1px solid red';
+            var fld = Ext.get(f.id);
+            if (fld && fld.dom) {
+                fld.dom.style.border = '1px solid red';
+            }
             var ef = Ext.get(f.id+'_error');
             if (ef) { ef.innerHTML = f.msg; }
             this.fields.push(f.id);
@@ -414,10 +570,10 @@ Ext.extend(MODx.form.Handler,Ext.Component,{
 
     ,errorExt: function(r,frm) {
         this.unhighlightFields();
-        if (r.errors !== null && frm) {
+        if (r && r.errors !== null && frm) {
             frm.markInvalid(r.errors);
         }
-        if (r.message !== undefined && r.message !== '') {
+        if (r && r.message !== undefined && r.message !== '') {
             this.showError(r.message);
         } else {
             MODx.msg.hide();
@@ -498,12 +654,18 @@ Ext.extend(MODx.Msg,Ext.Component,{
 
         var fadeOpts = {remove:true,useDisplay:true};
         if (!opt.dontHide) {
-            m.pause(opt.delay || 1.5).ghost("t",fadeOpts);
+            if(!Ext.isIE8) {
+                m.pause(opt.delay || 1.5).ghost("t",fadeOpts);
+            } else {
+                fadeOpts.duration = (opt.delay || 1.5);
+                m.ghost("t",fadeOpts);
+            }
         } else {
             m.on('click',function() {
                 m.ghost('t',fadeOpts);
             });
         }
+
     }
     ,getStatusMarkup: function(opt) {
         var mk = '<div class="modx-status-msg">';
@@ -513,3 +675,217 @@ Ext.extend(MODx.Msg,Ext.Component,{
     }
 });
 Ext.reg('modx-msg',MODx.Msg);
+
+/**
+ * Server-side state provider for MODx
+ *
+ * @class MODx.state.HttpProvider
+ * @extends Ext.state.Provider
+ * @constructor
+ * @param {Object} config Configuration object.
+ */
+MODx.HttpProvider = function(config) {
+    config = config || {};
+    this.addEvents(
+        'readsuccess'
+        ,'readfailure'
+        ,'writesuccess'
+        ,'writefailure'
+    );
+    MODx.HttpProvider.superclass.constructor.call(this,config);
+    Ext.apply(this, config, {
+        delay: 500
+        ,dirty: false
+        ,started: false
+        ,autoStart: true
+        ,autoRead: true
+        ,queue: {}
+        ,readUrl: MODx.config.connector_url
+        ,writeUrl: MODx.config.connector_url
+        ,method: 'post'
+        ,baseParams: {
+            register: 'state'
+            ,topic: ''
+        }
+        ,writeBaseParams: {
+            action: 'system/registry/register/send'
+            ,message: ''
+            ,message_key: ''
+            ,message_format: 'json'
+            ,delay: 0
+            ,ttl: 0
+            ,kill: 0
+        }
+        ,readBaseParams: {
+            action: 'system/registry/register/read'
+            ,format: 'json'
+            ,poll_limit: 1
+            ,poll_interval: 1
+            ,time_limit: 10
+            ,message_limit: 1000
+            ,remove_read: 0
+            ,show_filename: 0
+            ,include_keys: 1
+        }
+        ,paramNames: {
+            topic: 'topic'
+            ,name: 'name'
+            ,value: 'value'
+            ,message: 'message'
+            ,message_key: 'message_key'
+        }
+    });
+    this.config = config;
+    if (this.autoRead) {
+        this.readState();
+    }
+    this.dt = new Ext.util.DelayedTask(this.submitState, this);
+    if (this.autoStart) {
+        this.start();
+    }
+};
+Ext.extend(MODx.HttpProvider, Ext.state.Provider, {
+    initState: function(state) {
+        if (state instanceof Object) {
+            Ext.iterate(state, function(name, value, o) {
+                this.state[name] = value;//this.decodeValue(value);
+            }, this)
+        } else {
+            this.state = {};
+        }
+    }
+    ,set: function(name, value) {
+        if (!name) {
+            return;
+        }
+        this.queueChange(name, value);
+    }
+    ,get : function(name, defaultValue){
+        return typeof this.state[name] == "undefined" ?
+            defaultValue : this.state[name];
+    }
+    ,start: function() {
+        this.dt.delay(this.delay);
+        this.started = true;
+    }
+    ,stop: function() {
+        this.dt.cancel();
+        this.started = false;
+    }
+    ,queueChange:function(name, value) {
+        var lastValue = this.state[name];
+        var found = this.queue[name] !== undefined;
+        if (found) {
+            lastValue = this.queue[name];
+        }
+        var changed = undefined === lastValue || lastValue !== value;
+        if (changed) {
+            this.queue[name] = value;
+            this.dirty = true;
+        }
+        if (this.started) {
+            this.start();
+        }
+        return changed;
+    }
+    ,submitState: function() {
+        if (!this.dirty) {
+            this.dt.delay(this.delay);
+            return;
+        }
+        this.dt.cancel();
+
+        var o = {
+             url: this.writeUrl
+            ,method: this.method
+            ,scope: this
+            ,success: this.onWriteSuccess
+            ,failure: this.onWriteFailure
+            ,queue: Ext.apply({}, this.queue)
+            ,params: {}
+        };
+        var params = Ext.apply({}, this.baseParams, this.writeBaseParams);
+        params[this.paramNames.topic] = '/ys/user-' + MODx.user.id + '/';
+        params[this.paramNames.message] = Ext.encode(this.queue);
+
+        Ext.apply(o.params, params);
+        // be optimistic
+        this.dirty = false;
+
+        Ext.Ajax.request(o);
+    }
+    ,clear: function(name) {
+        this.set(name, undefined);
+    }
+    ,onWriteSuccess: function(r,o) {
+        r = Ext.decode(r.responseText);
+        if (true !== r.success) {
+            this.dirty = true;
+        } else {
+            Ext.iterate(o.queue, function(name, value) {
+                if(!name) {
+                    return;
+                }
+                if (undefined === value || null === value) {
+                    MODx.HttpProvider.superclass.clear.call(this, name);
+                } else {
+                    // parent sets value and fires event
+                    MODx.HttpProvider.superclass.set.call(this, name, value);
+                }
+            }, this);
+            if (false === this.dirty) {
+                this.queue = {};
+            } else {
+                Ext.iterate(o.queue, function(name, value) {
+                    var found = this.queue[name] !== undefined;
+                    if (true === found && value === this.queue[name]) {
+                        delete this.queue[name];
+                    }
+                }, this);
+            }
+            this.fireEvent('writesuccess', this);
+        }
+    }
+    ,onWriteFailure: function(r) {
+        r = Ext.decode(r.responseText);
+        this.dirty = true;
+        this.fireEvent('writefailure', this);
+    }
+    ,onReadFailure: function(r) {
+        r = Ext.decode(r.responseText);
+        this.fireEvent('readfailure', this);
+    }
+    ,onReadSuccess: function(r) {
+        r = Ext.decode(r.responseText);
+        var state;
+        if (true === r.success && r.message) {
+            state = Ext.decode(r.message);
+            if (!(state instanceof Object)) {
+                return;
+            }
+            Ext.iterate(state, function(name, value, o) {
+                this.state[name] = value;
+            }, this);
+            this.queue = {};
+            this.dirty = false;
+            this.fireEvent('readsuccess', this);
+        }
+    }
+    ,readState: function() {
+        var o = {
+             url: this.readUrl
+            ,method: this.method
+            ,scope: this
+            ,success: this.onReadSuccess
+            ,failure: this.onReadFailure
+            ,params: {}
+        };
+
+        var params = Ext.apply({}, this.baseParams, this.readBaseParams);
+        params[this.paramNames.topic] = '/ys/user-' + MODx.user.id + '/';
+
+        Ext.apply(o.params, params);
+        Ext.Ajax.request(o);
+    }
+});
+

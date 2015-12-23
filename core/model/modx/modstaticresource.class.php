@@ -1,12 +1,15 @@
 <?php
 /**
+ * @package modx
+ */
+/**
  * A derivative of modResource that stores content on the filesystem.
  *
  * {@inheritdoc}
  *
  * @package modx
  */
-class modStaticResource extends modResource {
+class modStaticResource extends modResource implements modResourceInterface {
     /**
      * @var string Path of the file containing the source content, relative to
      * the {@link modStaticResource::$_sourcePath}.
@@ -22,9 +25,14 @@ class modStaticResource extends modResource {
      */
     protected $_sourcePath= '';
 
+    /**
+     * Overrides modResource::__construct to set the class key for this Resource type
+     * @param xPDO $xpdo A reference to the xPDO|modX instance
+     */
     function __construct(& $xpdo) {
         parent :: __construct($xpdo);
         $this->set('class_key','modStaticResource');
+        $this->showInContextMenu = true;
     }
 
     /**
@@ -79,13 +87,12 @@ class modStaticResource extends modResource {
      * {@inheritdoc}
      */
     public function getContent(array $options = array()) {
-        $content = '';
+        $content = false; // Going to sendErrorPage() if couldn't populate the $content
         $this->getSourceFile($options);
         if (!empty ($this->_sourceFile)) {
             if (file_exists($this->_sourceFile)) {
                 $content= $this->getFileContent($this->_sourceFile);
                 if ($content === false) {
-                    $content = '';
                     $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, "No content could be retrieved from source file: {$this->_sourceFile}");
                 }
             } else {
@@ -94,14 +101,17 @@ class modStaticResource extends modResource {
         } else {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, "No source file specified.");
         }
+        if($content===false) {
+            $this->xpdo->sendErrorPage();
+        }
         return $content;
     }
 
     /**
      * Retrieve the resource content stored in a physical file.
      *
-     * @access public
      * @param string $file A path to the file representing the resource content.
+     * @param array $options
      * @return string The content of the file, of false if it could not be
      * retrieved.
      */
@@ -114,7 +124,7 @@ class modStaticResource extends modResource {
         if ($this->getOne('ContentType')) {
             $type= $this->ContentType->get('mime_type') ? $this->ContentType->get('mime_type') : 'text/html';
             if ($this->ContentType->get('binary') || $filesize > $byte_limit) {
-                if ($alias= array_search($this->xpdo->resourceIdentifier, $this->xpdo->aliasMap)) {
+                if ($alias= $this->get('uri')) {
                     $name= basename($alias);
                 } elseif ($this->get('alias')) {
                     $name= $this->get('alias');
@@ -147,7 +157,7 @@ class modStaticResource extends modResource {
                 }
                 $header= 'Cache-Control: public';
                 header($header);
-                $header= 'Content-Disposition: ' . ($this->get('content_dispo') ? 'inline' : 'attachment' . '; filename=' . $name);
+                $header= 'Content-Disposition: ' . ($this->get('content_dispo') ? 'attachment; filename=' . $name : 'inline');
                 header($header);
                 $header= 'Vary: User-Agent';
                 header($header);
@@ -157,7 +167,7 @@ class modStaticResource extends modResource {
                     }
                 }
                 @session_write_close();
-                while (@ob_end_clean()) {}
+                while (ob_get_level() && @ob_end_clean()) {}
                 readfile($file);
                 die();
             }
@@ -197,5 +207,36 @@ class modStaticResource extends modResource {
                 $value *= 1024;
         }
         return $value;
+    }
+
+    /**
+     * Sets the path to the Static Resource manager controller
+     * @static
+     * @param xPDO $modx A reference to the modX instance
+     * @return string
+     */
+    public static function getControllerPath(xPDO &$modx) {
+        $path = modResource::getControllerPath($modx);
+        return $path.'staticresource/';
+    }
+
+    /**
+     * Use this in your extended Resource class to display the text for the context menu item, if showInContextMenu is
+     * set to true.
+     * @return array
+     */
+    public function getContextMenuText() {
+        return array(
+            'text_create' => $this->xpdo->lexicon('static_resource'),
+            'text_create_here' => $this->xpdo->lexicon('static_resource_create_here'),
+        );
+    }
+
+    /**
+     * Use this in your extended Resource class to return a translatable name for the Resource Type.
+     * @return string
+     */
+    public function getResourceTypeName() {
+        return $this->xpdo->lexicon('static_resource');
     }
 }

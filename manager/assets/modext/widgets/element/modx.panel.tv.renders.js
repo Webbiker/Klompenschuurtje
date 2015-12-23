@@ -28,18 +28,23 @@ MODx.panel.ImageTV = function(config) {
             ,browserEl: 'tvbrowser'+config.tv
             ,name: 'tvbrowser'+config.tv
             ,id: 'tvbrowser'+config.tv
+            ,triggerClass: 'x-form-image-trigger'
             ,value: config.relativeValue
-            ,hideFiles: true
+            // ,hideFiles: true
+            ,source: config.source || 1
+            ,allowedFileTypes: config.allowedFileTypes || ''
+            ,openTo: config.openTo || ''
+            ,hideSourceCombo: true
             ,listeners: {
                 'select': {fn:function(data) {
                     Ext.getCmp('tv'+this.config.tv).setValue(data.relativeUrl);
-                    Ext.getCmp('tvbrowser'+this.config.tv).setValue(data.url);
+                    Ext.getCmp('tvbrowser'+this.config.tv).setValue(data.relativeUrl);
                     this.fireEvent('select',data);
                 },scope:this}
                 ,'change': {fn:function(cb,nv) {
-                    Ext.getCmp('tv'+this.config.tv).setValue(this.config.filemanager_url+nv);
+                    Ext.getCmp('tv'+this.config.tv).setValue(nv);
                     this.fireEvent('select',{
-                        relativeUrl: this.config.filemanager_url+nv
+                        relativeUrl: nv
                         ,url: nv
                     });
                 },scope:this}
@@ -75,12 +80,24 @@ MODx.panel.FileTV = function(config) {
             ,name: 'tvbrowser'+config.tv
             ,id: 'tvbrowser'+config.tv
             ,value: config.relativeValue
-            ,hideFiles: true
+            // ,hideFiles: true
+            ,source: config.source || 1
+            ,allowedFileTypes: config.allowedFileTypes || ''
+            ,wctx: config.wctx || 'web'
+            ,openTo: config.openTo || ''
+            ,hideSourceCombo: true
             ,listeners: {
                 'select': {fn:function(data) {
                     Ext.getCmp('tv'+this.config.tv).setValue(data.relativeUrl);
-                    Ext.getCmp('tvbrowser'+this.config.tv).setValue(data.url);
-                    this.fireEvent('select',data);                    
+                    Ext.getCmp('tvbrowser'+this.config.tv).setValue(data.relativeUrl);
+                    this.fireEvent('select',data);
+                },scope:this}
+                ,'change': {fn:function(cb,nv) {
+                    Ext.getCmp('tv'+this.config.tv).setValue(nv);
+                    this.fireEvent('select',{
+                        relativeUrl: nv
+                        ,url: nv
+                    });
                 },scope:this}
             }
         }] 

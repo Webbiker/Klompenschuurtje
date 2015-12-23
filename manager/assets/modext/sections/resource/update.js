@@ -1,6 +1,6 @@
 /**
  * Loads the resource update page
- * 
+ *
  * @class MODx.page.UpdateResource
  * @extends MODx.Component
  * @param {Object} config An object of config properties
@@ -13,24 +13,20 @@ MODx.page.UpdateResource = function(config) {
         'parent-cmb': config.record['parent']
     });
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'resource/index.php'
+        url: MODx.config.connector_url
         ,which_editor: 'none'
         ,formpanel: 'modx-panel-resource'
         ,id: 'modx-page-update-resource'
-        ,actions: {
-            'new': MODx.action['resource/create']
-            ,edit: MODx.action['resource/update']
-            ,preview: MODx.action['resource/preview']
-            ,cancel: MODx.action['welcome']
-        }
-        ,loadStay: true
+        ,action: 'resource/update'
         ,components: [{
-            xtype: 'modx-panel-resource'
-            ,renderTo: 'modx-panel-resource-div'
+            xtype: config.panelXType || 'modx-panel-resource'
+            ,renderTo: config.panelRenderTo || 'modx-panel-resource-div'
             ,resource: config.resource
             ,record: config.record || {}
             ,publish_document: config.publish_document
-            ,access_permissions: config.access_permissions
+            ,show_tvs: config.show_tvs
+            ,mode: config.mode
+            ,url: config.url
         }]
         ,buttons: this.getButtons(config)
     });
@@ -39,7 +35,6 @@ MODx.page.UpdateResource = function(config) {
         Ext.EventManager.on(window, 'beforeunload',function(e) {
             MODx.releaseLock(this.config.resource);
             MODx.sleep(400);
-            e.browserEvent.returnValue = '';
             return false;
         }, this);
     }
@@ -56,18 +51,34 @@ Ext.extend(MODx.page.UpdateResource,MODx.Component,{
         window.open(this.config.preview_url);
         return false;
     }
-    
-    ,duplicate: function(btn,e) {
+
+    ,duplicateResource: function(btn,e) {
         MODx.msg.confirm({
             text: _('resource_duplicate_confirm')
-            ,url: MODx.config.connectors_url+'resource/index.php'
+            ,url: MODx.config.connector_url
             ,params: {
-                action: 'duplicate'
+                action: 'resource/duplicate'
                 ,id: this.config.resource
             }
             ,listeners: {
                 success: {fn:function(r) {
-                    location.href = '?a='+MODx.action['resource/update']+'&id='+r.object.id;
+                    MODx.loadPage('resource/update', 'id='+r.object.id);
+                },scope:this}
+            }
+        });
+    }
+
+    ,deleteResource: function(btn,e) {
+        MODx.msg.confirm({
+            text: _('resource_delete_confirm')
+            ,url: MODx.config.connector_url
+            ,params: {
+                action: 'resource/delete'
+                ,id: this.config.resource
+            }
+            ,listeners: {
+                success: {fn:function(r) {
+                    MODx.loadPage('resource/update', 'id='+r.object.id);
                 },scope:this}
             }
         });
@@ -78,58 +89,72 @@ Ext.extend(MODx.page.UpdateResource,MODx.Component,{
         if (fp && fp.isDirty()) {
             Ext.Msg.confirm(_('warning'),_('resource_cancel_dirty_confirm'),function(e) {
                 if (e == 'yes') {
+                    fp.warnUnsavedChanges = false;
                     MODx.releaseLock(MODx.request.id);
                     MODx.sleep(400);
-                    location.href = '?a='+MODx.action['welcome'];                    
+                    MODx.loadPage('?');
                 }
             },this);
         } else {
             MODx.releaseLock(MODx.request.id);
-            location.href = '?a='+MODx.action['welcome'];
+            MODx.loadPage('?');
         }
     }
-    
+
     ,getButtons: function(cfg) {
         var btns = [];
         if (cfg.canSave == 1) {
             btns.push({
-                process: 'update'
+                process: 'resource/update'
                 ,text: _('save')
+                ,id: 'modx-abtn-save'
+                ,cls: 'primary-button'
                 ,method: 'remote'
-                ,checkDirty: cfg.richtext ? false : true
+                //,checkDirty: MODx.request.reload ? false : true
                 ,keys: [{
                     key: MODx.config.keymap_save || 's'
-                    ,alt: true
                     ,ctrl: true
                 }]
             });
-            btns.push('-');
-        }
-        if (cfg.canCreate == 1) {
+        } else if (cfg.locked) {
             btns.push({
-                process: 'duplicate'
-                ,text: _('duplicate')
-                ,handler: this.duplicate
+                text: cfg.lockedText || _('locked')
+                ,id: 'modx-abtn-locked'
+                ,handler: Ext.emptyFn
+                ,disabled: true
+            });
+        }
+        if (cfg.canDuplicate == 1 && (cfg.record.parent !== parseInt(MODx.config.tree_root_id) || cfg.canCreateRoot == 1)) {
+            btns.push({
+                text: _('duplicate')
+                ,id: 'modx-abtn-duplicate'
+                ,handler: this.duplicateResource
                 ,scope:this
             });
-            btns.push('-');
+        }
+        if (cfg.canDelete == 1 && !cfg.locked) {
+            btns.push({
+                text: _('delete')
+                ,id: 'modx-abtn-delete'
+                ,handler: this.deleteResource
+                ,scope:this
+            });
         }
         btns.push({
-            process: 'preview'
-            ,text: _('preview')
+            text: _('view')
+            ,id: 'modx-abtn-preview'
             ,handler: this.preview
             ,scope: this
         });
-        btns.push('-');
         btns.push({
-            process: 'cancel'
-            ,text: _('cancel')
+            text: _('cancel')
+            ,id: 'modx-abtn-cancel'
             ,handler: this.cancel
             ,scope: this
         });
-        btns.push('-');
         btns.push({
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         });
         return btns;

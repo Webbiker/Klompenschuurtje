@@ -1,26 +1,52 @@
+Ext.dd.DragDropMgr.getZIndex = function(element) {
+    var body = document.body,
+        z,
+        zIndex = -1;
+    var overTargetEl = element;
+ 
+    element = Ext.getDom(element);
+    while (element !== body) {
+ 
+        // this fixes the problem
+        if(!element) {
+            this._remove(overTargetEl); // remove the drop target from the manager
+            break;
+        }
+        // fix end
+ 
+        if (!isNaN(z = Number(Ext.fly(element).getStyle('zIndex')))) {
+            zIndex = z;
+        }
+        element = element.parentNode;
+    }
+    return zIndex;
+};
 MODx.TreeDrop = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         id: 'modx-treedrop'
         ,ddGroup: 'modx-treedrop-dd'
-    })
+    });
     MODx.TreeDrop.superclass.constructor.call(this,config);
     this.config = config;
     this.setup();
 };
-Ext.extend(MODx.TreeDrop,Ext.Component,{    
+Ext.extend(MODx.TreeDrop,Ext.Component,{
     setup: function() {
         var ddTarget = this.config.target;
         var ddTargetEl = this.config.targetEl;
         var cfg = this.config;
-        
+
         this.targetEl = new Ext.dd.DropTarget(this.config.targetEl, {
             ddGroup: this.config.ddGroup
-            
+
             ,notifyEnter: function(ddSource, e, data) {
                 if (ddTarget.getEl) {
                     var el = ddTarget.getEl();
-                    if (el) { el.frame(); }
+                    if (el) {
+                        el.frame();
+                        el.focus();
+                    }
                 }
             }
             ,notifyDrop: function(ddSource, e, data) {
@@ -34,7 +60,20 @@ Ext.extend(MODx.TreeDrop,Ext.Component,{
                     case 'chunk': win = true; break;
                     case 'tv': win = true; break;
                     case 'file': v = data.node.attributes.url; break;
-                    default: return false; break;
+                    default:
+                        var dh = Ext.getCmp(data.node.attributes.type+'-drop-handler');
+                        if (dh) {
+                            return dh.handle(data,{
+                                ddTargetEl: ddTargetEl
+                                ,cfg: cfg
+                                ,iframe: cfg.iframe
+                                ,iframeEl: cfg.iframeEl
+                                ,onInsert: cfg.onInsert
+                                ,panel: cfg.panel
+                            });
+                        }
+                        return false;
+                        break;
                 }
                 if (win) {
                     MODx.loadInsertElement({
@@ -63,9 +102,14 @@ Ext.extend(MODx.TreeDrop,Ext.Component,{
                             MODx.insertAtCursor(ddTargetEl,data.node.attributes.pk,cfg.onInsert);
                         } else if (el.dom.id == 'modx-resource-parent') {
                             v = data.node.attributes.pk;
-                            Ext.getCmp('modx-resource-parent').setValue(v);
-                            Ext.getCmp('modx-resource-parent-hidden').setValue(v);
-                            var p = Ext.getCmp('modx-panel-resource');
+                            var pf = Ext.getCmp('modx-resource-parent');
+                            if (v == pf.currentid) {
+                                MODx.msg.alert('',_('resource_err_own_parent'));
+                                return false;
+                            }
+                            pf.setValue(v);
+                            Ext.getCmp(pf.parentcmp).setValue(v);
+                            var p = Ext.getCmp(pf.formpanel);
                             if (p) { p.markDirty(); }
                         } else {
                             MODx.insertAtCursor(ddTargetEl,v,cfg.onInsert);
@@ -80,22 +124,29 @@ Ext.extend(MODx.TreeDrop,Ext.Component,{
                 return true;
             }
         });
-    }    
+        // Allow elements & files nodes to be dropped
+        this.targetEl.addToGroup('modx-treedrop-elements-dd');
+        this.targetEl.addToGroup('modx-treedrop-sources-dd');
+    }
 });
 Ext.reg('modx-treedrop',MODx.TreeDrop);
 
 MODx.loadInsertElement = function(r) {
-    var w = MODx.load({
+    if (MODx.InsertElementWindow) {
+        MODx.InsertElementWindow.hide();
+        MODx.InsertElementWindow.destroy();
+    }
+    MODx.InsertElementWindow = MODx.load({
         xtype: 'modx-window-insert-element'
         ,record: r
         ,listeners: {
-            'success':{fn: function() {            
+            'success':{fn: function() {
             },scope:this}
             ,'hide': {fn:function() { this.destroy(); }}
         }
     });
-    w.setValues(r);
-    w.show();
+    MODx.InsertElementWindow.setValues(r);
+    MODx.InsertElementWindow.show();
 };
 
 MODx.insertAtCursor = function(myField, myValue,h) {
@@ -105,25 +156,29 @@ MODx.insertAtCursor = function(myField, myValue,h) {
             myValue = z;
         }
     }
-    if (document.selection) { 
-        myField.focus(); 
-        sel = document.selection.createRange(); 
-        sel.text = myValue; 
+    myField.blur();
+    if (document.selection) {
+        sel = document.selection.createRange();
+        sel.text = myValue;
     } else if (myField.selectionStart || myField.selectionStart == '0') {
-        var startPos = myField.selectionStart; 
-        var endPos = myField.selectionEnd; 
-        myField.value = myField.value.substring(0, startPos)+ myValue+ myField.value.substring(endPos, myField.value.length); 
-    } else { 
-        myField.value += myValue; 
+        var startPos = myField.selectionStart;
+        var endPos = myField.selectionEnd;
+        myField.value = myField.value.substring(0, startPos)+ myValue+ myField.value.substring(endPos, myField.value.length);
+        myField.selectionStart = startPos + myValue.length;
+        myField.selectionEnd = myField.selectionStart;
+    } else {
+        myField.value += myValue;
     }
+    myField.focus();
 };
+
 MODx.insertForRTE = function(v,cfg) {
     var fn = cfg.onInsert || false;
     if (fn) {
         fn(v,cfg);
     } else {
         if (typeof cfg.iframeEl == 'object') {
-            var doc = cfg.iframeEl; 
+            var doc = cfg.iframeEl;
         } else {
             var doc = window.frames[0].document.getElementById(cfg.iframeEl);
         }
@@ -135,14 +190,26 @@ MODx.insertForRTE = function(v,cfg) {
     }
 };
 
+MODx.insertIntoContent = function(v,opt) {
+    if (opt.iframe) {
+        MODx.insertForRTE(v,opt.cfg);
+    } else {
+        MODx.insertAtCursor(opt.ddTargetEl,v);
+    }
+}
+
 MODx.window.InsertElement = function(config) {
     config = config || {};
+    var resourceCmp = Ext.get('modx-resource-id');
+    var resourceId = resourceCmp !== null ? resourceCmp.getValue() : 0;
     Ext.applyIf(config,{
         title: _('select_el_opts')
-        ,id: 'modx-window-insert-element' 
-        ,width: 600
-        ,url: MODx.config.connectors_url+'element/template.php'
-        ,action: 'create'
+        ,id: 'modx-window-insert-element'
+        ,width: 522 // match 300px fieldwidth plus the fieldset
+        ,labelAlign: 'left'
+        ,labelWidth: 160
+        ,url: MODx.config.connector_url
+        ,action: 'element/template/create'
         ,fields: [{
             xtype: 'hidden'
             ,name: 'pk'
@@ -152,7 +219,7 @@ MODx.window.InsertElement = function(config) {
             ,name: 'classKey'
             ,id: 'modx-dise-classkey'
         },{
-            xtype: 'checkbox'
+            xtype: 'xcheckbox'
             ,fieldLabel: _('cached')
             ,name: 'cached'
             ,id: 'modx-dise-cached'
@@ -163,23 +230,26 @@ MODx.window.InsertElement = function(config) {
             ,fieldLabel: _('property_set')
             ,name: 'propertyset'
             ,id: 'modx-dise-propset'
+            ,width: 300
             ,baseParams: {
-                action: 'getList'
+                action: 'element/propertyset/getList'
                 ,showAssociated: true
                 ,elementId: config.record.pk
                 ,elementType: config.record.classKey
             }
             ,listeners: {
-                'select': {fn:this.changePropertySet,scope:this}
+                'render': {fn:function() {Ext.getCmp('modx-dise-propset').getStore().load(); Ext.getCmp('modx-dise-propset').value = '0';},scope:this} 
+                ,'select': {fn:this.changePropertySet,scope:this}
             }
         },{
             id: 'modx-dise-proplist'
             ,autoLoad: {
-                url: MODx.config.connectors_url+'element/index.php'
+                url: MODx.config.connector_url
                 ,params: {
-                   'action': 'getInsertProperties'
+                   'action': 'element/getinsertproperties'
                    ,classKey: config.record.classKey
                    ,pk: config.record.pk
+                   ,resourceId: resourceId
                    ,propertySet: 0
                 }
                 ,scripts: true
@@ -190,29 +260,39 @@ MODx.window.InsertElement = function(config) {
         },{
             xtype: 'fieldset'
             ,title: _('properties')
-            ,autoHeight: true
+            // ,autoHeight: true
+            ,height: Ext.getBody().getViewSize().height * 0.6
             ,collapsible: true
+            ,autoScroll: true
             ,items: [{
                 html: '<div id="modx-iprops-form"></div>'
-                ,autoHeight: true
+                ,id: 'modx-iprops-container'
+                // ,height: 400
+                // ,autoScroll: true
             }]
         }]
     });
     MODx.window.InsertElement.superclass.constructor.call(this,config);
-    this.on('show',function() { this.center(); },this);
+    this.on('show',function() {
+        this.center();
+        this.mask = new Ext.LoadMask(Ext.get('modx-iprops-container'), {msg:_('loading')});
+        this.mask.show();
+    },this);
 };
 Ext.extend(MODx.window.InsertElement,MODx.Window,{
     changePropertySet: function(cb) {
         var fp = Ext.getCmp('modx-iprops-fp');
         if (fp) fp.destroy();
-
+        var resourceCmp = Ext.get('modx-resource-id');
+        var resourceId = resourceCmp !== null ? resourceCmp.getValue() : 0;
         var u = Ext.getCmp('modx-dise-proplist').getUpdater();
         u.update({
-            url: MODx.config.connectors_url+'element/index.php'
+            url: MODx.config.connector_url
             ,params: {
-                'action': 'getInsertProperties'
+                'action': 'element/getinsertproperties'
                 ,classKey: this.config.record.classKey
                 ,pk: this.config.record.pk
+                ,resourceId: resourceId
                 ,propertySet: cb.getValue()
             }
             ,scripts: true
@@ -220,6 +300,7 @@ Ext.extend(MODx.window.InsertElement,MODx.Window,{
             ,scope: this
         });
         this.modps = [];
+        this.mask.show();
     }
     ,createStore: function(data) {
         return new Ext.data.SimpleStore({
@@ -228,6 +309,7 @@ Ext.extend(MODx.window.InsertElement,MODx.Window,{
         });
     }
     ,onPropFormLoad: function(el,s,r) {
+        this.mask.hide();
         var vs = Ext.decode(r.responseText);
         if (!vs || vs.length <= 0) { return false; }
         for (var i=0;i<vs.length;i++) {
@@ -240,17 +322,18 @@ Ext.extend(MODx.window.InsertElement,MODx.Window,{
             ,id: 'modx-iprops-fp'
             ,layout: 'form'
             ,autoHeight: true
+            ,autoScroll: true
             ,labelWidth: 150
             ,border: false
             ,items: vs
             ,renderTo: 'modx-iprops-form'
-        })    
+        });
     }
     ,submit: function() {
         var v = '[[';
         var n = this.config.record.name;
         var f = this.fp.getForm();
-        
+
         if (f.findField('cached').getValue() != true) {
             v = v+'!';
         }
@@ -260,20 +343,20 @@ Ext.extend(MODx.window.InsertElement,MODx.Window,{
             case 'modTemplateVar': v = v+'*'+n; break;
         }
         var ps = f.findField('propertyset').getValue();
-        if (ps !== 0 && ps !== '') {
+        if (ps != 0 && ps !== '') {
             v = v+'@'+f.findField('propertyset').getRawValue();
         }
         v = v+'?';
-        
+
         for (var i=0;i<this.modps.length;i++) {
             var fld = this.modps[i];
-            var val = Ext.getCmp('modx-iprop-'+fld).getValue();
+            var val = typeof(Ext.getCmp('modx-iprop-'+fld).getValue) === 'function' ? Ext.getCmp('modx-iprop-'+fld).getValue() : Ext.getCmp('modx-iprop-'+fld).value;
             if (val == true) val = 1;
             if (val == false) val = 0;
-            v = v+' &'+fld+'=`'+val+'`';
+            v = v+'\n\t&'+fld+'=`'+val+'`';
         }
-        v = v+']]';
-        
+        v = v+'\n]]';
+
         if (this.config.record.iframe) {
             MODx.insertForRTE(v,this.config.record.cfg);
         } else {

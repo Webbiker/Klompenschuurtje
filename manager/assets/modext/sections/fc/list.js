@@ -1,16 +1,12 @@
-Ext.onReady(function() {
-	MODx.load({ xtype: 'modx-page-form-customization' });
-});
-
 MODx.page.FormCustomization = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
         components: [{
             xtype: 'modx-panel-fc-profiles'
-            ,renderTo: 'modx-panel-fc-profiles-div'
         }]
         ,buttons: [{
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         }]
 	});

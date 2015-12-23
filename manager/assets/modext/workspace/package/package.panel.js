@@ -2,9 +2,10 @@
 MODx.panel.Package = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'workspace/package/index.php'
+        url: MODx.config.connector_url
         ,baseParams: {}
         ,id: 'modx-panel-package'
+		,cls: 'container'
         ,chunk: ''
         ,bodyStyle: ''
         ,items: [{
@@ -14,70 +15,75 @@ MODx.panel.Package = function(config) {
             ,id: 'modx-package-header'
         },MODx.getPageStructure([{
             title: _('package')
-            ,bodyStyle: 'padding: 15px;'
             ,defaults: { border: false ,msgTarget: 'side' }
             ,layout: 'form'
             ,id: 'modx-package-form'
             ,labelWidth: 150
             ,items: [{
-                xtype: 'statictextfield'
-                ,fieldLabel: _('package')
-                ,name: 'package_name'
-                ,width: 300
-            },{
-                xtype: 'statictextfield'
-                ,fieldLabel: _('signature')
-                ,name: 'signature'
-                ,width: 300
-                ,submitValue: true
-            },{
-                xtype: 'statictextfield'
-                ,fieldLabel: _('uploaded_on')
-                ,name: 'created'
-                ,width: 300
-            },{
-                xtype: 'statictextfield'
-                ,fieldLabel: _('installed')
-                ,name: 'installed'
-                ,width: 300
-            },{
-                xtype: 'statictextfield'
-                ,fieldLabel: _('last_updated')
-                ,name: 'updated'
-                ,width: 300
-            },{
-                xtype: 'modx-combo-provider'
-                ,fieldLabel: _('provider')
-                ,name: 'provider'
-                ,width: 300
-            },{
-                xtype: 'textarea'
-                ,readOnly: true
-                ,fieldLabel: _('readme')
-                ,name: 'readme'
-                ,width: '80%'
-                ,height: 200
-            },{
-                xtype: 'textarea'
-                ,readOnly: true
-                ,fieldLabel: _('license')
-                ,name: 'license'
-                ,width: '80%'
-                ,height: 200
-            },{
-                xtype: 'textarea'
-                ,readOnly: true
-                ,fieldLabel: _('changelog')
-                ,name: 'changelog'
-                ,width: '80%'
-                ,height: 200
-            }]
+				xtype: 'panel'
+				,border: false
+				,cls:'main-wrapper'
+				,layout: 'form'
+				,items: [{
+					xtype: 'statictextfield'
+					,fieldLabel: _('package')
+					,name: 'package_name'
+					,width: 300
+				},{
+					xtype: 'statictextfield'
+					,fieldLabel: _('signature')
+					,name: 'signature'
+					,width: 300
+					,submitValue: true
+				},{
+					xtype: 'statictextfield'
+					,fieldLabel: _('uploaded_on')
+					,name: 'created'
+					,width: 300
+				},{
+					xtype: 'statictextfield'
+					,fieldLabel: _('installed')
+					,name: 'installed'
+					,width: 300
+				},{
+					xtype: 'statictextfield'
+					,fieldLabel: _('last_updated')
+					,name: 'updated'
+					,width: 300
+				},{
+					xtype: 'modx-combo-provider'
+					,fieldLabel: _('provider')
+					,name: 'provider'
+					,width: 300
+				},{
+					xtype: 'textarea'
+					,readOnly: true
+					,fieldLabel: _('readme')
+					,name: 'readme'
+					,width: '80%'
+					,height: 200
+				},{
+					xtype: 'textarea'
+					,readOnly: true
+					,fieldLabel: _('license')
+					,name: 'license'
+					,width: '80%'
+					,height: 200
+				},{
+					xtype: 'textarea'
+					,readOnly: true
+					,fieldLabel: _('changelog')
+					,name: 'changelog'
+					,width: '80%'
+					,height: 200
+				}]
+			}]
         },{
             title: _('uploaded_versions')
-            ,bodyStyle: 'padding: 15px;'
             ,defaults: { border: false ,msgTarget: 'side' }
             ,items: [{
                 xtype: 'modx-grid-package-versions'
+				,cls: 'main-wrapper'
                 ,signature: config.signature
                 ,preventRender: true
             }]
@@ -100,7 +106,7 @@ Ext.extend(MODx.panel.Package,MODx.FormPanel,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'get'
+                action: 'workspace/packages/get'
                 ,signature: this.config.signature
             }
             ,listeners: {
@@ -108,7 +114,7 @@ Ext.extend(MODx.panel.Package,MODx.FormPanel,{
                     this.getForm().setValues(r.object);
                     Ext.getCmp('modx-package-header').getEl().update('<h2>'+_('package')+': '+r.object.package_name+'</h2>');
                     this.fireEvent('ready',r.object);
-                    
+
                     this.initialized = true;
                 },scope:this}
             }

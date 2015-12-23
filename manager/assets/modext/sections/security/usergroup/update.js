@@ -1,10 +1,7 @@
-Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-page-user-group-update' });
-});
 
 /**
  * Loads the usergroup update page
- * 
+ *
  * @class MODx.page.UpdateUserGroup
  * @extends MODx.Component
  * @param {Object} config An object of config properties
@@ -15,26 +12,30 @@ MODx.page.UpdateUserGroup = function(config) {
     Ext.applyIf(config,{
         formpanel: 'modx-panel-user-group'
         ,buttons: [{
-            process: 'update'
+            process: 'security/group/update'
             ,text: _('save')
+            ,id: 'modx-abtn-save'
+            ,cls: 'primary-button'
             ,method: 'remote'
-            ,checkDirty: true
+            // ,checkDirty: true
             ,keys: [{
                 key: MODx.config.keymap_save || 's'
-                ,alt: true
                 ,ctrl: true
             }]
-        },'-',{
-            process: 'cancel'
-            ,text: _('cancel')
-            ,params: {a:MODx.action['security/permission']}
-        },'-',{
+        },{
+            text: _('cancel')
+            ,id: 'modx-abtn-cancel'
+            ,handler: function() {
+                MODx.loadPage('security/permission')
+            }
+        },{
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         }]
         ,components: [{
             xtype: 'modx-panel-user-group'
-            ,renderTo: 'modx-panel-user-group-div'
+            ,record: config.record || {}
             ,usergroup: MODx.request.id
         }]
     });

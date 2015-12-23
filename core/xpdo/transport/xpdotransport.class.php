@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006-2010 by  Jason Coward <xpdo@opengeek.com>
+ * Copyright 2010-2015 by MODX, LLC.
  *
  * This file is part of xPDO.
  *
@@ -56,6 +56,8 @@ class xPDOTransport {
     const UNINSTALL_OBJECT = 'uninstall_object';
     const ARCHIVE_WITH = 'archive_with';
     const ABORT_INSTALL_ON_VEHICLE_FAIL = 'abort_install_on_vehicle_fail';
+    const PACKAGE_NAME = 'package_name';
+    const PACKAGE_VERSION = 'package_version';
     /**
      * Indicates how pre-existing objects are treated on install/uninstall.
      * @var integer
@@ -98,6 +100,16 @@ class xPDOTransport {
      */
     public $signature= null;
     /**
+     * A unique name used to identify the package without the version.
+     * @var string
+     */
+    public $name= null;
+    /**
+     * The package version, as a PHP-standardized version number string.
+     * @var string
+     */
+    public $version= null;
+    /**
      * Indicates the state of the xPDOTransport instance.
      * @var integer
      */
@@ -129,16 +141,78 @@ class xPDOTransport {
     public $_preserved = array();
 
     /**
+     * Parse the name and version from a package signature.
+     *
+     * @static
+     * @param string $signature The package signature to parse.
+     * @return array An array with two elements containing the name and version respectively.
+     */
+    public static function parseSignature($signature) {
+        $exploded = explode('-', $signature);
+        $name = current($exploded);
+        $version = '';
+        $part = next($exploded);
+        while ($part !== false) {
+            $dotPos = strpos($part, '.');
+            if ($dotPos > 0 && is_numeric(substr($part, 0, $dotPos))) {
+                $version = $part;
+                while (($part = next($exploded)) !== false) {
+                    $version .= '-' . $part;
+                }
+                break;
+            } else {
+                $name .= '-' . $part;
+                $part = next($exploded);
+            }
+        }
+        return array(
+            $name,
+            $version
+        );
+    }
+
+    /**
+     * Compares two package versions by signature.
+     *
+     * @static
+     * @param string $signature1 A package signature.
+     * @param string $signature2 Another package signature to compare.
+     * @return bool|int Returns -1 if the first version is lower than the second, 0 if they
+     * are equal, and 1 if the second is lower if the package names in the provided
+     * signatures are equal; otherwise returns false.
+     */
+    public static function compareSignature($signature1, $signature2) {
+        $value = false;
+        $parsed1 = self::parseSignature($signature1);
+        $parsed2 = self::parseSignature($signature2);
+        if ($parsed1[0] === $parsed2[0]) {
+            $value = version_compare($parsed1[1], $parsed2[1]);
+        }
+        return $value;
+    }
+
+    /**
      * Prepares and returns a new xPDOTransport instance.
      *
      * @param xPDO &$xpdo The xPDO instance accessing this package.
      * @param string $signature The unique signature of the package.
      * @param string $path Valid path to the physical transport package.
+     * @param array $options An optional array of attributes for constructing the instance.
      */
-    public function __construct(& $xpdo, $signature, $path) {
+    public function __construct(& $xpdo, $signature, $path, array $options = array()) {
         $this->xpdo= & $xpdo;
         $this->signature= $signature;
         $this->path= $path;
+        if (!empty($options) && array_key_exists(self::PACKAGE_NAME, $options) && array_key_exists(self::PACKAGE_VERSION, $options)) {
+            $this->name= $options[self::PACKAGE_NAME];
+            $this->version= $options[self::PACKAGE_VERSION];
+        } else {
+            $nameAndVersion= self::parseSignature($this->signature);
+            if (count($nameAndVersion) == 2) {
+                $this->name= $nameAndVersion[0];
+                $this->version= $nameAndVersion[1];
+            }
+        }
         $xpdo->loadClass('transport.xPDOVehicle', XPDO_CORE_PATH, true, true);
     }
 
@@ -253,6 +327,7 @@ class xPDOTransport {
      * can be anything from rules describing how to pack or unpack the artifact,
      * or any other data that might be useful when dealing with a transportable
      * artifact.
+     * @return bool TRUE if the artifact is successfully registered in the transport.
      */
     public function put($artifact, $attributes = array ()) {
         $added= false;
@@ -263,6 +338,7 @@ class xPDOTransport {
             if (empty($vehiclePackage)) $vehiclePackage = $attributes['vehicle_package'] = 'transport';
             if (empty($vehicleClass)) $vehicleClass = $attributes['vehicle_class'] = 'xPDOObjectVehicle';
             if ($className = $this->xpdo->loadClass("{$vehiclePackage}.{$vehicleClass}", $vehiclePackagePath, true, true)) {
+                /** @var xPDOVehicle $vehicle */
                 $vehicle = new $className();
                 $vehicle->put($this, $artifact, $attributes);
                 if ($added= $vehicle->store($this)) {
@@ -286,13 +362,8 @@ class xPDOTransport {
             return false;
         }
         $this->writeManifest();
-        $path = $this->path;
-        $pos = strpos($path, ':');
-        if ($pos !== false) {
-            $path = substr($path, $pos +1);
-        }
-        $fileName = $path . $this->signature . '.transport.zip';
-        return xPDOTransport::_pack($this->xpdo, $fileName, $path, $this->signature);
+        $fileName = $this->path . $this->signature . '.transport.zip';
+        return xPDOTransport::_pack($this->xpdo, $fileName, $this->path, $this->signature);
     }
 
     /**
@@ -449,7 +520,135 @@ class xPDOTransport {
     }
 
     /**
-     * Get an existing {@link xPDOTransport} instance.
+     * Get dependency requirements for this xPDOTransport.
+     *
+     * @param array $requires An optional array of dependent package constraints
+     * to override/supplement those specified in the package metadata.
+     *
+     * @return array An array of dependency requirements for the package.
+     */
+    public function getDependencies(array $requires = array()) {
+        $requiresAttribute = $this->getAttribute('requires');
+        if (is_array($requiresAttribute)) {
+            $requires = array_merge($requiresAttribute, $requires);
+        }
+        return $requires;
+    }
+
+    /**
+     * Check if dependencies are satisfied for the package.
+     *
+     * Override this method to check implementation specific package
+     * dependencies. This implementation only checks platform dependencies.
+     *
+     * @param array $options An array of options for the checks.
+     *
+     * @return array An array containing any unsatisfied dependencies.
+     */
+    public function checkDependencies(array $options = array()) {
+        $unsatisfied = $this->getDependencies();
+        return self::checkPlatformDependencies($unsatisfied);
+    }
+
+    /**
+     * Check if any specified platform dependencies are satisfied.
+     *
+     * @param array $dependencies An array of dependencies to test.
+     *
+     * @return array An array containing any unsatisfied dependencies.
+     */
+    public static function checkPlatformDependencies($dependencies) {
+        if (is_array($dependencies)) {
+            foreach ($dependencies as $depName => $depRequire) {
+                switch ($depName) {
+                    case 'php':
+                        if (self::satisfies(XPDO_PHP_VERSION, $depRequire)) {
+                            unset($dependencies[$depName]);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return $dependencies;
+    }
+
+    /**
+     * Test if a version satisfies a version constraint.
+     *
+     * @param string $version The version to test.
+     * @param string $constraint The constraint to satisfy.
+     *
+     * @return bool TRUE if the version satisfies the constraint; FALSE otherwise.
+     */
+    public static function satisfies($version, $constraint) {
+        $satisfied = false;
+        $constraint = trim($constraint);
+        if (substr($constraint, 0, 1) === '~') {
+            $requirement = substr($constraint, 1);
+            $constraint = ">={$requirement},<" . self::nextSignificantRelease($requirement);
+        }
+        if (strpos($constraint, ',') !== false) {
+            $exploded = explode(',', $constraint);
+            array_walk($exploded, 'trim');
+            $satisfies = array();
+            foreach ($exploded as $requirement) {
+                $satisfies[] = self::satisfies($version, $requirement);
+            }
+            $satisfied = (false === array_search(false, $satisfies, true));
+        } elseif (($wildcardPos = strpos($constraint, '.*')) > 0) {
+            $requirement = substr($constraint, 0, $wildcardPos + 1);
+            $requirements = array(
+                ">=" . $requirement,
+                "<" . self::nextSignificantRelease($requirement)
+            );
+            $satisfies = array();
+            foreach ($requirements as $requires) {
+                $satisfies[] = self::satisfies($version, $requires);
+            }
+            $satisfied = (false === array_search(false, $satisfies, true));
+        } elseif (in_array(substr($constraint, 0, 1), array('<', '>', '!'))) {
+            $operator = substr($constraint, 0, 1);
+            $versionPos = 1;
+            if (substr($constraint, 1, 1) === '=') {
+                $operator .= substr($constraint, 1, 1);
+                $versionPos++;
+            }
+            $requirement = substr($constraint, $versionPos);
+            $satisfied = version_compare($version, $requirement, $operator);
+        } elseif ($constraint === '*') {
+            $satisfied = true;
+        } elseif (version_compare($version, $constraint) === 0) {
+            $satisfied = true;
+        }
+        return $satisfied;
+    }
+
+    /**
+     * Get the next significant release version for a given version string.
+     *
+     * @param string $version A valid SemVer version string.
+     *
+     * @return string The next significant version for the specified version.
+     */
+    public static function nextSignificantRelease($version) {
+        $parsed = explode('.', $version, 3);
+        if (count($parsed) > 1) array_pop($parsed);
+        $parsed[count($parsed) - 1]++;
+        if (count($parsed) === 1) $parsed[] = '0';
+        return implode('.', $parsed);
+    }
+
+    /**
+     * Get an xPDOTransport instance from an existing package.
+     *
+     * @param xPDO &$xpdo A reference to an xPDO instance.
+     * @param string $source Path to the packed transport.
+     * @param string $target Path to unpack the transport to.
+     * @param int $state The packed state of the transport.
+     *
+     * @return null|xPDOTransport An xPDOTransport instance or null.
      */
     public static function retrieve(& $xpdo, $source, $target, $state= xPDOTransport::STATE_PACKED) {
         $instance= null;
@@ -497,10 +696,11 @@ class xPDOTransport {
      * @todo Implement ability to store a package to a specified location, supporting various
      * transport methods.
      * @param mixed $location The location to store the package.
+     * @return bool TRUE if the package is stored successfully.
      */
     public function store($location) {
         $stored= false;
-        if ($this->state === xPDOTransport::PACKED) {}
+        if ($this->state === xPDOTransport::STATE_PACKED) {}
         return $stored;
     }
 

@@ -7,6 +7,7 @@ $xpdo_meta_map['modTemplateVarResource']= array (
   'package' => 'modx',
   'version' => '1.1',
   'table' => 'site_tmplvar_contentvalues',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'tmplvarid' => 0,
@@ -35,7 +36,7 @@ $xpdo_meta_map['modTemplateVarResource']= array (
     ),
     'value' => 
     array (
-      'dbtype' => 'text',
+      'dbtype' => 'mediumtext',
       'phptype' => 'string',
       'null' => false,
     ),
@@ -66,6 +67,28 @@ $xpdo_meta_map['modTemplateVarResource']= array (
       'type' => 'BTREE',
       'columns' => 
       array (
+        'contentid' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'tv_cnt' => 
+    array (
+      'alias' => 'tv_cnt',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'tmplvarid' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
         'contentid' => 
         array (
           'length' => '',

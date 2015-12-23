@@ -1,34 +1,33 @@
-Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-page-package' });
-});
-
 MODx.page.Package = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         formpanel: 'modx-panel-package'
         ,components: [{
             xtype: 'modx-panel-package'
-            ,renderTo: 'modx-panel-package-div'
             ,signature: MODx.request.signature
         }]
         ,buttons: [{
-            process: 'update'
+            process: 'workspace/packages/update'
             ,text: _('save')
+            ,id: 'modx-abtn-save'
+            ,cls: 'primary-button'
             ,method: 'remote'
-            ,checkDirty: true
+            // ,checkDirty: true
             ,keys: [{
                 key: MODx.config.keymap_save || 's'
                 ,alt: true
                 ,ctrl: true
             }]
-        },'-',{
+        },{
             process: 'cancel'
             ,text: _('cancel')
+            ,id: 'modx-abtn-cancel'
             ,handler: function() {
-                location.href= '?a='+MODx.action['workspaces'];
+                MODx.loadPage('workspaces');
             }
-        },'-',{
+        },{
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         }]
     });

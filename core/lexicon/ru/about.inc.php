@@ -1,18 +1,37 @@
 <?php
 /**
- * About Russian lexicon topic
+ * About English lexicon topic
  *
- * @language ru
+ * @language en
  * @package modx
  * @subpackage lexicon
  */
-$_lang['about_msg'] = 'MODx - это <a href="http://modxcms.com/what-is-modx.html" target="_blank">система для разработки и управления веб-сайтами</a>, распространяемая по лицензии <a href="http://opensource.org/licenses/gpl-2.0.php">GNU Public License v2</a> и по более поздним версиям этой лицензии.';
-$_lang['about_title'] = 'О MODx';
-$_lang['credits'] = 'Команда MODx';
-$_lang['credits_mysql'] = 'MODx использует базу данных MySQL!';
-$_lang['credits_php'] = 'MODx написан на PHP!';
-$_lang['credits_sencha'] = 'MODx использует <a href="http://www.sencha.com/" target="_blank">Sencha (ExtJS)</a>.';
-$_lang['credits_smarty'] = 'MODx использует <a href="http://www.smarty.net/" target="_blank">Smarty</a>.';
-$_lang['credits_xpdo'] = 'MODx использует технологию преобразования объектов в реляционные модели баз данных <a href="http://www.xpdo.org/" target="_blank">xPDO</a>.';
-$_lang['help_msg'] = '<p>Вы можете получить поддержку от сообщества <a href="http://modxcms.com/forums" target="_blank">на форумах MODx</a>. Советуем почитать <a href="http://svn.modxcms.com/docs/display/revolution" target="_blank">документацию MODx Revolution</a>.</p><p>Если Вы нашли ошибку, то пожалуйста сообщите нам <a href="http://svn.modxcms.com/jira/" target="_blank">MODx\'s JIRA Issue Tracker</a>.</p>';
-$_lang['help_title'] = 'Помощь';
+$_lang['help_page_title'] = 'Помощь и поддержка';
+$_lang['help_main_head'] = 'MODX к Вашим услугам';
+$_lang['help_main_subhead'] = 'Смотрите ниже, если хотите получить помощь для вашего MODX проекта<br>Более подробная информация на <a href="http://modx.com/support">modx.com/support</a> или по телефону +1 (469) 777-6639';
+$_lang['forums'] = 'Форумы';
+$_lang['forums_title'] = 'Форумы сообщества MODX';
+$_lang['forums_description'] = 'Бесплатная помощь от сообщества';
+$_lang['forums_link'] = 'http://forums.modx.com/';
+$_lang['docs'] = 'Документация';
+$_lang['docs_title'] = 'Ознакомьтесь с грандиозным руководством MODX';
+$_lang['docs_description'] = 'Официальная документация MODX';
+$_lang['docs_link'] = 'http://rtfm.modx.com/';
+$_lang['bugs'] = 'Трекер ошибок';
+$_lang['bugs_title'] = 'Сообщить об ошибке или предложить идею';
+$_lang['bugs_description'] = 'Нашли проблему? Дайте нам знать!';
+$_lang['bugs_link'] = 'https://github.com/modxcms/revolution/issues';
+$_lang['support'] = 'Платная поддержка';
+$_lang['support_title'] = 'Купить абонемент экстренной помощи';
+$_lang['support_description'] = 'Приоритетная поддержка от создателей';
+$_lang['support_link'] = 'http://modx.com/modx-support/';
+$_lang['email_placeholder'] = 'you@example.com';
+$_lang['email_sub'] = 'Будьте в курсе новостей MODX';
+$_lang['email_sub_description'] = 'Подпишитесь на <b>новости MODX</b>, чтобы получать все важные уведомления о MODX. Просто введите ваш email ниже — мы обещаем никогда не рассылать спам.';
+$_lang['email_sub_button'] = 'Подписаться';
+$_lang['social_follows'] = 'Вы также можете <b>следить за MODX</b> в социальных сетях.';
+$_lang['follow'] = 'Читать MODX';
+$_lang['like'] = 'Лайкнуть MODX';
+$_lang['circle'] = 'Добавить MODX в круги';
+$_lang['help_about'] = 'Используемое вами ПО MODX® является результатом взаимодействия удивительного сообщества пользователей, сторонников и разработчиков. С 2004 года MODX спонсируется и управляется командой разработчиков, финансирование текущей работы осуществляется через платную поддержку и разработку дополнительных платных функций. Вы можете <a href="http://modx.com/support/" class="supportTicket">купить поддержку от создателей</a>, чтобы получить один час экстренной помощи (или 2 часа неприоритетной поддержки). Или <a href="mailto:hello@modx.com?subject=MODX Manager Inquiry">напишите нам</a>, если у вас есть другой вопрос о MODX в общем.';
+$_lang['help_credit'] = 'MODX &mdash; свободное программное обеспечение с открытым исходным кодом, распространяемым под лицензией <a href="//www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPL версии 2.0</a> или выше. Авторские права (Copyright) 2004-2015 MODX (MODX, LLC). ”MODX” является зарегистрированной торговой маркой. Пожалуйста, поступайте честно &mdash; сохраняйте информацию об авторстве и прочие материалы на этой странице без изменений.';

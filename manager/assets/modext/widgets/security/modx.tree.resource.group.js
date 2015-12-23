@@ -10,15 +10,20 @@ MODx.tree.ResourceGroup = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('resource_groups')
-        ,url: MODx.config.connectors_url+'security/resourcegroup.php'
+        ,url: MODx.config.connector_url
+        ,action: 'security/resourcegroup/getnodes'
         ,root_id: '0'
         ,root_name: _('resource_groups')
         ,enableDrag: false
         ,enableDrop: true
         ,ddAppendOnly: true
         ,useDefaultToolbar: true
-        ,tbar: [{
+        ,baseParams: {
+            limit: 0
+        }
+        ,tbar: ['->', {
             text: _('resource_group_create')
+            ,cls: 'primary-button'
             ,scope: this
             ,handler: this.createResourceGroup
         }]
@@ -40,16 +45,39 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
             });
             m.push('-');
             m.push({
+                text: _('resource_group_update')
+                ,handler: this.updateResourceGroup
+            });
+            m.push('-');
+            m.push({
                 text: _('resource_group_remove')
                 ,handler: this.removeResourceGroup
             });
-        } else if (n.attributes.type == 'modResource') {
+        } else if (n.attributes.type == 'modResource' || n.attributes.type == 'modDocument') {
             m.push({
                 text: _('resource_group_access_remove')
                 ,handler: this.removeResource
             });
         }
         return m;
+    }
+
+    ,updateResourceGroup: function(itm,e) {
+        var r = this.cm.activeNode.attributes.data;
+
+        if (!this.windows.updateResourceGroup) {
+            this.windows.updateResourceGroup = MODx.load({
+                xtype: 'modx-window-resourcegroup-update'
+                ,record: r
+                ,listeners: {
+                    'success': {fn:this.refresh,scope:this}
+                }
+            });
+        }
+        this.windows.updateResourceGroup.reset();
+        this.windows.updateResourceGroup.setValues(r);
+        this.windows.updateResourceGroup.show(e.target);
+
     }
 
     ,removeResource: function(item,e) {
@@ -61,7 +89,7 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
             text: _('resource_group_access_remove_confirm')
             ,url: this.config.url
             ,params: {
-                action: 'removeResource'
+                action: 'security/resourcegroup/removeResource'
                 ,resource: resourceId
                 ,resourceGroup: resourceGroupId
             }
@@ -79,7 +107,7 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
             text: _('resource_group_remove_confirm')
             ,url: this.config.url
             ,params: {
-                action: 'remove'
+                action: 'security/resourcegroup/remove'
                 ,id: id
             }
             ,listeners: {
@@ -122,11 +150,11 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
         var docid = n.attributes.id.split('_'); docid = 'n_'+docid[1];
 
         if (e.target.findChild('id',docid) !== null) { return false; }
-        if (n.attributes.type != 'modResource') { return false; }
+        if (n.attributes.type != 'modResource' && n.attributes.type != 'modDocument') { return false; }
         if (e.point != 'append') { return false; }
         if (a.type != 'modResourceGroup') { return false; }
-        if (a.leaf === true) { return false; }
-        return true;
+        return a.leaf !== true;
+
     }
 	
     ,createDGD: function(n, text){
@@ -166,7 +194,7 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
             ,params: {
                 resource: dropEvent.dropNode.attributes.id
                 ,resourceGroup: dropEvent.target.attributes.id
-                ,action: 'updateResourcesIn'
+                ,action: 'security/resourcegroup/updateResourcesIn'
             }
             ,listeners: {
                 'success': {fn: function(r,o) {
@@ -188,23 +216,144 @@ Ext.reg('modx-tree-resource-group',MODx.tree.ResourceGroup);
 
 MODx.window.CreateResourceGroup = function(config) {
     config = config || {};
-    this.ident = config.ident || 'crgrp'+Ext.id();
+    this.ident = config.ident || 'modx-crgrp'+Ext.id();
     Ext.applyIf(config,{
         title: _('resource_group_create')
         ,id: this.ident
-        ,height: 150
-        ,width: 350
-        ,url: MODx.config.connectors_url+'security/resourcegroup.php'
-        ,action: 'create'
+        // ,height: 150
+        ,width: 600
+        ,stateful: false
+        ,url: MODx.config.connector_url
+        ,action: 'security/resourcegroup/create'
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
             ,id: 'modx-'+this.ident+'-name'
             ,xtype: 'textfield'
-            ,anchor: '90%'
+            ,anchor: '100%'
+        },{
+            xtype: 'fieldset'
+            ,collapsible: true
+            ,collapsed: false
+            ,title: _('resource_group_automatic_access')
+            ,items: [{
+                html: '<br /><p>'+_('resource_group_automatic_access_desc')+'</p>'
+                ,cls: 'desc-under'
+            },{
+                xtype: 'textfield'
+                ,name: 'access_contexts'
+                ,fieldLabel: _('contexts')
+                ,description: MODx.expandHelp ? '' : _('resource_group_access_contexts')
+                ,id: this.ident+'-access-contexts'
+                ,anchor: '100%'
+                ,value: 'web'
+            },{
+                xtype: MODx.expandHelp ? 'label' : 'hidden'
+                ,forId: this.ident+'-access-contexts'
+                ,html: _('resource_group_access_contexts')
+                ,cls: 'desc-under'
+            },{
+                layout: 'column'
+                ,border: false
+                ,defaults: {
+                    layout: 'form'
+                    ,labelAlign: 'top'
+                    ,anchor: '100%'
+                    ,border: false
+                }
+                ,items: [{
+                    columnWidth: .5
+                    ,items: [{
+                        boxLabel: _('resource_group_access_admin')
+                        ,description: _('resource_group_access_admin_desc')
+                        ,name: 'access_admin'
+                        ,id: this.ident+'-access-admin'
+                        ,xtype: 'checkbox'
+                        ,checked: false
+                        ,inputValue: 1
+                        ,anchor: '100%'
+                    },{
+                        xtype: MODx.expandHelp ? 'label' : 'hidden'
+                        ,forId: this.ident+'-access-admin'
+                        ,html: _('resource_group_access_admin_desc')
+                        ,cls: 'desc-under'
+                    },{
+                        boxLabel: _('resource_group_access_anon')
+                        ,description: _('resource_group_access_anon_desc')
+                        ,name: 'access_anon'
+                        ,id: this.ident+'-access-anon'
+                        ,xtype: 'checkbox'
+                        ,checked: false
+                        ,inputValue: 1
+                        ,anchor: '100%'
+                    },{
+                        xtype: MODx.expandHelp ? 'label' : 'hidden'
+                        ,forId: this.ident+'-access-anon'
+                        ,html: _('resource_group_access_anon_desc')
+                        ,cls: 'desc-under'
+                    }]
+                },{
+                    columnWidth: .5
+                    ,items: [{
+                        boxLabel: _('resource_group_access_parallel')
+                        ,description: _('resource_group_access_parallel_desc')
+                        ,name: 'access_parallel'
+                        ,id: this.ident+'-access-parallel'
+                        ,xtype: 'checkbox'
+                        ,checked: false
+                        ,inputValue: 1
+                        ,anchor: '100%'
+                    },{
+                        xtype: MODx.expandHelp ? 'label' : 'hidden'
+                        ,forId: this.ident+'-access-parallel'
+                        ,html: _('resource_group_access_parallel_desc')
+                        ,cls: 'desc-under'
+                    },{
+                        fieldLabel: _('resource_group_access_ugs')
+                        ,description: _('resource_group_access_ugs_desc')
+                        ,name: 'access_usergroups'
+                        ,id: this.ident+'-access-usergroups'
+                        ,xtype: 'textfield'
+                        ,value: ''
+                        ,anchor: '100%'
+                    },{
+                        xtype: MODx.expandHelp ? 'label' : 'hidden'
+                        ,forId: this.ident+'-access-usergroups'
+                        ,html: _('resource_group_access_ugs_desc')
+                        ,cls: 'desc-under'
+                    }]
+                }]
+            }]
         }]
     });
     MODx.window.CreateResourceGroup.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateResourceGroup,MODx.Window);
 Ext.reg('modx-window-resourcegroup-create',MODx.window.CreateResourceGroup);
+
+MODx.window.UpdateResourceGroup = function(config) {
+    config = config || {};
+    this.ident = config.ident || 'urgrp'+Ext.id();
+    Ext.applyIf(config,{
+        title: _('resource_group_update')
+        ,id: this.ident
+        // ,height: 150
+        // ,width: 350
+        ,url: MODx.config.connector_url
+        ,action: 'security/resourcegroup/update'
+        ,fields: [{
+            name: 'id'
+            ,xtype: 'hidden'
+            ,id: 'modx-'+this.ident+'-id'
+        },{
+            fieldLabel: _('name')
+            ,name: 'name'
+            ,id: 'modx-'+this.ident+'-name'
+            ,xtype: 'textfield'
+            ,anchor: '100%'
+        }]
+    });
+    MODx.window.UpdateResourceGroup.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.UpdateResourceGroup,MODx.Window);
+Ext.reg('modx-window-resourcegroup-update',MODx.window.UpdateResourceGroup);

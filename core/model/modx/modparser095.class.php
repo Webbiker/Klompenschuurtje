@@ -2,21 +2,23 @@
 /**
  * @package modx
  */
-
-/** Include the base modParser class */
+/* Include the base modParser class */
 include_once (strtr(realpath(dirname(__FILE__)) . '/modparser.class.php', '\\', '/'));
-
 /**
- * An extension of the MODx parser to support legacy MODx tags.
+ * An extension of the MODX parser to support legacy MODX tags.
  *
  * Use of this class is only necessary if you have a site that contains legacy
- * MODx tags.  It provides facilities for translating the legacy tags, as well
+ * MODX tags.  It provides facilities for translating the legacy tags, as well
  * as for supporting legacy behavior of the onParseDocument event used in many
- * legacy MODx plugins.
+ * legacy MODX plugins.
  *
  * @package modx
  */
 class modParser095 extends modParser {
+    /**
+     * An array of translation strings from migrating from Evolution
+     * @var array $tagTranslation
+     */
     public $tagTranslation= array (
         '[[++' => array ('[(', ')]', '++'),
         '[[$' => array ('{{', '}}', '$'),
@@ -27,12 +29,13 @@ class modParser095 extends modParser {
     );
 
     /**
-     * Collects MODx legacy tags and translates them to the new tag format.
+     * Collects MODX legacy tags and translates them to the new tag format.
      *
      * @param string &$content The content in which legacy tags are to be
      * replaced.
      * @param array $tokens An optional array of tag tokens on which to exclude
      * translation of the tags.
+     * @param boolean $echo
      * @return void The content is operated on by reference.
      */
     public function translate(& $content, $tokens= array (), $echo= false) {
@@ -68,6 +71,16 @@ class modParser095 extends modParser {
 
     /**
      * Adds the legacy tag translation and legacy OnParseDocument event support.
+     * @param string $parentTag
+     * @param $content
+     * @param bool $processUncacheable
+     * @param bool $removeUnprocessed
+     * @param string $prefix
+     * @param string $suffix
+     * @param array $tokens
+     * @param bool $echo
+     * @return string
+     *
      */
     public function processElementTags($parentTag, & $content, $processUncacheable= false, $removeUnprocessed= false, $prefix= "[[", $suffix= "]]", $tokens= array (), $echo= false) {
         // invoke OnParseDocument event

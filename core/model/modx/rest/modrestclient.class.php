@@ -8,16 +8,39 @@
 /**
  * The basic REST client for handling REST requests
  *
+ * @deprecated To be removed in 2.3. See modRest instead.
+ *
  * @package modx
  * @subpackage rest
  */
 class modRestClient {
+    /**
+     * @const The path of the request
+     */
     const OPT_PATH = 'path';
+    /**
+     * @const The port of the request
+     */
     const OPT_PORT = 'port';
+    /**
+     * @const The response class to use when generating the response object
+     */
     const OPT_RESPONSE_CLASS = 'restResponse.class';
+    /**
+     * @const The number of seconds before the request times out
+     */
     const OPT_TIMEOUT = 'timeout';
+    /**
+     * @const The user-agent sent in the request
+     */
     const OPT_USERAGENT = 'userAgent';
+    /**
+     * @const The user password to send with the request
+     */
     const OPT_USERPWD = 'userpwd';
+    /**
+     * @const The authentication type for the request
+     */
     const OPT_AUTHTYPE = 'authtype';
 
     /**
@@ -42,11 +65,15 @@ class modRestClient {
      */
     public $response = null;
     /**
-     * The expected response type
      * @access public
-     * @var string
+     * @var string The expected response type
      */
     public $responseType = 'xml';
+    /**
+     * The current host to connect to
+     * @var string $host
+     */
+    public $host;
 
     /**
      * The constructor for the modRestClient class. Assigns a modX instance
@@ -74,13 +101,14 @@ class modRestClient {
      * @return boolean True if a connection can be made.
      */
     public function getConnection() {
+        $className = false;
         if (function_exists('curl_init')) {
             $className = $this->modx->loadClass('rest.modRestCurlClient','',false,true);
         } else if (function_exists('fsockopen')) {
             $className = $this->modx->loadClass('rest.modRestSockClient','',false,true);
         }
 
-        if ($className) {
+        if (!empty($className)) {
             $this->conn = new $className($this->modx,$this->config);
         }
         return is_object($this->conn);
@@ -95,6 +123,7 @@ class modRestClient {
      * @param string $method The HTTP method to use for the request. May be GET,
      * PUT or POST.
      * @param array $params An array of parameters to send with the request.
+     * @param array $options An array of options to pass to the request.
      * @return modRestResponse The response object.
      */
     public function request($host,$path,$method = 'GET',array $params = array(),array $options = array()) {
@@ -162,7 +191,19 @@ class modRestClient {
  * @subpackage rest
  */
 class modRestResponse {
+    /**
+     * @var string The raw response.
+     */
+    public $response;
+    /**
+     * @var string The type of response format
+     */
     public $responseType = 'xml';
+    /** @var SimpleXMLElement $xml */
+    public $xml = null;
+    /** @var string $json */
+    public $json = null;
+    
     /**
      * The constructor for the modRestResponse class.
      *
@@ -173,10 +214,11 @@ class modRestResponse {
      */
     function __construct(modRestClient &$client, $response, $responseType = 'xml') {
         $this->client =& $client;
-        $this->response = $response;
+        $this->response = (string)$response;
+        $this->responseType = $responseType;
         if ($responseType == 'xml') {
             $this->toXml();
-        } else if ($responseType == 'json') {
+        } elseif ($responseType == 'json') {
             $this->fromJSON();
         }
     }
@@ -188,7 +230,7 @@ class modRestResponse {
      * @return SimpleXMLElement
      */
     public function toXml() {
-        if ($this->xml instanceof SimpleXMLElement) return $this->xml;
+        if (!empty($this->xml) && $this->xml instanceof SimpleXMLElement) return $this->xml;
 
         try {
             $this->xml = simplexml_load_string($this->response);
@@ -226,9 +268,11 @@ class modRestResponse {
         if ($this->responseType == 'xml') {
             $this->toXml();
             $isError = $this->xml->getName() == 'error';
-        } else {
+        } elseif ($this->responseType = 'json') {
             $this->fromJSON();
             $isError = !empty($this->json['error']) ? true : false;
+        } else {
+            $isError = !empty($this->response);
         }
         return $isError;
     }
@@ -247,7 +291,7 @@ class modRestResponse {
             } else {
                 $message = (string)$this->xml->message;
             }
-        } else {
+        } elseif ($this->responseType == 'json') {
             $this->fromJSON();
             $message = !empty($this->json['error']) && !empty($this->json['message']) ? $this->json['message'] : '';
         }

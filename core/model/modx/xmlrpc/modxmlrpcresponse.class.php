@@ -7,7 +7,6 @@ require_once MODX_CORE_PATH . 'model/modx/xmlrpc/xmlrpc.inc';
 require_once MODX_CORE_PATH . 'model/modx/xmlrpc/xmlrpcs.inc';
 require_once MODX_CORE_PATH . 'model/modx/xmlrpc/xmlrpc_wrappers.inc';
 require_once MODX_CORE_PATH . 'model/modx/modresponse.class.php';
-
 /**
  * Handles any XML-RPC resources and their response
  *
@@ -31,8 +30,7 @@ class modXMLRPCResponse extends modResponse {
     /**
      * Output the content of the resource
      *
-     * @access public
-     * @param boolean $noEvent Unused.
+     * @param array $options An array of options for the output
      */
     public function outputContent(array $options= array()) {
         if (empty($options['rpc_type'])) $options['rpc_type']= 'XML';
@@ -56,8 +54,8 @@ class modXMLRPCResponse extends modResponse {
         }
 
         $this->server->service();
-        @ ob_end_flush();
-        while (@ ob_end_clean()) {}
+        ob_get_level() && @ob_end_flush();
+        while (ob_get_level() && @ob_end_clean()) {}
         exit();
     }
 

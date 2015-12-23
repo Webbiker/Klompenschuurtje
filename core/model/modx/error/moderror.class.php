@@ -1,8 +1,8 @@
 <?php
 /*
- * MODx Revolution
+ * MODX Revolution
  *
- * Copyright 2006-2010 by the MODx Team.
+ * Copyright 2006-2015 by MODX, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -31,7 +31,7 @@
  * Abstract class for error handling and validation for requests.
  *
  * @abstract Implement a derivative of this class for error handling and
- * validation of any kind of MODx request.
+ * validation of any kind of MODX request.
  * @package modx
  * @subpackage error
  */
@@ -56,11 +56,24 @@ class modError {
      * @var boolean Indicates failure or success.
      */
     public  $status = false;
+    /**
+     * @var array An array of objects to validate against
+     */
     protected $_objects = array();
 
+    /**
+     * @param modX $modx A reference to the modX instance
+     * @param string $message The default message to send as an error response
+     */
     function __construct(modX &$modx, $message = '') {
         $this->modx =& $modx;
-        $this->message = $message;
+        if (is_string($message)) {
+            $this->message = $message;
+        } elseif (is_array($message) && isset($message['message'])) {
+            $this->message = $message['message'];
+        } else {
+            $this->message = '';
+        }
         $this->errors = array ();
     }
 
@@ -81,11 +94,11 @@ class modError {
      * handlers that derive from this can determine their own behaviour should
      * errors be found.
      * @access public
-     * @param xPDOObject/array $objs An xPDOObject or array of xPDOObjects to
+     * @param xPDOObject|array $objs An xPDOObject or array of xPDOObjects to
      * add to the validation queue.
      * @return string The validation message returned.
      */
-    public function checkValidation(array $objs= array()) {
+    public function checkValidation($objs= array()) {
         if (is_object($objs)) {
             $this->addObjectToValidate($objs);
         }
@@ -105,7 +118,9 @@ class modError {
      */
     protected function _validate() {
         $s = '';
+        /** @var xPDOObject $obj */
         foreach ($this->_objects as $obj) {
+            /** @var modValidator $validator */
             if ($validator= $obj->getValidator()) {
                 $messages= $validator->getMessages();
                 if (!empty($messages)) {
@@ -206,6 +221,9 @@ class modError {
 
     /**
      * Return all of the errors in the error queue.
+     *
+     * @param boolean $includeFields Whether or not to include the fields in the error response
+     * @return array An array of errors
      */
     public function getErrors($includeFields = false) {
         $errors = $this->errors;
@@ -249,6 +267,7 @@ class modError {
      *
      * @param string $message The error message to send.
      * @param object|array|string $object An object to send back to the output.
+     * @return string|array The failure response
      */
     public function failure($message = '', $object = null) {
         return $this->process($message, false, $object);
@@ -259,6 +278,7 @@ class modError {
      *
      * @param string $message The error message to send.
      * @param object|array|string $object An object to send back to the output.
+     * @return string|array The success response
      */
     public function success($message = '', $object = null) {
         return $this->process($message, true, $object);
@@ -270,7 +290,7 @@ class modError {
      * This function also makes sure that any members of the array are not PHP
      * resource types (e.g. database connections, file handles, etc.).
      *
-     * @param array|object $object An array or object to process.
+     * @param array|xPDOObject|object $object An array or object to process.
      * @return array Returns an array representation of the object(s).
      */
     public function toArray($object) {
@@ -304,214 +324,7 @@ class modError {
     public function reset() {
         $this->errors = array();
         $this->message = '';
-    }
-}
-
-/**
- * Response class for Processor executions
- */
-class modProcessorResponse {
-    /**
-     * When there is only a general error
-     */
-    const ERROR_GENERAL = 'error_general';
-    /**
-     * When there are only field-specific errors
-     */
-    const ERROR_FIELD = 'error_field';
-    /**
-     * When there is both field-specific and general errors
-     */
-    const ERROR_BOTH = 'error_both';
-    /**
-     * The field for the error type
-     */
-    const ERROR_TYPE = 'error_type';
-
-    /**
-     * @var modX A reference to the modX object
-     */
-    public $modx = null;
-    /**
-     * @var array A reference to the full response
-     */
-    public $response = null;
-    /**
-     * @var array A collection of modProcessorResponseError objects for each field-specific error
-     */
-    public $errors = array();
-    /**
-     * @var string The error type for this response
-     */
-    public $error_type = '';
-
-    /**
-     * The constructor for modProcessorResponse
-     * 
-     * @param modX $modx A reference to the modX object.
-     * @param array $response The array response from the modX.runProcessor method
-     */
-    function __construct(modX &$modx,$response = array()) {
-        $this->modx =& $modx;
-        $this->response = $response;
-        if ($this->isError()) {
-            if (!empty($response['errors']) && is_array($response['errors'])) {
-                foreach ($response['errors'] as $error) {
-                    $this->errors[] = new modProcessorResponseError($error);
-                }
-                if (!empty($response['message'])) {
-                    $this->error_type = modProcessorResponse::ERROR_BOTH;
-                } else {
-                    $this->error_type = modProcessorResponse::ERROR_FIELD;
-                }
-            } else {
-                $this->error_type = modProcessorResponse::ERROR_GENERAL;
-            }
-        }
-    }
-
-    /**
-     * Returns the type of error for this response
-     * @return string The type of error returned
-     */
-    public function getErrorType() {
-        return $this->error_type;
-    }
-
-    /**
-     * Checks to see if the response is an error
-     * @return Returns true if the response was a success, otherwise false
-     */
-    public function isError() {
-        return empty($this->response) || empty($this->response['success']);
-    }
-
-    /**
-     * Returns true if there is a general status message for the response.
-     * @return boolean True if there is a general message
-     */
-    public function hasMessage() {
-        return !empty($this->response['message']) ? true : false;
-    }
-
-    /**
-     * Gets the general status message for the response.
-     * @return string The status message
-     */
-    public function getMessage() {
-        return !empty($this->response['message']) ? $this->response['message'] : '';
-    }
-
-    /**
-     * Returns the entire response object in array form
-     * @return array The array response
-     */
-    public function getResponse() {
-        return $this->response;
-    }
-
-    /**
-     * Returns true if an object was sent with this response.
-     * @return boolean True if an object was sent.
-     */
-    public function hasObject() {
-        return !empty($this->response['object']) ? true : false;
-    }
-
-    /**
-     * Returns the array object, if is sent in the response
-     * @return array The object in the response, usually the object being performed on.
-     */
-    public function getObject() {
-        return !empty($this->response['object']) ? $this->response['object'] : array();
-    }
-
-    /**
-     * An array of modProcessorResponseError objects for each field-specific error
-     * @return array
-     */
-    public function getFieldErrors() {
-        return $this->errors;
-    }
-
-    /**
-     * Checks to see if there are any field-specific errors in this response
-     * @return boolean True if there were field-specific errors
-     */
-    public function hasFieldErrors() {
-        return !empty($this->errors) ? true : false;
-    }
-
-    /**
-     * Gets all errors and adds them all into an array.
-     *
-     * @param string $fieldErrorSeparator The separator to use between fieldkey and message for field-specific errors.
-     * @return array An array of all errors.
-     */
-    public function getAllErrors($fieldErrorSeparator = ': ') {
-        $errormsgs = array();
-        if ($response->hasMessage()) {
-            $errormsgs[] = $response->getMessage();
-        }
-        if ($response->hasFieldErrors()) {
-            $errors = $response->getFieldErrors();
-            if (!empty($errors)) {
-                foreach ($errors as $error) {
-                    $errormsgs[] = $error->field.$fieldErrorSeparator.$error->message;
-                }
-            }
-        }
-        return $errormsgs;
-    }
-}
-/**
- * An abstraction class of field-specific errors for a processor response
- */
-class modProcessorResponseError {
-    /**
-     * @var array The error data itself
-     */
-    public $error = null;
-    /**
-     * @var string The field key that the error occurred on
-     */
-    public $field = null;
-    /**
-     * @var string The message that was sent for the field error
-     */
-    public $message = '';
-
-    /**
-     * The constructor for the modProcessorResponseError class
-     *
-     * @param array $error An array error response
-     */
-    function __construct($error = array()) {
-        $this->error = $error;
-        if (!empty($error['id'])) { $this->field = $error['id']; }
-        if (!empty($error['msg'])) { $this->message = $error['msg']; }
-    }
-
-    /**
-     * Returns the message for the field-specific error
-     * @return string
-     */
-    public function getMessage() {
-        return $this->message;
-    }
-
-    /**
-     * Returns the field key for the field-specific error
-     */
-    public function getField() {
-        return $this->field;
-    }
-    
-    /**
-     * Returns the array data for the field-specific error
-     * @return array
-     */
-    public function getError() {
-        return $this->error;
+        $this->total = 0;
+        $this->status = true;
     }
 }

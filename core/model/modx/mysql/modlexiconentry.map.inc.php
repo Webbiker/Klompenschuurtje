@@ -7,6 +7,7 @@ $xpdo_meta_map['modLexiconEntry']= array (
   'package' => 'modx',
   'version' => '1.1',
   'table' => 'lexicon_entries',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'name' => '',
@@ -145,14 +146,6 @@ $xpdo_meta_map['modLexiconEntry']= array (
   'aggregates' => 
   array (
     'Namespace' => 
-    array (
-      'class' => 'modNamespace',
-      'local' => 'namespace',
-      'foreign' => 'name',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
-    ),
-    'modNamespace' => 
     array (
       'class' => 'modNamespace',
       'local' => 'namespace',

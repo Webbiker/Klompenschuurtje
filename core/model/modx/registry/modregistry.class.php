@@ -1,8 +1,8 @@
 <?php
 /*
- * MODx Revolution
+ * MODX Revolution
  *
- * Copyright 2006-2010 by the MODx Team.
+ * Copyright 2006-2015 by MODX, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -30,7 +30,7 @@
  *
  * -Logging of registry transactions to file or DB
  * -Tracking progress of asynchonous processes
- * -Can serve as a generic message queue, where MODx elements can register new
+ * -Can serve as a generic message queue, where MODX elements can register new
  * messages or grab the latest messages via scheduled or ad hoc requests.
  *
  * @todo Encapsulate all debugging, error handling, error reporting, and audit
@@ -61,14 +61,22 @@ class modRegistry {
         'modx',
     );
     /**
-     * An array of MODx registers managed by the registry.
+     * An array of MODX registers managed by the registry.
      * @var array
      * @access private
      */
     protected $_registers = array();
-
+    /**
+     * @var modRegister The current logging registry
+     */
     protected $_loggingRegister = null;
+    /**
+     * @var string The previous logTarget for xPDO, to be reset when finished
+     */
     protected $_prevLogTarget = null;
+    /**
+     * @var integer The previous log level for xPDO, to be reset when finished
+     */
     protected $_prevLogLevel = null;
 
     /**
@@ -143,6 +151,7 @@ class modRegistry {
      * Initialize a register within the registry.
      *
      * @access protected
+     * @param string $key The key of the registry
      * @param string $class The class of the modRegister implementation to
      * initialize.
      * @param array $options An optional array of register options.
@@ -163,9 +172,10 @@ class modRegistry {
      * @param modRegister &$register
      * @param string $topic
      * @param int $level
+     * @param boolean $clear Clear the register before subscribing to it
      * @return boolean True if successful.
      */
-    public function setLogging(modRegister &$register, $topic, $level = modX::LOG_LEVEL_ERROR) {
+    public function setLogging(modRegister &$register, $topic, $level = modX::LOG_LEVEL_ERROR, $clear = false) {
         $set = false;
         $this->_loggingRegister = &$register;
         if (isset($topic) && !empty($topic)) {
@@ -173,6 +183,7 @@ class modRegistry {
             if ($this->_loggingRegister->connect()) {
                 $this->_prevLogTarget = $this->modx->getLogTarget();
                 $this->_prevLogLevel = $this->modx->getLogLevel();
+                if ($clear) $this->_loggingRegister->clear($topic);
                 $this->_loggingRegister->subscribe($topic);
                 $this->_loggingRegister->setCurrentTopic($topic);
                 $this->modx->setLogTarget($this->_loggingRegister);

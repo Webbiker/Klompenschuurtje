@@ -1,16 +1,16 @@
 <?php
 /**
- * Action Estonian lexicon topic
+ * Action English lexicon topic
  *
- * @language et
+ * @language en
  * @package modx
  * @subpackage lexicon
  */
 $_lang['action'] = 'Tegevus';
-$_lang['action_confirm_remove'] = 'Oled kindel, et soovid eemaldada selle tegevuse? See võib MODx manageri liidese katki teha.';
+$_lang['action_confirm_remove'] = 'Oled kindel, et soovid eemaldada selle tegevuse? See võib MODX manageri liidese katki teha.';
 $_lang['action_create'] = 'Lisa Tegevus';
 $_lang['action_create_here'] = 'Loo Tegevus Siia';
-$_lang['action_desc'] = 'Tegevused on MODx controller-ite laiendused. Neid saab kasutada uute manager-i lehtede loomiseks ja ka ümberkorraldada MODx manageri navigatsiooni.';
+$_lang['action_desc'] = 'Tegevused on MODX controller-ite laiendused. Neid saab kasutada uute manager-i lehtede loomiseks ja ka ümberkorraldada MODX manageri navigatsiooni.';
 $_lang['action_err_create'] = 'Tekkis viga selle tegevuse loomisel.';
 $_lang['action_err_nf'] = 'Tegevust ei leitud!';
 $_lang['action_err_ns'] = 'Tegevust ei olnud täpsustatud!';
@@ -24,6 +24,7 @@ $_lang['action_remove'] = 'Eemalda Tegevust';
 $_lang['action_update'] = 'Uuenda Tegevust';
 $_lang['actions'] = 'Tegevused';
 $_lang['controller'] = 'Controller';
+$_lang['controller_err_ae'] = 'Controller already exists with this path for this Namespace.';
 $_lang['controller_err_nf'] = 'Controller-i faili ei leitud!';
 $_lang['controller_err_ns'] = 'Controller-it ei olnud täpsustatud.';
 $_lang['controller_parent'] = 'Vanem Controller';

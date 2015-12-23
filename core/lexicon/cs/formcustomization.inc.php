@@ -1,30 +1,29 @@
 <?php
 /**
- * Form Customization Czech lexicon topic
+ * Form Customization English lexicon topic
  *
- * @language cs
+ * @language en
  * @package modx
  * @subpackage lexicon
- *
- * @author modxcms.cz
- * @updated 2010-12-02
  */
 $_lang['action'] = 'Akce';
 $_lang['action_desc'] = 'Akce, na kterou se toto pravidlo bude vztahovat.';
 $_lang['activate'] = 'Aktivovat';
 $_lang['constraint'] = 'Omezení';
 $_lang['constraint_class'] = 'Typ omezení';
-$_lang['constraint_class_desc'] = 'Vylitelné. Pokud je nastaveno spolu s políčkem omezení a možnostmi omezení bude pravidlo použito.';
+$_lang['constraint_class_desc'] = 'Volitelné. Pokud je nastaveno spolu s políčkem omezení a možnostmi omezení bude pravidlo použito.';
 $_lang['constraint_desc'] = 'Volitelné. Hodnota políčka omezení proti, které by mělo být políčko zkontrolováno.';
-$_lang['constraint_field'] = 'Políčko omezení';
+$_lang['constraint_field'] = 'Určení políčka omezení';
 $_lang['constraint_field_desc'] = 'Volitelné. Políčko, na které by tato omezení měla být použita.';
 $_lang['containing_panel'] = 'Obsahující panel';
-$_lang['containing_panel_desc'] = 'ID formulářového panelu, kde se nachází políčko. Toto je občas nezbytné, aby systém poznal, o které pole se jedná.';
+$_lang['containing_panel_desc'] = 'ID formulářového panelu, kde se nachází políčko. Občas je pro některá pravidla nezbytné, aby systém poznal, ve kterém formuláři nebo panelu se dané políčko nachází.';
 $_lang['deactivate'] = 'Deaktivovat';
 $_lang['default_value'] = 'Výchozí hodnota';
 $_lang['export'] = 'Exportovat';
+$_lang['fc.action_create'] = 'Vytvořit dokument';
+$_lang['fc.action_update'] = 'Upravit dokument';
 $_lang['field'] = 'Políčko';
-$_lang['field_desc'] = 'Toto je políčko, které má být ovlivněno. Může to být také záložka nebo TV. Pokud je to TV, zadejte ji v tomto tvaru: "tv#", kde # je ID Template Variable.';
+$_lang['field_desc'] = 'Políčko, které má být ovlivněno. Může to být také záložka nebo TV. Pokud je to TV, zadejte ji v tomto tvaru: "tv#", kde # je ID Template Variable.';
 $_lang['field_default'] = 'Výchozí hodnota políčka';
 $_lang['field_label'] = 'Název políčka';
 $_lang['field_visible'] = 'Viditelnost políčka';
@@ -35,7 +34,7 @@ $_lang['filter_by_rule_type'] = 'Filtrovat dle pravidla...';
 $_lang['filter_by_search'] = 'Hledat...';
 $_lang['for_parent'] = 'Pro rodiče';
 $_lang['for_parent_desc'] = 'Toto políčko zaškrtněte pokud si přejete, aby bylo pravidlo aplikováno také na rodiče. Používejte pouze s dokumenty nebo objekty s políčkem `Rodič`. Vhodné pro stránku "Nový dokument."';
-$_lang['form_customization_msg'] = 'Na tomto místě najdete seznam aktuálně aplikovaných pravidel. Více informací o přizpůsobování formulářů najdete <a href="http://svn.modxcms.com/docs/display/revolution/Form+Customization" target="_blank">zde</a>. Berte na vědomí, že nesprávná pravidla mohou způsobit problémy v běhu MODx. Neaktivní pravidla jsou zobrazena šedě.';
+$_lang['form_customization_msg'] = 'Na tomto místě najdete seznam aktuálně aplikovaných pravidel. Více informací o přizpůsobování formulářů najdete <a href="http://rtfm.modx.com/display/revolution20/Customizing+the+Manager" target="_blank">zde</a>. Berte na vědomí, že nesprávná pravidla mohou způsobit problémy v běhu MODX. Neaktivní pravidla jsou zobrazena šedě.';
 $_lang['form_rules'] = 'Pravidla formulářů';
 $_lang['import'] = 'Importovat';
 $_lang['import_from_xml'] = 'Importovat novou sadu z XML';
@@ -59,6 +58,8 @@ $_lang['profiles'] = 'Profily přizpůsobení formulářů';
 $_lang['profiles_msg'] = 'Zde je seznam Vašich profilů přizpůsobení formulářů. Profily mohou obsahovat mnoho přizpůsobovacích pravidel a mohou být aktivovány a deaktivovány. Mohou být také konfigurovány, aby byly aplikovány pouze na určité skupiny uživatel.';
 $_lang['rank'] = 'Pořadí';
 $_lang['rank_desc'] = 'Pořadí v jakém jsou pravidla aplikována. Nižší číslo znamená, že bude pravidlo aplikováno dříve.';
+$_lang['region'] = 'Oblast';
+$_lang['regions'] = 'Oblasti';
 $_lang['rule'] = 'Pravidlo';
 $_lang['rule_create'] = 'Vytvořit pravidlo';
 $_lang['rule_desc'] = 'Typ pravidla použitý na toto políčko.';
@@ -76,19 +77,20 @@ $_lang['rule_remove_multiple_confirm'] = 'Opravdu chcete odstranit vybraná prav
 $_lang['rule_update'] = 'Upravit pravidlo';
 $_lang['rule_value_desc'] = 'Hodnota pro dané pravidlo.';
 $_lang['rules'] = 'Pravidla';
-$_lang['set'] = 'Sada';
+$_lang['set'] = 'Nastavit';
 $_lang['set_and_fields'] = 'Sada informací a políček';
 $_lang['set_change_template'] = 'Změnit šablonu pro sadu';
-$_lang['set_change_template_confirm'] = 'Opravdu chcete změnit šablonu? Tato volba změní šablonu, na kterou jsou tato pravidla aplikována. Pokud ano, MODx uloží provedené změny, předtím než znovu načte stránku pro obnovení nových TVs pro novou šablonu.';
-$_lang['set_constraint_field_desc'] = 'Nastavení políčka omezení zamezí aplikování pravidel této sady jestliže políčko tohoto dokumentu neobsahuje hodnotu "omezení".';
-$_lang['set_constraint_desc'] = 'Sada hodnot políčka (definovaných výše) pro zamezení aplikování pravidel v této sadě jestliže dokument nemá tuto hodnotu ve specifikovaném políčku omezení.';
+$_lang['set_change_template_confirm'] = 'Opravdu chcete změnit šablonu? Tato volba změní šablonu, na kterou jsou tato pravidla aplikována. Pokud ano, MODX uloží provedené změny, předtím než znovu načte stránku pro obnovení nových TVs pro novou šablonu.';
+$_lang['set_constraint_field_desc'] = 'Určení políčka omezení, které umožní zamezení aplikování pravidel této sady pokud dané políčko neobsahuje hodnotu určenou v políčku "Hodnota omezení".';
+$_lang['set_constraint_desc'] = 'Hodnota políčka (definovaného výše) pro zamezení aplikování pravidel této sady.';
 $_lang['set_create'] = 'Vytvořit novou sadu';
 $_lang['set_err_nfs'] = 'Sada s ID [[+id]] nenalezena';
 $_lang['set_err_ns'] = 'Nebyla vybrána sada.';
 $_lang['set_fields_msg'] = 'V této části můžete změnit políčka pro tuto stránku včetně jejich viditelnosti, jmenovek a výchozích hodnot. Poklikáním na řádku změníte hodnotu. Pro výchozí nastavení ponechte políčko prázdné.';
-$_lang['set_import_err_upload'] = 'Nastala chyba při přístupu k XML souboru. Vyberte prosím platný soubor.';
+$_lang['set_import_err_upload'] = 'Nastala chyba při hledání XML souboru. Vyberte platný soubor.';
 $_lang['set_import_err_xml'] = 'Nastala chyba při importování XML souboru. Ujistěte se prosím, že jste vybrali platný soubor sad přizpůsobení formulářů.';
 $_lang['set_import_msg'] = 'Vyberte XML soubor, ze kterého se mají importovat sady přizpůsobení formulářů. Musí být ve správném formátu přizpůsobení formulářů.';
+$_lang['set_import_template_err_nf'] = 'Šablona nebyla nalezena při importu sady přizpůsobení formulářů.';
 $_lang['set_msg'] = 'V této části můžete upravovat jak se budou na této stránce zobrazovat políčka, záložky a template variables, stejně tak i jejich jmenovky a výchozí hodnoty. Poklikáním na sloupec můžete změnit jeho hodnotu. Pro průchod tabulkou můžete také použít klávesu TAB. Pro výchozí hodnotu ponechte políčko prázdné.';
 $_lang['set_new'] = 'Vytvořit novou sadu';
 $_lang['set_remove'] = 'Odstranit sadu';
@@ -97,15 +99,15 @@ $_lang['set_remove_multiple'] = 'Odstranit více sad';
 $_lang['set_remove_multiple_confirm'] = 'Opravdu chcete odstranit tyto sady? Tato akce je nevratná.';
 $_lang['set_tab_err_ae'] = 'Záložka s tímto ID již existuje. Zvolte prosím jinou.';
 $_lang['set_tabs_msg'] = 'V této části můžete přizpůsobit záložky pro tuto stránku včetně jejich viditelnosti a titulku. Pro změnu hodnoty poklikejte na řádku. Pro výchozí hodnotu ponechte políčko prázdné.';
-$_lang['set_template_desc'] = 'Vybráním šablony omezíte aplikovaní pravidel ze sady jestliže dokument nemá určenou šablonu.';
+$_lang['set_template_desc'] = 'Vybráním šablony omezíte aplikovaní pravidel pouze na dokumenty využívající tuto šablonu.';
 $_lang['set_tvs_msg'] = 'V této části můžete nastavit viditelnost, jmenovky, výchozí hodnoty a záložky poklikáním na řádku v tabulce. Poznámka: Jestliže přemístítě TV do jiné záložky, můžete změnit pořadí TV v políčku "Pořadí záložky". Pro výchozí nastavení ponechte políčko prázdné.';
 $_lang['sets'] = 'Sady přizpůsobení formulářů';
-$_lang['simplexml_err_nf'] = 'Pro použití této vlastnosti vyžaduje MODx PHP rozšíření SimpleXML. Předtím než budete pokračovat se ujistěte, že je toto rozšíření nainstalováno.';
+$_lang['simplexml_err_nf'] = 'Pro použití této vlastnosti vyžaduje MODX PHP rozšíření SimpleXML. Předtím než budete pokračovat se ujistěte, že je toto rozšíření nainstalováno.';
 $_lang['tab'] = 'Záložka';
 $_lang['tab_create'] = 'Vytvořit novou záložku';
 $_lang['tab_id'] = 'ID';
 $_lang['tab_name'] = 'Název záložky';
-$_lang['tab_title'] = 'Titulek záložky';
+$_lang['tab_title'] = 'Název';
 $_lang['tab_new'] = 'Nová záložka';
 $_lang['tab_rank'] = 'Pořadí záložky';
 $_lang['tab_remove'] = 'Odstranit záložku';
@@ -126,4 +128,4 @@ $_lang['usergroup_remove'] = 'Odstranit uživatelskou skupinu ze sady';
 $_lang['usergroup_remove_confirm'] = 'Opravdu chcete, aby tato sada již neplatila pro uživatele z dané uživatelské skupiny?';
 $_lang['usergroups'] = 'Uživatelské skupiny';
 $_lang['visible'] = 'Viditelná';
-$_lang['xmlwriter_err_nf'] = 'Pro použité této vlastnosti vyžaduje MODx PHP rozšíření XMLWriter. Předtím než budete pokračovat se ujistěte, že je toto rozšíření nainstalováno.';
+$_lang['xmlwriter_err_nf'] = 'Pro použité této vlastnosti vyžaduje MODX PHP rozšíření XMLWriter. Předtím než budete pokračovat se ujistěte, že je toto rozšíření nainstalováno.';

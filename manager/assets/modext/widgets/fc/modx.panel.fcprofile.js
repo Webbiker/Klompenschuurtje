@@ -7,9 +7,12 @@
 MODx.panel.FCProfile = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'security/forms/profile.php'
-        ,baseParams: {}
+        url: MODx.config.connector_url
+        ,baseParams: {
+            action: 'security/forms/profile/get'
+        }
         ,id: 'modx-panel-fc-profile'
+		,cls: 'container'
         ,class_key: 'modFormCustomizationProfile'
         ,bodyStyle: ''
         ,items: [{
@@ -19,76 +22,84 @@ MODx.panel.FCProfile = function(config) {
             ,id: 'modx-fcp-header'
         },MODx.getPageStructure([{
             title: _('profile')
-            ,bodyStyle: 'padding: 15px;'
             ,defaults: { border: false ,msgTarget: 'side' }
             ,layout: 'form'
             ,id: 'modx-chunk-form'
             ,labelWidth: 150
             ,items: [{
                 html: '<p>'+_('profile_msg')+'</p>'
+				,bodyCssClass: 'panel-desc'
                 ,id: 'modx-fcp-msg'
                 ,border: false
             },{
-                xtype: 'hidden'
-                ,name: 'id'
-                ,id: 'modx-fcp-id'
-                ,value: config.record.id || MODx.request.id
+				xtype: 'panel'
+				,border: false
+				,cls:'main-wrapper'
+				,layout: 'form'
+				,items: [{
+					xtype: 'hidden'
+					,name: 'id'
+					,id: 'modx-fcp-id'
+					,value: config.record.id || MODx.request.id
+				},{
+					xtype: 'textfield'
+					,fieldLabel: _('name')
+					,name: 'name'
+					,id: 'modx-fcp-name'
+					,anchor: '100%'
+					,maxLength: 255
+					,enableKeyEvents: true
+					,allowBlank: false
+					,value: config.record.name
+					,listeners: {
+						'keyup': {scope:this,fn:function(f,e) {
+							Ext.getCmp('modx-fcp-header').getEl().update('<h2>'+_('profile')+': '+f.getValue()+'</h2>');
+						}}
+					}
+				},{
+					xtype: 'textarea'
+					,fieldLabel: _('description')
+					,name: 'description'
+					,id: 'modx-fcp-description'
+					,anchor: '100%'
+					,maxLength: 255
+					,grow: false
+					,value: config.record.description
+				},{
+					xtype: 'xcheckbox'
+					,fieldLabel: _('active')
+					,name: 'active'
+					,id: 'modx-fcp-active'
+					,inputValue: true
+					,value: config.record.active ? true : false
+					,anchor: '100%'
+					,allowBlank: true
+				}]
             },{
-                xtype: 'textfield'
-                ,fieldLabel: _('name')
-                ,name: 'name'
-                ,id: 'modx-fcp-name'
-                ,anchor: '90%'
-                ,maxLength: 255
-                ,enableKeyEvents: true
-                ,allowBlank: false
-                ,value: config.record.name
-                ,listeners: {
-                    'keyup': {scope:this,fn:function(f,e) {
-                        Ext.getCmp('modx-fcp-header').getEl().update('<h2>'+_('profile')+': '+f.getValue()+'</h2>');
-                    }}
-                }
-            },{
-                xtype: 'textarea'
-                ,fieldLabel: _('description')
-                ,name: 'description'
-                ,id: 'modx-fcp-description'
-                ,anchor: '90%'
-                ,maxLength: 255
-                ,grow: false
-                ,value: config.record.description
-            },{
-                xtype: 'checkbox'
-                ,fieldLabel: _('active')
-                ,name: 'active'
-                ,id: 'modx-fcp-active'
-                ,inputValue: true
-                ,value: config.record.active ? true : false
-                ,anchor: '90%'
-                ,allowBlank: true
-            },{ html: '<hr />' },{
                 xtype: 'modx-grid-fc-set'
+				,cls:'main-wrapper'
                 ,baseParams: {
-                    action: 'getList'
+                    action: 'security/forms/set/getList'
                     ,profile: config.record.id
                 }
                 ,preventRender: true
             }]
         },{
             title: _('usergroups')
-            ,bodyStyle: { padding: '15px' }
+            ,layout: 'anchor'
             ,items: [{
                 html: '<p>'+_('profile_usergroups_msg')+'</p>'
+				,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
                 xtype: 'modx-grid-fc-profile-usergroups'
+				,cls:'main-wrapper'
                 ,data: config.record.usergroups || []
                 ,preventRender: true
             }]
         }],{
             id: 'modx-fc-profile-tabs'
         })]
-        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}
@@ -102,7 +113,9 @@ Ext.extend(MODx.panel.FCProfile,MODx.FormPanel,{
     ,setup: function() {
         if (!this.initialized) { this.getForm().setValues(this.config.record); }
         if (!Ext.isEmpty(this.config.record.name)) {
-            Ext.getCmp('modx-fcp-header').getEl().update('<h2>'+_('profile')+': '+this.config.record.name+'</h2>');
+            Ext.defer(function() {
+                Ext.getCmp('modx-fcp-header').update('<h2>'+_('profile')+': '+this.config.record.name+'</h2>');
+            }, 250, this);
         }
         this.fireEvent('ready',this.config.record);
         this.clearDirty();
@@ -138,6 +151,7 @@ MODx.grid.FCProfileUserGroups = function(config) {
         }]
         ,tbar: [{
             text: _('usergroup_create')
+            ,cls: 'primary-button'
             ,handler: this.addUserGroup
             ,scope: this
         }]
@@ -184,8 +198,8 @@ MODx.window.AddGroupToProfile = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('usergroup_create')
-        ,height: 150
-        ,width: 375
+        // ,height: 150
+        // ,width: 375
         ,fields: [{
             fieldLabel: _('user_group')
             ,name: 'usergroup'
@@ -194,7 +208,7 @@ MODx.window.AddGroupToProfile = function(config) {
             ,xtype: 'modx-combo-usergroup'
             ,editable: false
             ,allowBlank: false
-            ,anchor: '90%'
+            ,anchor: '100%'
         }]
     });
     MODx.window.AddGroupToProfile.superclass.constructor.call(this,config);
@@ -204,7 +218,7 @@ Ext.extend(MODx.window.AddGroupToProfile,MODx.Window,{
         var rec = {};
         rec.id = Ext.getCmp('modx-fcaug-usergroup').getValue();
         rec.name = Ext.getCmp('modx-fcaug-usergroup').getRawValue();
-        
+
         var g = Ext.getCmp('modx-grid-fc-profile-usergroups');
         var s = g.getStore();
         var v = s.findExact('id',rec.id);

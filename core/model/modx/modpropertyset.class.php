@@ -1,10 +1,17 @@
 <?php
 /**
+ * @package modx
+ */
+/**
  * Represents a reusable set of properties for elements.
  *
  * Each named property set can be associated with one or more element instances
  * and can be called via a tag syntax or programatically.
  *
+ * @property string $name A name for the set
+ * @property int $category Optional. The category this Set belongs to
+ * @property string $description A description of the set
+ * @property array $properties An array of properties contained in this Property Set
  * @package modx
  * @extends xPDOSimpleObject
  */
@@ -54,6 +61,21 @@ class modPropertySet extends xPDOSimpleObject {
                     $this->xpdo->lexicon->load($property['lexicon']);
                 }
                 $property['desc_trans'] = $this->xpdo->lexicon($property['desc']);
+                $property['area'] = !empty($property['area']) ? $property['area'] : '';
+                
+                if (!empty($property['options'])) {
+                    foreach ($property['options'] as &$option) {
+                        if (empty($option['text']) && !empty($option['name'])) {
+                            $option['text'] = $option['name'];
+                            unset($option['name']);
+                        }
+                        if (empty($option['value']) && !empty($option[0])) {
+                            $option['value'] = $option[0];
+                            unset($option[0]);
+                        }
+                        $option['name'] = $this->xpdo->lexicon($option['text']);
+                    }
+                }
             }
         }
         return $value;
@@ -102,6 +124,7 @@ class modPropertySet extends xPDOSimpleObject {
                         'options' => $property[3],
                         'value' => $property[4],
                         'lexicon' => !empty($property[5]) ? $property[5] : null,
+                        'area' => !empty($property[6]) ? $property[6] : '',
                     );
                 } elseif (is_array($property) && isset($property['value'])) {
                     $key = $property['name'];
@@ -112,6 +135,7 @@ class modPropertySet extends xPDOSimpleObject {
                         'options' => isset($property['options']) ? $property['options'] : array(),
                         'value' => $property['value'],
                         'lexicon' => !empty($property['lexicon']) ? $property['lexicon'] : null,
+                        'area' => !empty($property['area']) ? $property['area'] : '',
                     );
                 } else {
                     $key = $propKey;
@@ -122,8 +146,14 @@ class modPropertySet extends xPDOSimpleObject {
                         'options' => array(),
                         'value' => $property,
                         'lexicon' => null,
+                        'area' => '',
                     );
                 }
+                
+                if ($propertyArray['type'] == 'combo-boolean' && is_numeric($propertyArray['value'])) {
+                    $propertyArray['value'] = (boolean)$propertyArray['value'];
+                }
+                
                 /* handle translations of properties (temp fix until modLocalizableObject in 2.1 and beyond) */
                 /*if (!empty($propertyArray['lexicon'])) {
                     $this->xpdo->lexicon->load($propertyArray['lexicon']);

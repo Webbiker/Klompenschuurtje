@@ -1,8 +1,8 @@
 <?php
-/*
- * MODx Revolution
+/**
+ * MODX Revolution
  *
- * Copyright 2006-2010 by the MODx Team.
+ * Copyright 2006-2015 by MODX, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -18,9 +18,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * @package modx
  */
 /**
- * Encapsulates a MODx response to a web request.
+ * Encapsulates a MODX response to a web request.
  *
  * Includes functions to manipluate header data, such as status codes, as well
  * as manipulating the response body.
@@ -28,10 +30,30 @@
  * @package modx
  */
 class modResponse {
+    /**
+     * A reference to the modX instance
+     * @var modX $modx
+     */
     public $modx= null;
+    /**
+     * The HTTP header for this Response
+     * @var string $header
+     */
     public $header= null;
+    /**
+     * The body of this response
+     * @var string $body
+     */
     public $body= null;
+    /**
+     * The current content type on the resource
+     * @var modContentType $contentType
+     */
+    public $contentType = null;
 
+    /**
+     * @param modX $modx A reference to the modX instance
+     */
     function __construct(modX &$modx) {
         $this->modx= & $modx;
     }
@@ -42,17 +64,15 @@ class modResponse {
      * @param array $options Various options that can be set.
      */
     public function outputContent(array $options = array()) {
-        if (!($contentType = $this->modx->resource->getOne('ContentType'))) {
+        if (!($this->contentType = $this->modx->resource->getOne('ContentType'))) {
             if ($this->modx->getDebug() === true) {
                 $this->modx->log(modX::LOG_LEVEL_DEBUG, "No valid content type for RESOURCE: " . print_r($this->modx->resource->toArray(), true));
             }
             $this->modx->log(modX::LOG_LEVEL_FATAL, "The requested resource has no valid content type specified.");
         }
 
-        if (!$contentType->get('binary')) {
-            $this->modx->resource->process();
-
-            $this->modx->resource->_output= $this->modx->resource->_content;
+        if (!$this->contentType->get('binary')) {
+            $this->modx->resource->_output= $this->modx->resource->process();
             $this->modx->resource->_jscripts= $this->modx->jscripts;
             $this->modx->resource->_sjscripts= $this->modx->sjscripts;
             $this->modx->resource->_loadedjscripts= $this->modx->loadedjscripts;
@@ -64,16 +84,16 @@ class modResponse {
             $this->modx->parser->processElementTags('', $this->modx->resource->_output, true, true, '[[', ']]', array(), $maxIterations);
 
             /*FIXME: only do this for HTML content ?*/
-            if (strpos($contentType->get('mime_type'), 'text/html') !== false) {
+            if (strpos($this->contentType->get('mime_type'), 'text/html') !== false) {
                 /* Insert Startup jscripts & CSS scripts into template - template must have a </head> tag */
                 if (($js= $this->modx->getRegisteredClientStartupScripts()) && (strpos($this->modx->resource->_output, '</head>') !== false)) {
                     /* change to just before closing </head> */
-                    $this->modx->resource->_output= preg_replace("/(<\/head>)/i", $js . "\n\\1", $this->modx->resource->_output);
+                    $this->modx->resource->_output= preg_replace("/(<\/head>)/i", $js . "\n\\1", $this->modx->resource->_output,1);
                 }
 
                 /* Insert jscripts & html block into template - template must have a </body> tag */
                 if ((strpos($this->modx->resource->_output, '</body>') !== false) && ($js= $this->modx->getRegisteredClientScripts())) {
-                    $this->modx->resource->_output= preg_replace("/(<\/body>)/i", $js . "\n\\1", $this->modx->resource->_output);
+                    $this->modx->resource->_output= preg_replace("/(<\/body>)/i", $js . "\n\\1", $this->modx->resource->_output,1);
                 }
             }
 
@@ -84,16 +104,12 @@ class modResponse {
                 $this->modx->invokeEvent('OnWebPagePrerender');
             }
 
-            $totalTime= ($this->modx->getMicroTime() - $this->modx->startTime);
-            $queries= 0;
-            $queryTime= 0;
-            if ($this->modx->db !== null && $this->modx->db instanceof DBAPI) {
-                $queryTime= $this->modx->queryTime;
-                $queryTime= sprintf("%2.4f s", $queryTime);
-                $queries= isset ($this->modx->executedQueries) ? $this->modx->executedQueries : 0;
-            }
-            $totalTime= sprintf("%2.4f s", $totalTime);
+            $totalTime= (microtime(true) - $this->modx->startTime);
+            $queryTime= $this->modx->queryTime;
+            $queries= isset ($this->modx->executedQueries) ? $this->modx->executedQueries : 0;
             $phpTime= $totalTime - $queryTime;
+            $queryTime= sprintf("%2.4f s", $queryTime);
+            $totalTime= sprintf("%2.4f s", $totalTime);
             $phpTime= sprintf("%2.4f s", $phpTime);
             $source= $this->modx->resourceGenerated ? "database" : "cache";
             $this->modx->resource->_output= str_replace("[^q^]", $queries, $this->modx->resource->_output);
@@ -112,38 +128,38 @@ class modResponse {
 
         /* send out content-type, content-disposition, and custom headers from the content type */
         if ($this->modx->getOption('set_header')) {
-            $type= $contentType->get('mime_type') ? $contentType->get('mime_type') : 'text/html';
+            $type= $this->contentType->get('mime_type') ? $this->contentType->get('mime_type') : 'text/html';
             $header= 'Content-Type: ' . $type;
-            if (!$contentType->get('binary')) {
+            if (!$this->contentType->get('binary')) {
                 $charset= $this->modx->getOption('modx_charset',null,'UTF-8');
                 $header .= '; charset=' . $charset;
             }
             header($header);
-            if (!$this->modx->checkPreview()) {
+            if (!$this->checkPreview()) {
                 $dispositionSet= false;
-                if ($customHeaders= $contentType->get('headers')) {
+                if ($customHeaders= $this->contentType->get('headers')) {
                     foreach ($customHeaders as $headerKey => $headerString) {
                         header($headerString);
                         if (strpos($headerString, 'Content-Disposition:') !== false) $dispositionSet= true;
                     }
                 }
                 if (!$dispositionSet && $this->modx->resource->get('content_dispo')) {
-                    if ($alias= array_search($this->modx->resourceIdentifier, $this->modx->aliasMap)) {
+                    if ($alias= $this->modx->resource->get('uri')) {
                         $name= basename($alias);
                     } elseif ($this->modx->resource->get('alias')) {
                         $name= $this->modx->resource->get('alias');
-                        if ($ext= $contentType->getExtension()) {
-                            $name .= ".{$ext}";
+                        if ($ext= $this->contentType->getExtension()) {
+                            $name .= "{$ext}";
                         }
                     } elseif ($name= $this->modx->resource->get('pagetitle')) {
                         $name= $this->modx->resource->cleanAlias($name);
-                        if ($ext= $contentType->getExtension()) {
-                            $name .= ".{$ext}";
+                        if ($ext= $this->contentType->getExtension()) {
+                            $name .= "{$ext}";
                         }
                     } else {
                         $name= 'download';
-                        if ($ext= $contentType->getExtension()) {
-                            $name .= ".{$ext}";
+                        if ($ext= $this->contentType->getExtension()) {
+                            $name .= "{$ext}";
                         }
                     }
                     $header= 'Cache-Control: public';
@@ -162,15 +178,16 @@ class modResponse {
             "_postProcess"
         ));
 
-        if ($this->modx->resource instanceof modStaticResource && $contentType->get('binary')) {
+        if ($this->modx->resource instanceof modStaticResource && $this->contentType->get('binary')) {
             $this->modx->resource->process();
         } else {
-            if ($contentType->get('binary')) {
+            if ($this->contentType->get('binary')) {
                 $this->modx->resource->_output = $this->modx->resource->process();
             }
             @session_write_close();
             echo $this->modx->resource->_output;
-            while (@ ob_end_flush()) {}
+            while (ob_get_level() && @ob_end_flush()) {}
+            flush();
             exit();
         }
     }
@@ -193,6 +210,7 @@ class modResponse {
      * options array).
      * @param string $responseCode The type of HTTP response code HEADER to send for the
      * redirect (deprecated, use responseCode in options array)
+     * @return void|boolean
      */
     public function sendRedirect($url, $options= false, $type= '', $responseCode= '') {
         if (!is_array($options)) {

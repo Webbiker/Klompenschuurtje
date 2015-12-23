@@ -7,6 +7,7 @@ $xpdo_meta_map['modTransportPackage']= array (
   'package' => 'modx.transport',
   'version' => '1.1',
   'table' => 'transport_packages',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
     'signature' => NULL,
@@ -124,8 +125,7 @@ $xpdo_meta_map['modTransportPackage']= array (
     ),
     'version_major' => 
     array (
-      'dbtype' => 'tinyint',
-      'precision' => '4',
+      'dbtype' => 'smallint',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
@@ -134,8 +134,7 @@ $xpdo_meta_map['modTransportPackage']= array (
     ),
     'version_minor' => 
     array (
-      'dbtype' => 'tinyint',
-      'precision' => '4',
+      'dbtype' => 'smallint',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
@@ -144,8 +143,7 @@ $xpdo_meta_map['modTransportPackage']= array (
     ),
     'version_patch' => 
     array (
-      'dbtype' => 'tinyint',
-      'precision' => '4',
+      'dbtype' => 'smallint',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
@@ -163,8 +161,7 @@ $xpdo_meta_map['modTransportPackage']= array (
     ),
     'release_index' => 
     array (
-      'dbtype' => 'tinyint',
-      'precision' => '4',
+      'dbtype' => 'smallint',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,

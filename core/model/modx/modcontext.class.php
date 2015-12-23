@@ -7,22 +7,70 @@
 /**
  * Represents a virtual site context within a modX repository.
  *
+ * @property string $key The key of the context
+ * @property string $description The description of the context
+ *
  * @package modx
  */
 class modContext extends modAccessibleObject {
+    /**
+     * An array of configuration options for this context
+     * @var array $config
+     */
     public $config= null;
+    /**
+     * The alias map for this context
+     * @var array $aliasMap
+     */
     public $aliasMap= null;
+    /**
+     * The resource map for all resources in this context
+     * @var array $resourceMap
+     */
     public $resourceMap= null;
-    public $resourceListing= null;
-    public $documentListing= null;
-    public $documentMap= null;
+    /**
+     * A map of WebLink Resources with their target URLs
+     * @var array $webLinkMap
+     */
+    public $webLinkMap= null;
+    /**
+     * The event map for all events being executed in this context
+     * @var array $eventMap
+     */
     public $eventMap= null;
+    /**
+     * The plugin cache array for all plugins being fired in this context
+     * @var array $pluginCache
+     */
     public $pluginCache= null;
+    /**
+     * The key for the cache for this context
+     * @var string $_cacheKey
+     */
     protected $_cacheKey= '[contextKey]/context';
 
-    function __construct(& $xpdo) {
-        parent :: __construct($xpdo);
-        $this->documentListing= & $this->resourceListing;
+    /**
+     * Prepare and execute a PDOStatement to retrieve data needed for $aliasMap and $resourceMap.
+     *
+     * @static
+     * @param modContext &$context A reference to a specific modContext instance.
+     * @return PDOStatement|bool A PDOStatement, prepared and executed, with the map data, or false
+     * if the statement could not be prepared or executed.
+     */
+    public static function getResourceCacheMapStmt(&$context) {
+        return false;
+    }
+
+    /**
+     * Prepare and execute a PDOStatement to retrieve data needed for $webLinkMap.
+     *
+     * @static
+     * @param modContext &$context A reference to a specific modContext instance.
+     * @return PDOStatement|bool A PDOStatement, prepared and executed, with the map data, or false
+     * if the statement could not be prepared or executed.
+     */
+    public static function getWebLinkCacheMapStmt(&$context) {
+        return false;
     }
 
     /**
@@ -37,16 +85,24 @@ class modContext extends modAccessibleObject {
      * and regenerated.
      * @return boolean Indicates if the context was successfully prepared.
      */
-    public function prepare($regenerate= false) {
+    public function prepare($regenerate= false, array $options = array()) {
         $prepared= false;
         if ($this->config === null || $regenerate) {
             if ($this->xpdo->getCacheManager()) {
                 $context = array();
-                if ($regenerate || !($context = $this->xpdo->cacheManager->get($this->getCacheKey()))) {
-                    $context = $this->xpdo->cacheManager->generateContext($this->get('key'));
+                if ($regenerate || !($context = $this->xpdo->cacheManager->get($this->getCacheKey(), array(
+                    xPDO::OPT_CACHE_KEY => $this->xpdo->getOption('cache_context_settings_key', null, 'context_settings'),
+                    xPDO::OPT_CACHE_HANDLER => $this->xpdo->getOption('cache_context_settings_handler', null, $this->xpdo->getOption(xPDO::OPT_CACHE_HANDLER, null, 'cache.xPDOFileCache')),
+                    xPDO::OPT_CACHE_FORMAT => (integer) $this->xpdo->getOption('cache_context_settings_format', null, $this->xpdo->getOption(xPDO::OPT_CACHE_FORMAT, null, xPDOCacheManager::CACHE_PHP)),
+                )))) {
+                    $context = $this->xpdo->cacheManager->generateContext($this->get('key'), $options);
                 }
                 if (!empty($context)) {
                     foreach ($context as $var => $val) {
+                        if ($var === 'policies') {
+                            $this->setPolicies($val);
+                            continue;
+                        }
                         $this->$var = $val;
                     }
                     $prepared= true;
@@ -98,31 +154,42 @@ class modContext extends modAccessibleObject {
      */
     public function findPolicy($context = '') {
         $policy = array();
+        $enabled = true;
         $context = !empty($context) ? $context : $this->xpdo->context->get('key');
-        if (empty($this->_policies) || !isset($this->_policies[$context])) {
-            $accessTable = $this->xpdo->getTableName('modAccessContext');
-            $policyTable = $this->xpdo->getTableName('modAccessPolicy');
-            $sql = "SELECT acl.target, acl.principal, acl.authority, acl.policy, p.data FROM {$accessTable} acl " .
-                    "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
-                    "WHERE acl.principal_class = 'modUserGroup' " .
-                    "AND acl.target = :context " .
-                    "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
-            $bindings = array(
-                ':context' => $this->get('key')
-            );
-            $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
-            if ($query->stmt && $query->stmt->execute()) {
-                while ($row = $query->stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $policy['modAccessContext'][$row['target']][] = array(
-                        'principal' => $row['principal'],
-                        'authority' => $row['authority'],
-                        'policy' => $row['data'] ? $this->xpdo->fromJSON($row['data'], true) : array(),
+        if (!is_object($this->xpdo->context) || $context === $this->xpdo->context->get('key')) {
+            $enabled = (boolean) $this->xpdo->getOption('access_context_enabled', null, true);
+        } elseif ($this->xpdo->getContext($context)) {
+            $enabled = (boolean) $this->xpdo->contexts[$context]->getOption('access_context_enabled', true);
+        }
+        if ($enabled) {
+            if (empty($this->_policies) || !isset($this->_policies[$context])) {
+                $c = $this->xpdo->newQuery('modAccessContext');
+                $c->leftJoin('modAccessPolicy','Policy');
+                $c->select(array(
+                    'modAccessContext.id',
+                    'modAccessContext.target',
+                    'modAccessContext.principal',
+                    'modAccessContext.authority',
+                    'modAccessContext.policy',
+                    'Policy.data',
+                ));
+                $c->where(array(
+                    'modAccessContext.principal_class' => 'modUserGroup',
+                    'modAccessContext.target' => $this->get('key'),
+                ));
+                $c->sortby('modAccessContext.target,modAccessContext.principal,modAccessContext.authority,modAccessContext.policy');
+                $acls = $this->xpdo->getCollection('modAccessContext',$c);
+                foreach ($acls as $acl) {
+                    $policy['modAccessContext'][$acl->get('target')][] = array(
+                        'principal' => $acl->get('principal'),
+                        'authority' => $acl->get('authority'),
+                        'policy' => $acl->get('data') ? $this->xpdo->fromJSON($acl->get('data'), true) : array(),
                     );
                 }
+                $this->_policies[$context] = $policy;
+            } else {
+                $policy = $this->_policies[$context];
             }
-            $this->_policies[$context] = $policy;
-        } else {
-            $policy = $this->_policies[$context];
         }
         return $policy;
     }
@@ -147,27 +214,31 @@ class modContext extends modAccessibleObject {
      *    http : URL is absolute, forced to http scheme
      *   https : URL is absolute, forced to https scheme
      * </pre>
+     * @param array $options An array of options for generating the Resource URL.
      * @return string The URL for the resource.
      */
-    public function makeUrl($id, $args = '', $scheme = -1) {
+    public function makeUrl($id, $args = '', $scheme = -1, array $options = array()) {
         $url = '';
         $found = false;
         if ($id= intval($id)) {
+            if ($this->config === null) {
+                $this->prepare();
+            }
             if (is_object($this->xpdo->context) && $this->get('key') !== $this->xpdo->context->get('key')) {
-                $config = array_merge($this->xpdo->_systemConfig, $this->config, $this->xpdo->_userConfig);
+                $config = array_merge($this->xpdo->_systemConfig, $this->config, $this->xpdo->_userConfig, $options);
                 if ($scheme === -1 || $scheme === '' || strpos($scheme, 'abs') !== false) {
                     $scheme= 'full';
                 }
             } else {
-                $config = $this->xpdo->config;
+                $config = array_merge($this->xpdo->config, $options);
             }
 
             if ($config['friendly_urls'] == 1) {
-                if ($id == $config['site_start']) {
+                if ((integer) $id === (integer) $config['site_start']) {
                     $alias= ($scheme === '' || $scheme === -1) ? $config['base_url'] : '';
                     $found= true;
                 } else {
-                    $alias= array_search($id, $this->aliasMap);
+                    $alias= $this->getResourceURI($id);
                     if (!$alias) {
                         $alias= '';
                         $this->xpdo->log(xPDO::LOG_LEVEL_WARN, '`' . $id . '` was requested but no alias was located.');
@@ -175,39 +246,49 @@ class modContext extends modAccessibleObject {
                         $found= true;
                     }
                 }
-            } elseif (isset($this->resourceListing["{$id}"])) {
+            } elseif (array_keys(array((string) $id), $this->resourceMap, true) !== false) {
                 $found= true;
             }
 
             if ($found) {
+                $target = null;
+                if (isset($config['use_weblink_target']) && !empty($config['use_weblink_target'])) {
+                    if (array_key_exists($id, $this->webLinkMap)) {
+                        $target = $this->webLinkMap[$id];
+                        if (!empty($target)) {
+                            $alias = $target;
+                        }
+                    }
+                }
+                $targetHasQS = (empty($config['friendly_urls']) || strpos($alias, '?') !== false);
                 if (is_array($args)) {
                     $args = modX::toQueryString($args);
                 }
-                if ($args != '' && $config['friendly_urls'] == 1) {
-                    /* add ? to $args if missing */
-                    $c= substr($args, 0, 1);
-                    if ($c == '&') {
-                        $args= '?' . substr($args, 1);
-                    } elseif ($c != '?') {
-                        $args= '?' . $args;
+                if ($args != '') {
+                    if (!$targetHasQS) {
+                        /* add ? to $args if missing */
+                        $c= substr($args, 0, 1);
+                        if ($c == '&') {
+                            $args= '?' . substr($args, 1);
+                        } elseif ($c != '?') {
+                            $args= '?' . $args;
+                        }
+                    } elseif ($args != '') {
+                        /* add & to $args if missing */
+                        $c= substr($args, 0, 1);
+                        if ($c == '?')
+                            $args= '&' . substr($args, 1);
+                        elseif ($c != '&') $args= '&' . $args;
                     }
                 }
-                elseif ($args != '') {
-                    /* add & to $args if missing */
-                    $c= substr($args, 0, 1);
-                    if ($c == '?')
-                        $args= '&' . substr($args, 1);
-                    elseif ($c != '&') $args= '&' . $args;
-                }
-
-                if ($config['friendly_urls'] == 1) {
+                if ($config['friendly_urls'] == 1 || $target !== null) {
                     $url= $alias . $args;
                 } else {
                     $url= $config['request_controller'] . '?' . $config['request_param_id'] . '=' . $id . $args;
                 }
 
                 $host= '';
-                if ($scheme !== -1 && $scheme !== '') {
+                if ($target === null && $scheme !== -1 && $scheme !== '') {
                     if ($scheme === 1 || $scheme === 0) {
                         $https_port= $this->getOption('https_port',$config,443);
                         $isSecure= ($_SERVER['SERVER_PORT'] == $https_port || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS'])=='on')) ? 1 : 0;
@@ -288,5 +369,44 @@ class modContext extends modAccessibleObject {
             ));
         }
         return $saved;
+    }
+
+    /**
+     * Get and execute a PDOStatement representing data for the aliasMap and resourceMap.
+     *
+     * @return PDOStatement|null
+     */
+    public function getResourceCacheMap() {
+        return $this->xpdo->call('modContext', 'getResourceCacheMapStmt', array(&$this));
+    }
+
+    /**
+     * Get and execute a PDOStatement representing data for the webLinkMap.
+     *
+     * @return PDOStatement|null
+     */
+    public function getWebLinkCacheMap() {
+        return $this->xpdo->call('modContext', 'getWebLinkCacheMapStmt', array(&$this));
+    }
+
+    /**
+     * Get a Resource URI in this Context by id.
+     *
+     * @param string|integer $id The integer id of the Resource.
+     * @return string|bool The URI of the Resource, or false if not found in this Context.
+     */
+    public function getResourceURI($id) {
+        if ($this->getOption('cache_alias_map') && isset($this->aliasMap)) {
+            $uri = array_search($id, $this->aliasMap);
+        } else {
+            $query = $this->xpdo->newQuery('modResource', array(
+                'id' => $id,
+                'deleted' => false,
+                'context_key' => $this->get('key')
+            ));
+            $query->select($this->xpdo->getSelectColumns('modResource', '', '', array('uri')));
+            $uri = $this->xpdo->getValue($query->prepare());
+        }
+        return $uri;
     }
 }

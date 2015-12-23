@@ -1,19 +1,17 @@
 <?php
 /**
- * Custom Filters Czech lexicon topic
+ * Custom Filters English lexicon topic
  *
- * @language cs
+ * @language en
  * @package modx
  * @subpackage lexicon
- *
- * @author modxcms.cz
- * @updated 2010-07-13
  */
 $_lang['ago'] = 'před [[+time]]';
 $_lang['ago_day'] = '[[+time]] dnem';
 $_lang['ago_days'] = '[[+time]] dny';
 $_lang['ago_hour'] = '[[+time]] hodinou';
 $_lang['ago_hours'] = '[[+time]] hodinami';
+$_lang['ago_minute'] = '1 minuta';
 $_lang['ago_minutes'] = '[[+time]] minutami';
 $_lang['ago_month'] = '[[+time]] měsícem';
 $_lang['ago_months'] = '[[+time]] měsíci';

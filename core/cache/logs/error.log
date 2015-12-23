@@ -1,0 +1,7 @@
+[2015-12-23 20:53:57] (ERROR @ /Users/joostbrommert/Sites/GitHub/Klompenschuurtje/core/cache/includes/elements/modsnippet/18.include.cache.php : 43) PHP warning: require_once(/Users/joostbrommert/Sites/GitHub/Klompenschuurtje/core/components/phpthumbof/model/phpthumbof/phpthumbof.class.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory
+[2015-12-23 20:56:04] (ERROR @ /Users/joostbrommert/Sites/GitHub/Klompenschuurtje/core/cache/includes/elements/modsnippet/18.include.cache.php : 43) PHP warning: require_once(/Users/joostbrommert/Sites/GitHub/Klompenschuurtje/core/components/phpthumbof/model/phpthumbof/phpthumbof.class.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory
+[2015-12-23 21:25:49] (ERROR @ /index.php) Could not cache source data for 5.
+[2015-12-23 21:25:49] (ERROR @ /index.php) Could not cache source data for 5.
+[2015-12-23 21:25:49] (ERROR @ /index.php) Could not cache source data for 5.
+[2015-12-23 21:25:49] (ERROR @ /index.php) Could not cache source data for 5.
+[2015-12-23 21:25:49] (ERROR @ /index.php) Could not cache source data for 5.

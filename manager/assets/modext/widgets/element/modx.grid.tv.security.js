@@ -16,12 +16,16 @@ MODx.grid.TVSecurity = function(config) {
     });
     Ext.applyIf(config,{
         id: 'modx-grid-tv-security'
-        ,url: MODx.config.connectors_url+'element/tv/resourcegroup.php'
+        ,url: MODx.config.connector_url
+        ,fields: ['id','name','access','menu']
         ,baseParams: {
-            action: 'getList'
+            action: 'element/tv/resourcegroup/getList'
             ,tv: config.tv
         }
-        ,fields: ['id','name','access','menu']
+        ,saveParams: {
+            tv: config.tv
+        }
+        ,width: 800
         ,paging: true
         ,remoteSort: true
         ,plugins: tt

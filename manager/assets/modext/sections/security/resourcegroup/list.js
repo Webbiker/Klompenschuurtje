@@ -1,7 +1,3 @@
-Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-page-resource-groups' });
-});
-
 /**
  * Loads the groups and roles page
  * 
@@ -15,10 +11,10 @@ MODx.page.ResourceGroups = function(config) {
     Ext.applyIf(config,{
         components: [{
             xtype: 'modx-panel-resource-groups'
-            ,renderTo: 'modx-panel-resource-groups-div'
         }]
         ,buttons: [{
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         }]
     });

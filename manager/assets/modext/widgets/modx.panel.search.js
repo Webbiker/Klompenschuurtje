@@ -10,108 +10,216 @@ MODx.panel.Search = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         id: 'modx-panel-search'
+		,cls: 'container form-with-labels'
+        ,labelAlign: 'top'
         ,autoHeight: true
         ,items: [{
             html: '<h2>'+_('search')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
-        },{
-            xtype: 'portal'
+        },MODx.getPageStructure([{
+            layout: 'form'
+            ,title: _('search_criteria')
+            ,defaults: {
+                collapsible: false
+                ,autoHeight: true
+            }
             ,items: [{
-                columnWidth: .97
-                ,items: [{
-                    title: _('search_criteria')
-                    ,cls: 'x-panel-header'
-                    ,layout: 'form'
-                    ,border: false
-                    ,defaults: {
-                        collapsible: false
-                        ,autoHeight: true
-                        ,bodyStyle: 'padding: 15px;'
-                    }
-                    ,items: this.getFields()
-                },{
-                    xtype: 'modx-grid-search'
-                    ,preventRender: true
-                    ,bodyStyle: 'padding: 0;'
-                    ,width: '100.7%'
-                }]
+                layout: 'form'
+                ,cls: 'main-wrapper'
+                ,border: false
+                ,items: this.getFields(config)
+            },{
+                html: '<hr />'
+                ,border: false
+            },{
+                xtype: 'modx-grid-search'
+                ,cls: 'main-wrapper'
+                ,preventRender: true
             }]
-        }]
+        }])]
     });
     MODx.panel.Search.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.Search,MODx.FormPanel,{
     filters: {}
     
-    ,getFields: function() {
-        var lsr = {
-            'change': {fn:this.filter,scope: this}
-            ,'render': {fn:this._addEnterKeyHandler}
-        };
+    ,getFields: function(config) {
         return [{
-            xtype: 'textfield'
-            ,name: 'id'
-            ,fieldLabel: _('id')
-            ,width: 100
-            ,listeners: lsr
-        },{
-            xtype: 'textfield'
-            ,name: 'pagetitle'
-            ,fieldLabel: _('pagetitle')
-            ,width: 300
-            ,listeners: lsr
-        },{
-            xtype: 'textfield'
-            ,name: 'longtitle'
-            ,fieldLabel: _('long_title')
-            ,width: 300
-            ,listeners: lsr
+            layout: 'column'
+            ,border: false
+            ,defaults: {
+                layout: 'form'
+                ,labelAlign: 'top'
+                ,anchor: '100%'
+                ,border: false
+            }
+            ,items: [{
+                columnWidth: .6
+                ,items: [{
+                    xtype: 'textfield'
+                    ,name: 'pagetitle'
+                    ,id: 'modx-search-pagetitle'
+                    ,fieldLabel: _('pagetitle')
+                    ,anchor: '100%'
+                    ,listeners: {
+                        'change': {fn:this.filter,scope: this}
+                        ,'render': {fn:this._addEnterKeyHandler}
+                    }
+                    ,value: config.record.q || ''
+                },{
+                    xtype: 'textfield'
+                    ,name: 'longtitle'
+                    ,id: 'modx-search-longtitle'
+                    ,fieldLabel: _('long_title')
+                    ,anchor: '100%'
+                    ,listeners: {
+                        'change': {fn:this.filter,scope: this}
+                        ,'render': {fn:this._addEnterKeyHandler}
+                    }
+                    ,value: config.record.q || ''
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('resource_summary')
+                    ,name: 'introtext'
+                    ,id: 'modx-search-introtext'
+                    ,anchor: '100%'
+                    ,listeners: {
+                        'change': {fn:this.filter,scope: this}
+                        ,'render': {fn:this._addEnterKeyHandler}
+                    }
+                    ,value: config.record.q || ''
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('resource_description')
+                    ,name: 'description'
+                    ,id: 'modx-search-description'
+                    ,anchor: '100%'
+                    ,listeners: {
+                        'change': {fn:this.filter,scope: this}
+                        ,'render': {fn:this._addEnterKeyHandler}
+                    }
+                    ,value: config.record.q || ''
+                }]
+            },{
+                columnWidth: .4
+                ,items: [{
+                    xtype: 'textfield'
+                    ,name: 'alias'
+                    ,id: 'modx-search-alias'
+                    ,fieldLabel: _('alias')
+                    ,anchor: '100%'
+                    ,listeners: {
+                        'change': {fn:this.filter,scope: this}
+                        ,'render': {fn:this._addEnterKeyHandler}
+                    }
+                    ,value: config.record.q || ''
+                },{
+                    xtype: 'textfield'
+                    ,name: 'menutitle'
+                    ,id: 'modx-search-menutitle'
+                    ,fieldLabel: _('resource_menutitle')
+                    ,anchor: '100%'
+                    ,listeners: {
+                        'change': {fn:this.filter,scope: this}
+                        ,'render': {fn:this._addEnterKeyHandler}
+                    }
+                    ,value: config.record.q || ''
+                },{
+                    layout: 'column'
+                    ,border: false
+                    ,defaults: {
+                        layout: 'form'
+                        ,labelAlign: 'top'
+                        ,anchor: '100%'
+                        ,border: false
+                    }
+                    ,items: [{
+                        columnWidth: .5
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,name: 'id'
+                            ,id: 'modx-search-id'
+                            ,fieldLabel: _('id')
+                            ,width: 100
+                            ,listeners: {
+                                'change': {fn:this.filter,scope: this}
+                                ,'render': {fn:this._addEnterKeyHandler}
+                            }
+                        },{
+                            xtype: 'xcheckbox'
+                            ,name: 'published'
+                            ,id: 'modx-search-published'
+                            ,boxLabel: _('published')
+                            ,hideLabel: true
+                            ,inputValue: 1
+                            ,checked: false
+                            ,handler: this.filter
+                            ,scope: this
+                        },{
+                            xtype: 'xcheckbox'
+                            ,name: 'unpublished'
+                            ,id: 'modx-search-unpublished'
+                            ,boxLabel: _('unpublished')
+                            ,hideLabel: true
+                            ,inputValue: 1
+                            ,checked: false
+                            ,handler: this.filter
+                            ,scope: this
+                        }]
+                    },{
+                        columnWidth: .5
+                        ,items: [{
+                            xtype: 'textfield'
+                            ,name: 'parent'
+                            ,id: 'modx-search-parent'
+                            ,fieldLabel: _('parent')
+                            ,width: 100
+                            ,listeners: {
+                                'change': {fn:this.filter,scope: this}
+                                ,'render': {fn:this._addEnterKeyHandler}
+                            }
+                        },{
+                            xtype: 'xcheckbox'
+                            ,name: 'deleted'
+                            ,id: 'modx-search-deleted'
+                            ,boxLabel: _('deleted')
+                            ,hideLabel: true
+                            ,inputValue: 1
+                            ,checked: false
+                            ,handler: this.filter
+                            ,scope: this
+                        },{
+                            xtype: 'xcheckbox'
+                            ,name: 'undeleted'
+                            ,id: 'modx-search-undeleted'
+                            ,boxLabel: _('undeleted')
+                            ,hideLabel: true
+                            ,inputValue: 1
+                            ,checked: false
+                            ,handler: this.filter
+                            ,scope: this
+                        }]
+                    }]
+                }]
+            }]
         },{
             xtype: 'textarea'
             ,name: 'content'
             ,fieldLabel: _('content')
-            ,width: 300
+            ,anchor: '100%'
             ,grow: true
-            ,listeners: lsr
-        },{
-            xtype: 'checkbox'
-            ,name: 'published'
-            ,fieldLabel: _('published')
-            ,inputValue: 1
-            ,checked: false
-            ,handler: this.filter
-            ,scope: this
-        },{
-            xtype: 'checkbox'
-            ,name: 'unpublished'
-            ,fieldLabel: _('unpublished')
-            ,inputValue: 1
-            ,checked: false
-            ,handler: this.filter
-            ,scope: this
-        },{
-            xtype: 'checkbox'
-            ,name: 'deleted'
-            ,fieldLabel: _('deleted')
-            ,inputValue: 1
-            ,checked: false
-            ,handler: this.filter
-            ,scope: this
-        },{
-            xtype: 'checkbox'
-            ,name: 'undeleted'
-            ,fieldLabel: _('undeleted')
-            ,inputValue: 1
-            ,checked: false
-            ,handler: this.filter
-            ,scope: this
+            ,listeners: {
+                'change': {fn:this.filter,scope: this}
+                ,'render': {fn:this._addEnterKeyHandler}
+            }
+            ,value: config.record.q || ''
         }];
     }
     
     ,filter: function(tf,newValue,oldValue) {
         var p = this.getForm().getValues();
-        p.action = 'search';
+        p.action = 'resource/search';
         
         var g = Ext.getCmp('modx-grid-search');
         if (g) {
@@ -142,9 +250,9 @@ MODx.grid.Search = function(config) {
     Ext.applyIf(config,{
         title: _('search_results')
         ,id: 'modx-grid-search'
-        ,url: MODx.config.connectors_url+'resource/index.php'
+        ,url: MODx.config.connector_url
         ,baseParams: {
-            action: 'search'
+            action: 'resource/search'
         }
         ,fields: ['id','pagetitle','description','published','deleted','menu']
         ,paging: true

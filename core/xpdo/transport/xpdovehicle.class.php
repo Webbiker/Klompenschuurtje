@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006-2010 by  Jason Coward <xpdo@opengeek.com>
+ * Copyright 2010-2015 by MODX, LLC.
  *
  * This file is part of xPDO.
  *
@@ -172,7 +172,7 @@ abstract class xPDOVehicle {
                                     } else {
                                         if ($preExistingMode === xPDOTransport::PRESERVE_PREEXISTING && is_array($copied)) {
                                             foreach ($copied as $copiedFile => $stat) {
-                                                if (isset($stat['overwritten'])) $transport->_preserved[$options['guid']]['files'][$copiedFile]= $stat;
+                                                if (isset($stat['overwritten'])) $transport->_preserved[$options['guid']]['files'][substr($copiedFile, strlen($fileTarget))]= $stat;
                                             }
                                         }
                                         $resolved = true;
@@ -264,7 +264,9 @@ abstract class xPDOVehicle {
                         $fileName = $fileMeta['name'];
                         $fileSource = $transport->path . $fileMeta['source'];
                         if (!$validated = include ($fileSource)) {
-                            $transport->xpdo->log(xPDO::LOG_LEVEL_ERROR, "xPDOVehicle validator failed: type php ({$fileSource})");
+                            if (!isset($fileMeta['silent_fail']) || !$fileMeta['silent_fail']) {
+                                $transport->xpdo->log(xPDO::LOG_LEVEL_ERROR, "xPDOVehicle validator failed: type php ({$fileSource})");
+                            }
                         }
                         break;
 

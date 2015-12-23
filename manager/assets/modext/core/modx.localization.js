@@ -61,13 +61,29 @@ Ext.onReady(function() {
         ,lastText: _('ext_last')
         ,refreshText: _('ext_refresh')
     });
+    Ext.apply(Ext.Updater.prototype,{
+        text: _('loading')
+    });
+    Ext.apply(Ext.LoadMask.prototype,{
+        msg : _('loading')
+    });
+    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype,{
+        splitTip: _('ext_splittip')
+    });
+    Ext.apply(Ext.form.BasicForm.prototype,{
+        waitTitle: _('please_wait')
+    });
     Ext.apply(Ext.form.ComboBox.prototype,{
         loadingText: _('loading')
+    });
+    Ext.apply(Ext.form.Field.prototype,{
+        invalidText: _('ext_invalidfield')
     });    
     Ext.apply(Ext.form.TextField.prototype,{
         minLengthText: _('ext_minlenfield')
         ,maxLengthText: _('ext_maxlenfield')
         ,invalidText: _('ext_invalidfield')
+        ,blankText: _('field_required') 
     });
     Ext.apply(Ext.form.NumberField.prototype,{
         minText: _('ext_minvalfield')

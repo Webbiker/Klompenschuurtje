@@ -1,15 +1,12 @@
 <?php
 /**
- * Default Czech lexicon topic
+ * Lexicon English lexicon topic
  *
- * @language cs
+ * @language en
  * @package modx
  * @subpackage lexicon
- *
- * @author modxcms.cz
- * @updated 2010-07-18
  */
-$_lang['duplicate'] = 'Zkopírovat';
+$_lang['duplicate'] = 'Kopírovat';
 $_lang['entry'] = 'Záznam';
 $_lang['entry_create'] = 'Vytvořit záznam';
 $_lang['entry_err_ae'] = 'Záznam již existuje!';
@@ -33,5 +30,6 @@ $_lang['lexicon_management'] = 'Správa slovníků';
 $_lang['lexicon_management_desc'] = 'Zde můžete spravovat všechny záznamy ve slovníku skrze všechny jmenné prostory respektive jejich témata.';
 $_lang['lexicon_rlfb_msg'] = 'Úspěšně obnoveno [[+num]] záznamů.';
 $_lang['reload_from_base'] = 'Obnovit záznamy do výchozího stavu';
+$_lang['reload_success'] = 'Úspěšně znovunačteno [[+total]] řetězců.';
 $_lang['search_by_key'] = 'Hledat klíč:';
 $_lang['topic'] = 'Téma';

@@ -13,14 +13,11 @@ require_once dirname(__FILE__) . '/modregister.class.php';
  *
  * This implementation does not address transactional conflicts and should be
  * used in non-critical processes that are easily recoverable.
+ *
+ * @package modx
+ * @subpackage registry
  */
 class modDbRegister extends modRegister {
-    /**
-     * A polling flag that will terminate additional polling when true.
-     * @access protected
-     * @var boolean $__kill
-     */
-    public $__kill = false;
     /**
      * The queue object representing this modRegister instance.
      * @access protected
@@ -31,15 +28,21 @@ class modDbRegister extends modRegister {
     /**
      * Construct a new modDbRegister instance.
      *
-     * @param modX &$modx A reference to a modX instance.
-     * @param string $key A unique identifier for this register.
-     * @param array $options Optional array of register-specific options.
+     * @param modX &$modx A reference to the modX instance
+     * @param string $key The key of the registry to load
+     * @param array $options An array of options to set
      */
     function __construct(modX &$modx, $key, array $options = array()) {
         parent :: __construct($modx, $key, $options);
         $this->_queue = $this->_initQueue($key, $options);
     }
 
+    /**
+     * Initialize a new queue
+     * @param string $key The new name of the queue
+     * @param array $options An array of options
+     * @return modDbRegisterQueue A reference to the new Queue object
+     */
     protected function _initQueue($key, $options) {
         $queue = $this->modx->getObject('registry.db.modDbRegisterQueue', array(
             'name' => $key
@@ -56,17 +59,27 @@ class modDbRegister extends modRegister {
     }
 
     /**
-     * If we made it here, we connected fine.
+     * Connect to the register service implementation. If we made it here, we connected fine.
      *
-     * {@inheritdoc}
+     * @param array $attributes A collection of attributes required for
+     * connection to the register.
+     * @return boolean Indicates if the connection was successful.
      */
     public function connect(array $attributes = array()) {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * Clear the register messages.
      *
+     * {@inheritdoc}
+     */
+    public function clear($topic) {
+        $result = $this->modx->removeCollection('modDbRegisterMessage', array('topic' => $topic));
+        return (bool)$result;
+    }
+
+    /**
      * This implementation supports the following options and default behavior:
      * <ul>
      * <li>msg_limit: Only poll until the specified limit of messages has
@@ -80,17 +93,24 @@ class modDbRegister extends modRegister {
      * interval.</li>
      * <li>remove_read: Remove the message immediately upon digesting it.
      * Default is true.</li>
+     * <li>include_keys: Include the message keys in the array of messages returned.
+     * Default is false.</li>
      * </ul>
+     *
+     * @param array $options An array of general or protocol specific options.
+     * @return mixed The resulting message from the register.
      */
     public function read(array $options = array()) {
         $this->__kill = false;
         $messages = array();
+        $topicMessages = array();
         $msgLimit = isset($options['msg_limit']) ? intval($options['msg_limit']) : 5;
-        $timeLimit = isset($options['time_limit']) ? intval($options['time_limit']) : ini_get('time_limit');
+        $timeLimit = isset($options['time_limit']) ? intval($options['time_limit']) : ini_get('max_execution_time');
         $pollLimit = isset($options['poll_limit']) ? intval($options['poll_limit']) : 0;
         $pollInterval = isset($options['poll_interval']) ? intval($options['poll_interval']) : 0;
         $removeRead = isset($options['remove_read']) ? (boolean) $options['remove_read'] : true;
-        $startTime = $this->modx->getMicroTime();
+        $includeKeys = isset($options['include_keys']) ? (boolean) $options['include_keys'] : false;
+        $startTime = microtime(true);
         $time = $timeLimit <= 0 ? -1 : $startTime;
         $expires = $startTime + $timeLimit;
         $msgCount = 0;
@@ -105,39 +125,38 @@ class modDbRegister extends modRegister {
             $iteration++;
             foreach ($this->subscriptions as $subIdx => $topic) {
                 $topicMessages = array();
-                $msgTable = $this->modx->getTableName('registry.db.modDbRegisterMessage');
-                $topicTable = $this->modx->getTableName('registry.db.modDbRegisterTopic');
-                $orderby = "ORDER BY `msg`.`created` ASC";
                 $balance = $msgLimit - $msgCount;
-                $limit = ($balance > 0) ? "LIMIT {$balance}" : '';
-                $sql = "SELECT `msg`.* FROM {$msgTable} `msg` JOIN {$topicTable} `topic` ON `msg`.`valid` <= NOW() AND (`topic`.`name` = :topic OR (`topic`.`name` = :topicbase AND `msg`.`id` = :topicmsg)) AND `topic`.`id` = `msg`.`topic` {$orderby} {$limit}";
-                $stmt = $this->modx->prepare($sql);
-                if ($stmt) {
-                    $stmt->bindValue(':topic', $topic);
-                    $stmt->bindValue(':topicbase', dirname($topic) . '/');
-                    $stmt->bindValue(':topicmsg', basename($topic));
-                    if ($stmt->execute()) {
-                        foreach ($stmt->fetchAll(PDO::FETCH_OBJ) as $msg) {
-                            $newMsg = $this->_readMessage($msg, $removeRead);
-                            if ($newMsg !== null) {
-                                $topicMessages[] = $newMsg;
-                                $msgCount++;
-                            } else {
-                                $this->modx->log(modX::LOG_LEVEL_INFO, 'Message was null or expired: ' . print_r($msg, 1));
-                            }
-                            if ($this->__kill) break;
+                $args = array(
+                    &$this,
+                    $topic,
+                    dirname($topic) . '/',
+                    basename($topic),
+                    $balance,
+                    array('fetchMode' => PDO::FETCH_OBJ)
+                );
+                foreach ($this->modx->call('registry.db.modDbRegisterMessage', 'getValidMessages', $args) as $msg) {
+                    $newMsg = $this->_readMessage($msg, $removeRead);
+                    if ($newMsg !== null) {
+                        if (!$includeKeys) {
+                            $topicMessages[] = $newMsg;
+                        } else {
+                            $topicMessages[$msg->id] = $newMsg;
                         }
+                        $msgCount++;
                     } else {
-                        $this->modx->log(modX::LOG_LEVEL_ERROR, 'Error executing statement from sql: ' . $sql);
+                        $this->modx->log(modX::LOG_LEVEL_INFO, 'Message was null or expired: ' . print_r($msg, 1));
                     }
-                } else {
-                    $this->modx->log(modX::LOG_LEVEL_ERROR, 'Error preparing statement from sql: ' . $sql);
+                    if ($this->__kill) break;
                 }
             }
             if (!empty($topicMessages)) {
-                $messages = $messages + $topicMessages;
+                if (!$includeKeys) {
+                    $messages = $messages + $topicMessages;
+                } else {
+                    $messages = array_merge($messages, $topicMessages);
+                }
             }
-            $time = $this->modx->getMicroTime();
+            $time = microtime(true);
         }
         return $messages;
     }
@@ -147,9 +166,10 @@ class modDbRegister extends modRegister {
      *
      * @todo Implement support for reading various message types, other than
      * executable PHP format.
-     * @access protected
+     *
      * @param object $obj The message data to read.
      * @param boolean $remove Indicates if the message should be deleted once it is read.
+     * @return mixed The message returned
      */
     protected function _readMessage($obj, $remove = true) {
         $message = null;
@@ -164,8 +184,6 @@ class modDbRegister extends modRegister {
     }
 
     /**
-     * {@inheritdoc}
-     *
      * This implementation provides support for sending messages using either
      * time-based indexes so they are consumed in the order they are produced,
      * or named indexes typically used when consumers want to subscribe to a
@@ -188,6 +206,13 @@ class modDbRegister extends modRegister {
      * <li>kill: Tells a message consumer to stop consuming any more
      * messages after reading any message sent with this option.</li>
      * </ul>
+     *
+     * @param string $topic A topic container in which to broadcast the message.
+     * @param mixed $message A message, or collection of messages to be sent to
+     * the register.
+     * @param array $options An optional array of general or protocol
+     * specific message properties.
+     * @return boolean Indicates if the message was recorded.
      *
      * @todo Implement support for sending various message types, other than
      * executable PHP format.
@@ -221,7 +246,7 @@ class modDbRegister extends modRegister {
                             case 'php' :
                             default :
                                 $timestamp = isset($options['delay']) ? time() + intval($options['delay']) : time();
-                                $expires = isset($options['ttl']) ? time() + intval($options['ttl']) : 0;
+                                $expires = isset($options['ttl']) && intval($options['ttl']) ? time() + intval($options['ttl']) : 0;
                                 $kill = isset($options['kill']) ? (boolean) $options['kill'] : false;
                                 if (!is_int($msgIdx)) {
                                     $msgKey = $msgIdx;
@@ -255,9 +280,11 @@ class modDbRegister extends modRegister {
         return $sent;
     }
 
-    public function close() {}
-    public function acknowledge($messageKey, $transactionKey) {}
-    public function begin($transactionKey) {}
-    public function commit($transactionKey) {}
-    public function abort($transactionKey) {}
+    /**
+     * Close the connection to the register service implementation.
+     * @return boolean Indicates if the connection was closed successfully.
+     */
+    public function close() {
+        return true;
+    }
 }

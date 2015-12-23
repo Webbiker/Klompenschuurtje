@@ -1,20 +1,17 @@
 <?php
 /**
- * Welcome Thai lexicon topic
+ * Welcome English lexicon topic
  *
- * @language th
+ * @language en
  * @package modx
  * @subpackage lexicon
- 
-  * @author Mr.Kittipong Intaboot COE#18,KKU
- * @updated 2010-07-21
  */
-$_lang['modx_news'] = 'ข่าวสาร MODx';
+$_lang['modx_news'] = 'ข่าวของ MODX';
 $_lang['security_notices'] = 'แจ้งเตือนเรื่องความปลอดภัย';
-$_lang['welcome_messages'] = 'ในกล่องข้อความของคุณมี <strong>%d</strong> ข้อความ ซึ่งยังไม่อ่าน <strong>%s</strong> ข้อความ';
-$_lang['welcome_title'] = 'ยินดีต้อนรับสู่ MODx Content Manager ของคุณ';
-$_lang['yourinfo_message'] = 'ข้อมูลเกี่ยวกับคุณบางส่วน:';
-$_lang['yourinfo_previous_login'] = 'คุณล็อกอินครั้งสุดท้ายเมื่อ:';
-$_lang['yourinfo_title'] = 'เกี่ยวกับตัวคุณ';
-$_lang['yourinfo_total_logins'] = 'จำนวนการลงชื่อเข้าใจทั้งหมดของคุณ:';
-$_lang['yourinfo_username'] = 'คุณลงชื่อเข้าใช้ในนาม:';
+$_lang['welcome_messages'] = 'ในกล่องข้อความของคุณมี <strong>%d</strong> ข้อความ ซึ่งมี <strong>%s</strong> ข้อความที่ยังไม่ได้อ่าน';
+$_lang['welcome_title'] = 'ยินดีต้อนรับเข้าสู่ MODX คอนเทนต์เมเนเจอร์';
+$_lang['yourinfo_message'] = 'ตรงส่วนนี้จะแสดงข้อมูลส่วนตัวบางอย่างเกี่ยวกับคุณ:';
+$_lang['yourinfo_previous_login'] = 'คุณเข้าสู่ระบบครั้งล่าสุด:';
+$_lang['yourinfo_title'] = 'ข้อมูลส่วนตัว';
+$_lang['yourinfo_total_logins'] = 'จำนวนการเข้าสู่ระบบทั้งหมด:';
+$_lang['yourinfo_username'] = 'คุณเข้าสู่ระบบในนาม:';

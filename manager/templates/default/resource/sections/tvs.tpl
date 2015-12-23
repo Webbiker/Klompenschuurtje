@@ -1,30 +1,29 @@
 {$OnResourceTVFormPrerender}
 
 <input type="hidden" name="tvs" value="1" />
-<div id="modx-tv-tabs">
+<div id="modx-tv-tabs" class="x-form-label-top">
 {foreach from=$categories item=category}
-{if count($category->tvs) > 0}
+{if count($category.tvs) > 0}
 
-    <div id="modx-tv-tab{$category->id}" class="x-tab{if $category->hidden}-hidden{/if}" title="{$category->category|default:$_lang.uncategorized|ucfirst}">
-    
-    {foreach from=$category->tvs item=tv name='tv'}
+    <div id="modx-tv-tab{$category.id}" class="x-tab{if $category.hidden}-hidden{/if}" title="{$category.category}">
+    {foreach from=$category.tvs item=tv name='tv'}
 {if $tv->type NEQ "hidden"}
-    <div class="x-form-item x-tab-item {cycle values=",alt"} modx-tv" id="tv{$tv->id}-tr">
-        <label for="tv{$tv->id}" class="modx-tv-label">
-
-            {if $showCheckbox}<input type="checkbox" name="tv{$tv->id}-checkbox" class="modx-tv-checkbox" value="1" />{/if}
-            <span class="modx-tv-caption" id="tv{$tv->id}-caption">{$tv->caption}</span>
-            <a class="modx-tv-reset" href="javascript:;" onclick="MODx.resetTV({$tv->id});" title="{$_lang.set_to_default}"></a>
-
-            {if $tv->description}<span class="modx-tv-description">{$tv->description}</span>{/if}
-            {if $tv->inherited}<br /><span class="modx-tv-inherited">{$_lang.tv_value_inherited}</span>{/if}
+    <div class="x-form-item x-tab-item {cycle values=",alt"} modx-tv{if $smarty.foreach.tv.first} tv-first{/if}{if $smarty.foreach.tv.last} tv-last{/if}" id="tv{$tv->id}-tr">
+        <label for="tv{$tv->id}" class="x-form-item-label modx-tv-label">
+            <div class="modx-tv-label-title">
+                {if $showCheckbox}<input type="checkbox" name="tv{$tv->id}-checkbox" class="modx-tv-checkbox" value="1" />{/if}
+                <span class="modx-tv-caption" id="tv{$tv->id}-caption">{if $tv->caption}{$tv->caption}{else}{$tv->name}{/if}</span>
+            </div>
+            <a class="modx-tv-reset" id="modx-tv-reset-{$tv->id}" title="{$_lang.set_to_default}"></a>
+            {if $tv->description}
+            <span class="modx-tv-label-description">{$tv->description}</span>
+            {/if}
         </label>
-        <div class="x-form-element modx-tv-form-element" style="padding-left: 200px;">
+        {if $tv->inherited}<span class="modx-tv-inherited">{$_lang.tv_value_inherited}</span>{/if}
+        <div class="x-form-element modx-tv-form-element">
             <input type="hidden" id="tvdef{$tv->id}" value="{$tv->default_text|escape}" />
             {$tv->get('formElement')}
         </div>
-
-        <br class="clear" />
     </div>
     <script type="text/javascript">{literal}Ext.onReady(function() { new Ext.ToolTip({{/literal}target: 'tv{$tv->id}-caption',html: '[[*{$tv->name}]]'{literal}});});{/literal}</script>
 {else}
@@ -32,6 +31,8 @@
     {$tv->get('formElement')}
 {/if}
     {/foreach}
+
+    <div class="clear"></div>
 
     </div>
 {/if}
@@ -55,36 +56,44 @@ Ext.onReady(function() {
                 var cbs = d.dom.value.split(',');
                 for (var i=0;i<c.items.length;i++) {
                     if (c.items.items[i]) {
-                        c.items.items[i].setValue(cbs.indexOf(c.items.items[i].id) != -1 ? true : false);
+                        c.items.items[i].setValue(cbs.indexOf(c.items.items[i].id) != -1);
                     }
                 } 
             } else {
                 c.setValue(d.dom.value);
             }
         }
-        Ext.getCmp('modx-panel-resource').markDirty();
+        var p = Ext.getCmp('modx-panel-resource');
+        if (p) {
+            p.markDirty();
+            p.fireEvent('tv-reset',{id:id});
+        }
     };
+
+    Ext.select('.modx-tv-reset').on('click',function(e,t,o) {
+        var id = t.id.split('-');
+        id = id[3];
+        MODx.resetTV(id);
+    });
     MODx.refreshTVs = function() {
         if (MODx.unloadTVRTE) { MODx.unloadTVRTE(); }
         Ext.getCmp('modx-panel-resource-tv').refreshTVs();
     };
     {/literal}{if $tvcount GT 0}{literal}
     MODx.load({
-        xtype: 'modx-tabs'
+        xtype: 'modx-vtabs'
         ,applyTo: 'modx-tv-tabs'
-        ,activeTab: 0
         ,autoTabs: true
         ,border: false
         ,plain: true
-        ,width: Ext.getCmp('modx-panel-resource').getWidth() - 30
-        ,hideMode: 'offsets'
-        ,autoScroll: true
-        ,defaults: {
-            bodyStyle: 'padding: 5px;'
-            ,autoScroll: true
-            ,autoHeight: true
-        }
         ,deferredRender: false
+        ,id: 'modx-resource-vtabs'
+        ,headerCfg: {
+            tag: 'div'
+            ,cls: 'x-tab-panel-header vertical-tabs-header'
+            ,id: 'modx-resource-vtabs-header'
+            ,html: MODx.config.show_tv_categories_header == true ? '<h4 id="modx-resource-vtabs-header-title">'+_('categories')+'</h4>' : ''
+        }
     });
     {/literal}{/if}
 
@@ -98,4 +107,4 @@ Ext.onReady(function() {
 
 {$OnResourceTVFormRender}
 
-<br class="clear" />
+    <div class="clear"></div>

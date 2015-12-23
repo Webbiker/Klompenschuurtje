@@ -1,17 +1,15 @@
 <?php
 /**
- * Category Thai lexicon topic
+ * Category English lexicon topic
  *
- * @language th
+ * @language en
  * @package modx
  * @subpackage lexicon
-  
- * @author Mr.Kittipong Intaboot COE#18,KKU
- * @updated 2010-07-21
  */
 $_lang['categories'] = 'หมวดหมู่';
-$_lang['category_confirm_delete'] = 'คุณแน่ใจที่จะลบหมวดหมู่นี้หรือไม่? เอเลเมนต์ทั้งหมดในหมวดหมู่นี้จะถูกจัดเข้าใน"ไม่ระบุหมวดหมู่"';
+$_lang['category_confirm_delete'] = 'คุณแน่ใจที่จะลบหมวดหมู่นี้หรือไม่? เอเลเมนต์ทั้งหมดในหมวดหมู่นี้จะถูกจัดเข้าใน "ไม่ระบุหมวดหมู่"';
 $_lang['category_create'] = 'สร้างหมวดหมู่';
+$_lang['category_err_ae'] = 'หมวดหมู่ชื่อนี้มีอยู่แล้ว กรุณาลองใช้ชื่อใหม่';
 $_lang['category_err_create'] = 'เกิดข้อผิดพลาดขณะที่พยายามสร้างหมวดหมู่.';
 $_lang['category_err_not_found'] = 'ไม่พบหมวดหมู่!';
 $_lang['category_err_nf'] = 'ไม่พบหมวดหมู่';

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006, 2007, 2008, 2009, 2010 by Jason Coward <xpdo@opengeek.com>
+ * Copyright 2010-2015 by MODX, LLC.
  *
  * This file is part of xPDO.
  *
@@ -71,6 +71,11 @@ class xPDOAPCCache extends xPDOCache {
         $deleted = false;
         if (!isset($options['multiple_object_delete']) || empty($options['multiple_object_delete'])) {
             $deleted= apc_delete($this->getCacheKey($key));
+        } elseif (class_exists('APCIterator', true)) {
+            $iterator = new APCIterator('user', '/^' . str_replace('/', '\/', $this->getCacheKey($key)) . '/', APC_ITER_KEY);
+            if ($iterator) {
+                $deleted = apc_delete($iterator);
+            }
         }
         return $deleted;
     }
@@ -81,6 +86,15 @@ class xPDOAPCCache extends xPDOCache {
     }
 
     public function flush($options= array()) {
-        return apc_clear_cache('user');
+        $flushed = false;
+        if (class_exists('APCIterator', true) && $this->getOption('flush_by_key', $options, true) && !empty($this->key)) {
+            $iterator = new APCIterator('user', '/^' . str_replace('/', '\/', $this->key) . '\//', APC_ITER_KEY);
+            if ($iterator) {
+                $flushed = apc_delete($iterator);
+            }
+        } else {
+            $flushed = apc_clear_cache('user');
+        }
+        return $flushed;
     }
 }

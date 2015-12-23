@@ -11,10 +11,10 @@ MODx.grid.LexiconTopic = function(config) {
     Ext.applyIf(config,{
         title: _('lexicon_topics')
         ,id: 'modx-grid-lexicon-topic'
-        ,url: MODx.config.connectors_url+'workspace/lexicon/topic.php'
+        ,url: MODx.config.connector_url
         ,fields: ['id','name','namespace','menu']
         ,baseParams: {
-            action: 'getList'
+            action: 'workspace/lexicon/topic/getList'
             ,'namespace': 'core'
         }
         ,saveParams: {
@@ -65,6 +65,7 @@ MODx.grid.LexiconTopic = function(config) {
         },{
             text: _('create_new')
             ,xtype: 'button'
+            ,cls:'primary-button'
             ,menu: [{
                 text: _('topic')
                 ,handler: this.loadWindow2.createDelegate(this,[{
@@ -110,7 +111,7 @@ Ext.extend(MODx.grid.LexiconTopic,MODx.grid.Grid,{
         this.getStore().baseParams[name] = nv;
         this.config.saveParams[name] = nv;
         this.getBottomToolbar().changePage(1);
-        this.refresh();
+        //this.refresh();
     }
     ,loadWindow2: function(btn,e,o) {
         this.menu.record = {
@@ -126,7 +127,7 @@ Ext.extend(MODx.grid.LexiconTopic,MODx.grid.Grid,{
         
         this.getBottomToolbar().changePage(1);
         this.getStore().baseParams['namespace'] = ns;
-        this.refresh();
+        //this.refresh();
     }
 });
 Ext.reg('modx-grid-lexicon-topic',MODx.grid.LexiconTopic);
@@ -144,15 +145,15 @@ MODx.window.CreateLexiconTopic = function(config) {
     var r = config.record;
     Ext.applyIf(config,{
         title: _('topic_create')
-        ,url: MODx.config.connectors_url+'workspace/lexicon/topic.php'
-        ,action: 'create'
+        ,url: MODx.config.connector_url
+        ,action: 'workspace/lexicon/topic/create'
         ,fields: [{
             xtype: 'textfield'
             ,fieldLabel: _('name')
             ,name: 'name'
             ,id: 'modx-clt-name'
             ,itemId: 'name'
-            ,width: 250
+            ,anchor: '100%'
             ,maxLength: 100
         },{
             xtype: 'modx-combo-namespace'
@@ -161,6 +162,7 @@ MODx.window.CreateLexiconTopic = function(config) {
             ,id: 'modx-clt-namespace'
             ,itemId: 'namespace'
             ,value: r['namespace']
+            ,anchor: '100%'
         }]
     });
     MODx.window.CreateLexiconTopic.superclass.constructor.call(this,config);

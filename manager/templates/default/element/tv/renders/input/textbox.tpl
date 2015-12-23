@@ -8,16 +8,25 @@
 <script type="text/javascript">
 // <![CDATA[
 {literal}
-var fld = MODx.load({
-{/literal}
-    xtype: 'textfield'
-    ,applyTo: 'tv{$tv->id}'
-    ,width: '97%'
-    ,enableKeyEvents: true
-{literal}
-    ,listeners: { 'keydown': { fn:MODx.fireResourceFormChange, scope:this}}
+Ext.onReady(function() {
+    var fld = MODx.load({
+    {/literal}
+        xtype: 'textfield'
+        ,applyTo: 'tv{$tv->id}'
+        ,width: '99%'
+        ,enableKeyEvents: true
+        ,msgTarget: 'under'
+        ,allowBlank: {if $params.allowBlank == 1 || $params.allowBlank == 'true'}true{else}false{/if}
+        {if $params.maxLength},maxLength: {$params.maxLength}{/if}
+        {if $params.minLength},minLength: {$params.minLength}{/if}
+        {if $params.regex},regex: new RegExp('{$params.regex}'){/if}
+        {if $params.regexText},regexText: '{$params.regexText}'{/if}
+    {literal}
+        ,listeners: { 'keydown': { fn:MODx.fireResourceFormChange, scope:this}}
+    });
+    Ext.getCmp('modx-panel-resource').getForm().add(fld);
+    MODx.makeDroppable(fld);
 });
-MODx.makeDroppable(fld);
 {/literal}
 // ]]>
 </script>

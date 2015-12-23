@@ -1,3 +1,7 @@
+/* Fix ExtJS 3.4 issue with new timezones */
+Ext.override(Ext.form.TimeField, {
+    initDate: '2/1/2008'
+});
 
 Ext.ns('Ext.ux.form');
 
@@ -62,6 +66,14 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
     /**
      * @cfg {Object} timeConfig Config for TimeField constructor.
      */
+    ,maxDateValue: ''
+    ,minDateValue: ''
+    ,timeIncrement: 15
+    ,maxTimeValue: null
+    ,minTimeValue: null
+    ,disabledDates: null
+    ,hideTime: false
+
 
     // {{{
     /**
@@ -72,6 +84,11 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
         // call parent initComponent
         Ext.ux.form.DateTime.superclass.initComponent.call(this);
 
+        // offset time
+        if (!this.hasOwnProperty('offset_time') || isNaN(this.offset_time)) {
+            this.offset_time = 0;
+        }
+
         // create DateField
         var dateConfig = Ext.apply({}, {
              id:this.id + '-date'
@@ -79,6 +96,12 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
             ,width:this.timeWidth
             ,selectOnFocus:this.selectOnFocus
             ,validator:this.dateValidator
+            ,disabledDates: this.disabledDates || null
+            ,disabledDays: this.disabledDays || []
+            ,showToday: this.showToday || true
+            ,maxValue: this.maxDateValue || ''
+            ,minValue: this.minDateValue || ''
+            ,startDay: this.startDay || 0
             ,listeners:{
                   blur:{scope:this, fn:this.onBlur}
                  ,focus:{scope:this, fn:this.onFocus}
@@ -87,6 +110,11 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
         this.df = new Ext.form.DateField(dateConfig);
         this.df.ownerCt = this;
         delete(this.dateFormat);
+        delete(this.disabledDates);
+        delete(this.disabledDays);
+        delete(this.maxDateValue);
+        delete(this.minDateValue);
+        delete(this.startDay);
 
         // create TimeField
         var timeConfig = Ext.apply({}, {
@@ -95,6 +123,10 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
             ,width:this.timeWidth
             ,selectOnFocus:this.selectOnFocus
             ,validator:this.timeValidator
+            ,increment: this.timeIncrement || 15
+            ,maxValue: this.maxTimeValue || null
+            ,minValue: this.minTimeValue || null
+            ,hidden: this.hideTime
             ,listeners:{
                   blur:{scope:this, fn:this.onBlur}
                  ,focus:{scope:this, fn:this.onFocus}
@@ -103,6 +135,9 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
         this.tf = new Ext.form.TimeField(timeConfig);
         this.tf.ownerCt = this;
         delete(this.timeFormat);
+        delete(this.maxTimeValue);
+        delete(this.minTimeValue);
+        delete(this.timeIncrement);
 
         // relay events
         this.relayEvents(this.df, ['focus', 'specialkey', 'invalid', 'valid']);
@@ -438,6 +473,9 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
      * @private Sets the value of DateField
      */
     ,setDate:function(date) {
+        if (date && this.offset_time != 0) {
+            date = date.add(Date.MINUTE, 60 * new Number(this.offset_time));
+        }
         this.df.setValue(date);
     } // eo function setDate
     // }}}
@@ -446,6 +484,9 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
      * @private Sets the value of TimeField
      */
     ,setTime:function(date) {
+        if (date && this.offset_time != 0) {
+            date = date.add(Date.MINUTE, 60 * new Number(this.offset_time));
+        }
         this.tf.setValue(date);
     } // eo function setTime
     // }}}
@@ -606,7 +647,10 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
      */
     ,updateHidden:function() {
         if(this.isRendered) {
-            var value = this.dateValue instanceof Date ? this.dateValue.format(this.hiddenFormat) : '';
+            var value = '';
+            if (this.dateValue instanceof Date) {
+                value = this.dateValue.add(Date.MINUTE, 0 - 60 * new Number(this.offset_time)).format(this.hiddenFormat);
+            }
             this.el.dom.value = value;
         }
     }

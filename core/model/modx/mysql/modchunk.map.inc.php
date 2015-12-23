@@ -7,6 +7,7 @@ $xpdo_meta_map['modChunk']= array (
   'package' => 'modx',
   'version' => '1.1',
   'table' => 'site_htmlsnippets',
+  'extends' => 'modElement',
   'fields' => 
   array (
     'name' => '',
@@ -17,6 +18,8 @@ $xpdo_meta_map['modChunk']= array (
     'snippet' => NULL,
     'locked' => 0,
     'properties' => NULL,
+    'static' => 0,
+    'static_file' => '',
   ),
   'fieldMeta' => 
   array (
@@ -83,6 +86,28 @@ $xpdo_meta_map['modChunk']= array (
       'phptype' => 'array',
       'null' => true,
     ),
+    'static' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'attributes' => 'unsigned',
+      'phptype' => 'boolean',
+      'null' => false,
+      'default' => 0,
+      'index' => 'index',
+    ),
+    'static_file' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+  ),
+  'fieldAliases' => 
+  array (
+    'content' => 'snippet',
   ),
   'indexes' => 
   array (
@@ -134,6 +159,40 @@ $xpdo_meta_map['modChunk']= array (
         ),
       ),
     ),
+    'static' => 
+    array (
+      'alias' => 'static',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'static' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+  ),
+  'composites' => 
+  array (
+    'PropertySets' => 
+    array (
+      'class' => 'modElementPropertySet',
+      'local' => 'id',
+      'foreign' => 'element',
+      'owner' => 'local',
+      'cardinality' => 'many',
+      'criteria' => 
+      array (
+        'foreign' => 
+        array (
+          'element_class' => 'modChunk',
+        ),
+      ),
+    ),
   ),
   'aggregates' => 
   array (
@@ -156,7 +215,7 @@ $xpdo_meta_map['modChunk']= array (
         'invalid' => 
         array (
           'type' => 'preg_match',
-          'rule' => '/^(?!\\s)[a-zA-Z0-9\\x2d-\\x2f\\x7f-\\xff_-\\s]+(?!\\s)$/',
+          'rule' => '/^(?!\\s)[a-zA-Z0-9\\x2d-\\x2f\\x7f-\\xff-_\\s]+(?!\\s)$/',
           'message' => 'chunk_err_invalid_name',
         ),
       ),

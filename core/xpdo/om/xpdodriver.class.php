@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006-2010 by  Jason Coward <xpdo@opengeek.com>
+ * Copyright 2010-2015 by MODX, LLC.
  *
  * This file is part of xPDO.
  *
@@ -28,8 +28,8 @@
 /**
  * Provides driver specific members and methods for an xPDO instance.
  *
- * These are baseline members and methods that need to be loaded every 
- * time an xPDO instance makes a connection.  xPDODriver class implementations 
+ * These are baseline members and methods that need to be loaded every
+ * time an xPDO instance makes a connection.  xPDODriver class implementations
  * are specific to a database driver and should include this base class in order
  * to extend it.
  *
@@ -62,15 +62,21 @@ abstract class xPDODriver {
      * @var array
      */
     public $_currentTimes= array();
+    public $quoteChar = '';
+    public $escapeOpenChar = '';
+    public $escapeCloseChar = '';
 
     /**
      * Get an xPDODriver instance.
      *
-     * @param object $xpdo A reference to a specific xPDO instance.
+     * @param xPDO $xpdo A reference to a specific xPDO instance.
      */
-    public function __construct(& $xpdo) {
+    public function __construct(xPDO &$xpdo) {
         if ($xpdo !== null && $xpdo instanceof xPDO) {
             $this->xpdo= & $xpdo;
+            $this->xpdo->_quoteChar= $this->quoteChar;
+            $this->xpdo->_escapeCharOpen= $this->escapeOpenChar;
+            $this->xpdo->_escapeCharClose= $this->escapeCloseChar;
         }
     }
 

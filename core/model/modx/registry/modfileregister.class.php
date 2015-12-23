@@ -13,29 +13,22 @@ require_once(dirname(__FILE__) . '/modregister.class.php');
  *
  * This implementation does not address transactional conflicts and should be
  * used in non-critical processes that are easily recoverable.
+ *
+ * @package modx
+ * @subpackage registry
  */
 class modFileRegister extends modRegister {
-    /**
-     * A polling flag that will terminate additional polling when true.
-     * @var boolean
-     */
-    var $__kill = false;
     /**
      * A physical directory where the register stores topics and messages.
      * @var string
      */
-    var $directory = null;
+    protected $directory = null;
 
-    /**#@+
+    /**
      * Construct a new modFileRegister instance.
      *
-     * @param modX &$modx A reference to a modX instance.
-     * @param array $options Optional array of registry options.
+     * {@inheritdoc}
      */
-    function modFileRegister(& $modx, $key, $options = array()) {
-        $this->__construct($modx, $key, $options);
-    }
-    /**@ignore*/
     function __construct(& $modx, $key, $options = array()) {
         parent :: __construct($modx, $key, $options);
         $modx->getCacheManager();
@@ -45,19 +38,31 @@ class modFileRegister extends modRegister {
                 : $key;
         if ($this->directory[strlen($this->directory)-1] != '/') $this->directory .= '/';
     }
-    /**#@-*/
 
     /**
      * Make sure the register can write to the specified $directory.
      *
      * {@inheritdoc}
      */
-    function connect($attributes = array()) {
+    public function connect(array $attributes = array()) {
         $connected = false;
         if (is_string($this->directory) && strlen($this->directory)) {
             $connected = $this->modx->cacheManager->writeTree($this->directory);
         }
         return $connected;
+    }
+
+    /**
+     * Clear the register messages.
+     *
+     * {@inheritdoc}
+     */
+    public function clear($topic) {
+        $topicDirectory = $this->directory;
+        $topicDirectory.= $topic[0] == '/' ? substr($topic, 1) : $topic ;
+        return $this->modx->cacheManager->deleteTree($topicDirectory, array(
+            'extensions' => '.msg.php'
+        ));
     }
 
     /**
@@ -76,17 +81,21 @@ class modFileRegister extends modRegister {
      * interval.</li>
      * <li>remove_read: Remove the message immediately upon digesting it.
      * Default is true.</li>
+     * <li>include_keys: Include the message keys in the array of messages returned.
+     * Default is false.</li>
      * </ul>
      */
-    function read($options = array()) {
+    public function read(array $options = array()) {
         $this->__kill = false;
         $messages = array();
+        $topicMessages = array();
         $msgLimit = isset($options['msg_limit']) ? intval($options['msg_limit']) : 5;
         $timeLimit = isset($options['time_limit']) ? intval($options['time_limit']) : ini_get('time_limit');
         $pollLimit = isset($options['poll_limit']) ? intval($options['poll_limit']) : 0;
         $pollInterval = isset($options['poll_interval']) ? intval($options['poll_interval']) : 0;
         $removeRead = isset($options['remove_read']) ? (boolean) $options['remove_read'] : true;
-        $startTime = $this->modx->getMicroTime();
+        $includeKeys = isset($options['include_keys']) ? (boolean) $options['include_keys'] : false;
+        $startTime = microtime(true);
         $time = $timeLimit <= 0 ? -1 : $startTime;
         $expires = $startTime + $timeLimit;
         $msgCount = 0;
@@ -104,28 +113,62 @@ class modFileRegister extends modRegister {
                 $topicDirectory = $this->directory;
                 $topicDirectory.= $topic[0] == '/' ? substr($topic, 1) : $topic ;
                 if (is_dir($topicDirectory)) {
-                    if ($d = dir($topicDirectory)) {
-                        while (false !== ($entry = $d->read()) && $msgCount < $msgLimit && !$this->__kill) {
-                            if (strpos($entry, '.msg.php')) {
-                                if ($newMsg = $this->_readMessage($topicDirectory . $entry, $removeRead)) {
+                    $dirListing = $this->getSortedDirectoryListing($topicDirectory);
+                    if (!empty($dirListing)) {
+                        foreach ($dirListing as $idx => $entry) {
+                            if ($msgCount >= $msgLimit || $this->__kill) break;
+                            if ($newMsg = $this->_readMessage($topicDirectory . $entry, $removeRead)) {
+                                if (!$includeKeys) {
                                     $topicMessages[] = $newMsg;
-                                    $msgCount++;
+                                } else {
+                                    $msgKey = substr($entry, 0, strpos($entry, '.msg.php'));
+                                    $topicMessages[$msgKey] = $newMsg;
                                 }
+                                $msgCount++;
                             }
                         }
                     }
                 }
                 elseif ($newMsg = $this->_readMessage($topicDirectory . '.msg.php', $removeRead)) {
-                    $topicMessages[] = $newMsg;
+                    if (!$includeKeys) {
+                        $topicMessages[] = $newMsg;
+                    } else {
+                        $topicMessages[$topicDirectory] = $newMsg;
+                    }
                     $msgCount++;
                 }
             }
             if (!empty($topicMessages)) {
-                $messages = $messages + $topicMessages;
+                if (!$includeKeys) {
+                    $messages = $messages + $topicMessages;
+                } else {
+                    $messages = array_merge($messages, $topicMessages);
+                }
             }
-            $time = $this->modx->getMicroTime();
+            $time = microtime(true);
         }
         return $messages;
+    }
+
+    /**
+     * Get list of topic messages from a directory sorted by modified date.
+     *
+     * @param string $dir A valid directory path.
+     * @return array An array of topic messages sorted by modified date.
+     */
+    private function getSortedDirectoryListing($dir) {
+        $listing = array();
+        $d = new DirectoryIterator($dir);
+        $idx = 0;
+        foreach ($d as $f) {
+            $filename = $f->getFilename();
+            if ($f->isFile() && strpos($filename, '.msg.php')) {
+                $listing[] = $filename;
+                $idx++;
+            }
+        }
+        if (!empty($listing)) sort($listing);
+        return $listing;
     }
 
     /**
@@ -138,7 +181,7 @@ class modFileRegister extends modRegister {
      * @param boolean $remove Indicates if the message file should be deleted
      * once the message is read from it.
      */
-    function _readMessage($filename, $remove = true) {
+    private function _readMessage($filename, $remove = true) {
         $message = null;
         if (file_exists($filename)) {
             $message = @ include($filename);
@@ -178,7 +221,7 @@ class modFileRegister extends modRegister {
      * @todo Implement support for sending various message types, other than
      * executable PHP format.
      */
-    function send($topic, $message, $options = array()) {
+    public function send($topic, $message, array $options = array()) {
         $sent = false;
         if (empty($topic) || $topic[0] != '/') $topic = $this->_currentTopic . $topic;
         $topicIdx = array_search($topic, $this->subscriptions);
@@ -197,7 +240,7 @@ class modFileRegister extends modRegister {
                         case 'php' :
                         default :
                             $timestamp = isset($options['delay']) ? time() + intval($options['delay']) : time();
-                            $expires = isset($options['ttl']) ? time() + intval($options['ttl']) : 0;
+                            $expires = isset($options['ttl']) && !empty($options['ttl']) ? time() + intval($options['ttl']) : 0;
                             $kill = isset($options['kill']) ? (boolean) $options['kill'] : false;
                             if (!is_int($msgIdx)) {
                                 $msgKey = $msgIdx;
@@ -216,5 +259,8 @@ class modFileRegister extends modRegister {
         }
         return $sent;
     }
+
+    public function close() {
+        return true;
+    }
 }
-?>

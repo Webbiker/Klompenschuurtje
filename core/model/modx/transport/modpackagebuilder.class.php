@@ -1,8 +1,8 @@
 <?php
 /*
- * MODx Revolution
+ * MODX Revolution
  *
- * Copyright 2006-2010 by the MODx Team.
+ * Copyright 2006-2015 by MODX, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -21,13 +21,11 @@
  */
 
 /**
+ * Abstracts the package building process
+ *
  * @package modx
  * @subpackage transport
  */
-/**
-* Abstracts the package building process
-*
-*/
 class modPackageBuilder {
     /**
     * @var string The directory in which the package file is located.
@@ -45,12 +43,12 @@ class modPackageBuilder {
     */
     public $filename;
     /**
-    * @var string The xPDOTransport package object.
+    * @var xPDOTransport The xPDOTransport package object.
     * @access public
     */
     public $package;
     /**
-     * @var string The modNamespace that the package is associated with.
+     * @var modNamespace The modNamespace that the package is associated with.
      * @access public
      */
     public $namespace;
@@ -103,7 +101,10 @@ class modPackageBuilder {
     }
 
     /**
-     * @deprecated
+     * @deprecated To be removed in 2.2
+     * @param string $name
+     * @param string $version
+     * @param string $release
      * @see modPackageBuilder::createPackage
      */
     public function create($name, $version, $release = '') {
@@ -159,8 +160,8 @@ class modPackageBuilder {
      * package.
      *
      * @access public
-     * @param array An array of class names to build in
-     * @return null
+     * @param array $classes An array of class names to build in
+     * @return void
      */
     public function setAutoSelects(array $classes = array ()) {
         $this->autoselects = $classes;
@@ -170,9 +171,9 @@ class modPackageBuilder {
     * Creates the modTransportVehicle for the specified object.
     *
     * @access public
-    * @param xPDOObject $obj The xPDOObject being abstracted as a vehicle.
+    * @param mixed $obj The payload being abstracted as a vehicle.
     * @param array $attr Attributes for the vehicle.
-    * @return modTransportVehicle The createed modTransportVehicle instance.
+    * @return modTransportVehicle The created modTransportVehicle instance.
     */
     public function createVehicle($obj, $attr) {
         if ($this->{'namespace'}) {
@@ -188,25 +189,30 @@ class modPackageBuilder {
      * will create a namespace.
      *
      * @access public
-     * @param string/modNamespace $namespace The modNamespace object or the
+     * @param string|modNamespace $ns The modNamespace object or the
      * string name of the namespace
-     * @param boolean/array $autoincludes If true, will automatically select
+     * @param boolean|array $autoincludes If true, will automatically select
      * relative resources to the namespace.
      * @param boolean $packageNamespace If false, will not package the namespace
      * as a vehicle.
      * @param string $path The path for the namespace to be created.
+     * @param string $assetsPath An optional custom assets_path for the namespace.
      * @return boolean True if successful.
      */
-    public function registerNamespace($ns = 'core', $autoincludes = true, $packageNamespace = true, $path = '') {
+    public function registerNamespace($ns = 'core', $autoincludes = true, $packageNamespace = true, $path = '', $assetsPath = '') {
         if (!($ns instanceof modNamespace)) {
             $namespace = $this->modx->getObject('modNamespace', $ns);
             if (!$namespace) {
                 $namespace = $this->modx->newObject('modNamespace');
                 $namespace->set('name', $ns);
                 $namespace->set('path',$path);
+                $namespace->set('assets_path',$assetsPath);
             }
             if (!empty($path)) {
                 $namespace->set('path',$path);
+            }
+            if (!empty($assetsPath)) {
+                $namespace->set('assets_path',$assetsPath);
             }
         } else {
             $namespace = $ns;
@@ -312,142 +318,6 @@ class modPackageBuilder {
         $manager = $this->modx->getManager();
         $generator = $manager->getGenerator();
         $generator->parseSchema($schema, $model);
-        return true;
-    }
-
-    /**
-     * Build in the lexicon into the package. Deprecated.
-     *
-     * @deprecated
-     * @access public
-     * @return boolean True if successful
-     */
-    public function buildLexicon($path) {
-        return false;
-
-        $invdirs = array (
-            '.',
-            '..',
-            '.svn',
-            '.git',
-            '_notes'
-        );
-        $i = 0;
-        $ti = 0;
-        $topics = array ();
-        $languages = array ();
-        $entries = array ();
-
-        if (!is_dir($path)) {
-            $this->modx->log(modX::LOG_LEVEL_FATAL,$this->modx->lexicon('lexicon_err_path_nf',array(
-                'path' => $path,
-            )));
-        }
-
-        $this->modx->log(modX::LOG_LEVEL_INFO, $this->modx->lexicon('lexicon_autobuilding',array(
-            'path' => $path
-        )));
-
-        /* loop through cultures */
-        $dir = dir($path);
-        while (false !== ($culture = $dir->read())) {
-            if (in_array($culture, $invdirs))
-                continue;
-            if (!is_dir($path . $culture))
-                continue;
-
-            $language = $this->modx->newObject('modLexiconLanguage');
-            $language->fromArray(array (
-                'name' => $culture,
-            ), '', true, true);
-            $languages[$culture] = $language;
-
-            /* loop through topics */
-            $fdir = $path . $culture . '/';
-            $fd = dir($fdir);
-            while (false !== ($entry = $fd->read())) {
-                if (in_array($entry, $invdirs))
-                    continue;
-                if (is_dir($fdir . $entry))
-                    continue;
-
-                $top = str_replace('.inc.php', '', $entry);
-
-                $topic = $this->modx->getObject('modLexiconTopic', array (
-                    'name' => $top,
-                    'namespace' => $this->{'namespace'}->get('name'),
-                ));
-                if ($topic == null) {
-                    $topic = $this->modx->newObject('modLexiconTopic');
-                    $topic->fromArray(array (
-                        'id' => $ti,
-                        'name' => $top,
-                        'namespace' => $this->{'namespace'}->get('name'),
-                    ), '', true, true);
-                    $ti++;
-                }
-
-                $f = $fdir . $entry;
-                /* loop through entries in topic */
-                $entries = array ();
-                if (file_exists($f)) {
-                    $_lang = array ();
-                    @include $f;
-
-                    foreach ($_lang as $key => $value) {
-                        $entry = $this->modx->newObject('modLexiconEntry');
-                        $entry->fromArray(array (
-                            'id' => $i,
-                            'name' => $key,
-                            'value' => $value,
-                            'topic' => $top,
-                            'namespace' => $this->{'namespace'}->get('name'),
-                            'language' => $culture,
-                        ), '', true, true);
-                        $entries[] = $entry;
-                        $i++;
-                    }
-                }
-                $topic->addMany($entries);
-                $topics[] = $topic;
-
-            }
-        }
-        $dir->close();
-
-        /* package in languages */
-        $attributes = array (
-            xPDOTransport::UNIQUE_KEY => 'name',
-            xPDOTransport::PRESERVE_KEYS => true,
-            xPDOTransport::UPDATE_OBJECT => true,
-            xPDOTransport::UNINSTALL_OBJECT => false,
-            xPDOTransport::PREEXISTING_MODE => xPDOTransport::PRESERVE_PREEXISTING,
-        );
-        foreach ($languages as $language) {
-            $vehicle = $this->createVehicle($language, $attributes);
-            $this->putVehicle($vehicle);
-        }
-        unset($attributes);
-
-        /* package in topics */
-        $attributes = array (
-            xPDOTransport::PRESERVE_KEYS => false,
-            xPDOTransport::UPDATE_OBJECT => true,
-            xPDOTransport::UNIQUE_KEY => array ('name','namespace'),
-            xPDOTransport::RELATED_OBJECTS => true,
-            xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
-                'Entries' => array (
-                    xPDOTransport::PRESERVE_KEYS => false,
-                    xPDOTransport::UPDATE_OBJECT => true,
-                    xPDOTransport::UNIQUE_KEY => array ('name','topic','language'),
-                ),
-            ),
-        );
-        foreach ($topics as $topic) {
-            $vehicle = $this->createVehicle($topic, $attributes);
-            $this->putVehicle($vehicle);
-        }
-
         return true;
     }
 
