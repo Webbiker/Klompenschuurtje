@@ -1,0 +1,128 @@
+/* CSS Document */
+@font-face {
+    font-family: 'BloklettersBalpen';
+    src: url('/Fonts/Blokletters-Balpen-webfont.eot');
+    src: url('/Fonts/Blokletters-Balpen-webfont.eot?iefix') format('eot'),
+         url('/Fonts/Blokletters-Balpen-webfont.woff') format('woff'),
+         url('/Fonts/Blokletters-Balpen-webfont.ttf') format('truetype'),
+         url('/Fonts/Blokletters-Balpen-webfont.svg#webfontqQCANlOs') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'BloklettersViltstift';
+    src: url('/Fonts/Blokletters-Viltstift-webfont.eot');
+    src: url('/Fonts/Blokletters-Viltstift-webfont.eot?iefix') format('eot'),
+         url('/Fonts/Blokletters-Viltstift-webfont.woff') format('woff'),
+         url('/Fonts/Blokletters-Viltstift-webfont.ttf') format('truetype'),
+         url('/Fonts/Blokletters-Viltstift-webfont.svg#webfont4P6345Om') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*		{ margin:0; padding:0; list-style:none; font-weight:normal; outline:none; }
+HTML	{ height:100%; }
+BODY	{ background:url(/images/default/bodyBackground.jpg);  font: 12px/18px 'BloklettersBalpen', Arial, sans-serif; height:100%;  }
+H1		{ font: 24px/30px 'BloklettersViltstift', Arial, sans-serif; font-weight:normal; margin-bottom:16px; }
+H2		{ font: 14px/18px 'BloklettersViltstift', Arial, sans-serif; font-weight:normal; color:#117f3b; margin-bottom:4px; }
+P		{ margin-bottom:16px; }
+STRONG	{ font: 12px/18px 'BloklettersViltstift', Arial, sans-serif; }
+A:link, A:active, A:visited { color:#117f3b; text-decoration:none; font-family: 'BloklettersViltstift', Arial, sans-serif; }
+A:hover						{ color:#0a4c24; text-decoration:none; }
+
+A.button	{ width:252px; height:27px; padding:15px; display:block; color:#FFF; text-decoration:none; font-size:14px; background:url(/images/default/woodenButton.png) no-repeat; font-family: 'BloklettersBalpen', Arial, sans-serif; }
+A.button.active	{ background:url(/images/default/woodenButtonActive.png) no-repeat; }
+A.actionBtn	{ width:151px; height:27px; padding:12px 9px 14px 9px; background:url(/images/default/woodenActionButton.png) no-repeat; float:right; display:block; color:#000; text-align:center; line-height:14px; }
+A.actionBtnBig	{ width:194px; height:38px; font-size:14px; padding:14px 9px 12px 9px; background:url(/images/default/woodenActionButtonBig.png) no-repeat; float:right; display:block; color:#000; text-align:center; line-height:18px; }
+
+.wrapper { display: block; min-height: 100%; _height:100%; width:100%; position: absolute; top: 0px; z-index: 0; margin:0px auto; }
+
+.headerHome							{ width:100%; height:570px; margin-bottom:96px; background:url(/images/default/headerBackground.jpg); position:relative; z-index:100; }
+.headerHome .headerHomeBGround		{ width:100%; height:570px; background:url(/images/default/headerBGKinderdijk.jpg) no-repeat top center; }
+.headerHome .headerGrass			{ width:100%; height:133px; background:url(/images/default/headerGrassSmall.png) repeat-x bottom; position:absolute; bottom:-96px; z-index:120; }
+.headerHome .headerGrassContent		{ position:relative; width:960px; margin:0 auto; }
+.headerHome .headerGrassContent .klompen	{ position:absolute; z-index:140; bottom:-110px; left:-20px; }
+.headerHome .headerGrassContent .portret	{ position:absolute; z-index:140; bottom:-170px; right:-40px; }
+.headerHome .headerContent			{ width:960px; height:555px; padding-top:15px; margin:0 auto; position:relative; z-index:100; }
+
+.header							{ width:100%; height:220px; margin-bottom:96px; background:url(/images/default/headerBackground.jpg); position:relative; z-index:100; }
+.header .headerHomeBGround		{ width:100%; height:220px; background:url(/images/default/headerBGKinderdijk.jpg) no-repeat center -200px; }
+.header .headerGrass			{ width:100%; height:133px; background:url(/images/default/headerGrassSmall.png) repeat-x bottom; position:absolute; bottom:-96px; z-index:100; }
+.header .headerGrassContent		{ position:relative; width:960px; margin:0 auto; }
+.header .headerGrassContent .klompen	{ position:absolute; z-index:100; bottom:-110px; right:-20px; }
+.header .headerContent			{ width:960px; height:205px; padding-top:15px; margin:0 auto; position:relative; }
+
+.navigation				{ position:absolute; z-index:50; left:100px; top:130px; font-size:14px; }
+.navigation LI			{ float:left; height:46px; }
+.navigation LI.active	{ background:url(/images/default/active.png) no-repeat bottom center; }
+.navigation LI A		{ color:#000; text-decoration:none; display:block; padding:9px 12px; }
+.navigation LI A:hover	{ color:#159c49; text-decoration:none; }
+
+.carrousel				{ width:789px; height:396px; position:absolute; bottom:0; left:-45px; }
+.carrousel .mask		{ background:url(/images/default/carrouselMask.png) no-repeat; width:789px; height:396px; position:absolute; z-index:90; }
+.carrousel .slides		{ background:#FFF; width:610px; height:343px; top:53px; left:75px; z-index:80; position:absolute; overflow:hidden; }
+.carrousel .slide		{ width:568px; height:291px; padding:26px 21px; color:#FFF; font:14px/24px 'BloklettersViltstift', Arial, sans-serif; text-shadow:4px 4px 2px #000; }
+.carrousel P.head, .carrousel H3		{ font-size:24px; margin-bottom:4px; }
+
+.mainContent								{ background:url(/images/default/mainContentSmudges.png) no-repeat top center; padding-top:30px; /* min-height:455px; */ }
+.mainContent UL								{ margin-bottom:16px; }
+.mainContent LI								{ background:url(/images/default/bullit.gif) no-repeat 8px 1px; text-indent:24px; }
+.mainContent .pButton { height:60px; }
+.mainContent TABLE { width:100%; }
+.mainContent TD { text-align:left; padding-right:16px; vertical-align:top; }
+.mainContent TABLE.maat { border-width:1px 1px 0 0; border-style:solid; border-color:#CCC; width:80px; }
+.mainContent TABLE.maat TD { text-align:center; padding:2px; border-width:0 0 1px 1px; border-style:solid; border-color:#CCC; }
+.mainContent #big { *height:315px !important; }
+.mainContent #small { *height:315px !important; }
+
+.OneColumnLayout							{ background:url(/images/default/mainContentBackground.png) no-repeat top center; width:860px; padding:20px 50px 123px 50px; margin:0 auto 0 auto; }
+.OneColumnLayout .leftContent				{ width:550px; float:left; }
+.OneColumnLayout .sidebar					{ margin-left:580px; padding-top:40px; }
+.OneColumnLayout .sidebar .imgPlaceHolder	{ width:280px; height:245px; position:relative; overflow:hidden; margin-bottom:16px; }
+.OneColumnLayout .sidebar .imgPlaceHolder .mask { background:url(/images/default/contentImageMask.png) no-repeat; width:280px; height:245px; position:absolute; top:0; left:0; z-index:100; }
+.OneColumnLayout .sidebar .imgPlaceHolder P	{ position:absolute; text-align:right; right:14px; top:215px; font: 9px/11px 'BloklettersViltstift', Arial, sans-serif; z-index:110; }
+
+.TwoColumnLayout							{ width:960px; margin:0 auto 0 auto; }
+.TwoColumnLayout .sidebar					{ width:282px; float:left; margin-left:29px; }
+.TwoColumnLayout .sidebar .share			{ width:186px; height:98px; padding:12px 10px 30px 90px; margin-top:10px; background:url(/images/default/shareitLeftBackground.png) no-repeat; color:#FFF; font: 14px/24px 'BloklettersViltstift', Arial, sans-serif; }
+.TwoColumnLayout .sidebar .share IMG 		{ float:right; margin-top:6px; }
+.TwoColumnLayout .sidebar .share P			{ padding-top:9px; }
+.TwoColumnLayout .rightContent				{ width:552px; margin:0 29px 0 339px; padding:20px 20px 123px 20px; background:url(/images/default/rightContentBackground.png) no-repeat; }
+.TwoColumnLayout .rightContent .share		{ width:466px; height:28px; padding:32px 10px 30px 80px; margin-top:100px; background:url(/images/default/shareitRightBackground.gif) no-repeat; color:#FFF; font: 14px/24px 'BloklettersViltstift', Arial, sans-serif; }
+.TwoColumnLayout .rightContent .share IMG 	{ float:right; }
+.TwoColumnLayout .rightContent .share P		{ padding-top:9px; }
+.TwoColumnLayout .leftContent	{ background:url(/images/default/leftContentBackground.png) no-repeat; padding:15px 15px 115px 15px; margin-bottom:220px; position:relative; }
+.TwoColumnLayout .leftContent .fiets { position:absolute; z-index:10; bottom:-100px; left:-65px; }
+
+UL.overview						{ margin-bottom:24px; }
+UL.overview LI					{ width:262px; height:210px; float:left; margin-bottom:24px; position:relative; cursor:pointer; text-indent:0; }
+Ul.overview Li .mask			{ width:262px; height:210px; z-index:100; position:absolute; left:0; top:0; background:url(/images/klompen/frameOverview.png) no-repeat; }
+UL.overview LI.margin			{ margin-right:26px; }
+UL.overview LI A.actionBtn		{ position:absolute; bottom:-10px; left:55px; z-index:200; }
+
+.detailfotos					{ width:552px; height:330px; position:relative; margin-bottom:24px; }
+.detailfotos .mask				{ width:552px; height:330px; position:absolute; z-index:100; left:0; top:0; background:url(/images/klompen/frameDetail.png) no-repeat; }
+.detailfotos A.actionBtn		{ position:absolute; bottom:-10px; right:30px; z-index:200; }
+.detailfotos UL					{ width:552px; height:309px; overflow:hidden; }
+.detailfotos LI					{ text-indent:0; }
+
+.contactForm P					{ margin:0 0 6px 0;  }
+.contactForm LABEL				{ width:180px; padding-top:8px; float:left; font-family: 'BloklettersViltstift', Arial, sans-serif;  }
+.contactForm INPUT[type=submit].actionBtn	{ width:169px; height:53px; font: 12px/14px 'BloklettersViltstift', Arial, sans-serif; background:url(/images/default/woodenActionButton.png) no-repeat; display:block; color:#000; text-align:center; border:0; cursor:pointer; }
+.contactForm INPUT[type=text]	{ background:url(/images/default/inputTextfield.gif) no-repeat; width:282px; height:22px; padding:4px; border:0; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; font-size:14px; color:#159c49; margin-right:4px; }
+.contactForm SELECT				{ width:290px; height:30px; border:1px solid #159c49; padding:4px; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; font-size:14px; color:#159c49; margin-right:4px; }
+.contactForm TEXTAREA			{ background:url(/images/default/inputTextarea.gif) no-repeat; width:352px; height:185px; overflow:hidden; padding:8px; border:0; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; font-size:14px; color:#159c49; margin-right:4px; margin-bottom:12px; }
+.contactForm .asterix			{ font: 18px/10px 'BloklettersViltstift', Arial, sans-serif; color:#C00; height: 0; line-height: 1; vertical-align: baseline; _vertical-align: bottom; position: relative; top:0.9ex; }
+.contactForm .voetnoot			{ text-align:right; font: 9px/10px 'BloklettersViltstift', Arial, sans-serif; }
+.contactForm SPAN.error			{ display:block; color:#C00; font-size:10px; padding-left:90px; margin-bottom:4px; }
+
+.footer							{ position: absolute; left:0px; bottom:0px; width:100%; display: block; height:123px; z-index:999; padding:0px; margin:0px; background:url(/images/default/footerBackground.png) repeat-x bottom; }
+.footer A:link, .footer A:active, .footer A:visited	{ color:#FFF; text-decoration:none; }
+.footer A:hover										{ color:#FFF; text-decoration:underline; }
+.footerContent 					{ width:900px; padding:70px 0 0 0; height:53px; margin:0 auto; color:#FFF; overflow:hidden; }
+.footerContent .sidebar			{ width:145px; text-align:center; float:right; font-size:8px; }
+.footerContent .footerBody		{ margin-right:145px; padding-top:4px; }
+
+.clearfloat						{ clear:both; line-height:0; font-size:0; height:0; padding:0; margin:0; }

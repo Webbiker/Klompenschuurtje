@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'BloklettersBalpen';
+    src: url('/assets/fonts/Blokletters-Balpen-webfont.eot');
+    src: url('/assets/fonts/Blokletters-Balpen-webfont.eot?iefix') format('eot'),
+         url('/assets/fonts/Blokletters-Balpen-webfont.woff') format('woff'),
+         url('/assets/fonts/Blokletters-Balpen-webfont.ttf') format('truetype'),
+         url('/assets/fonts/Blokletters-Balpen-webfont.svg#webfontqQCANlOs') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BloklettersViltstift';
+    src: url('/assets/fonts/Blokletters-Viltstift-webfont.eot');
+    src: url('/assets/fonts/Blokletters-Viltstift-webfont.eot?iefix') format('eot'),
+         url('/assets/fonts/Blokletters-Viltstift-webfont.woff') format('woff'),
+         url('/assets/fonts/Blokletters-Viltstift-webfont.ttf') format('truetype'),
+         url('/assets/fonts/Blokletters-Viltstift-webfont.svg#webfont4P6345Om') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+html {
+    font-family: 'BloklettersBalpen', _sans;
+    line-height: 1;
+    color: $black;
+}
+
+a {
+    color: $green;
+    text-decoration: none;
+    transition: all ease-in $speed;
+    &:hover {
+        color: $dgreen;
+        transition: all ease-in $speed;
+    }
+}
+
+h1, h2, h3, h4 {
+    font-family: 'BloklettersViltstift', _sans;
+}
+
+h2, h3, h4, p, ul {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+h2 {
+    font-size: rem-calc(24);
+    line-height: rem-calc(36);
+}
+
+h3 {
+    font-size: rem-calc(18);
+    line-height: rem-calc(30);
+}
+
+h4 {
+    font-size: rem-calc(14);
+    line-height: rem-calc(24);
+}
+
+p {
+    font-size: rem-calc(16);
+    line-height: rem-calc(24);
+    margin-bottom: 24px;
+}
+
+strong,
+b {
+    font-family: 'BloklettersViltstift', _sans;
+}
+
+@media #{$medium-only} {
+}
+
+@media #{$small-only} {
+}
