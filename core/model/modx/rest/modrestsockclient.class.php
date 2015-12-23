@@ -5,6 +5,9 @@
  */
 require_once dirname(__FILE__) . '/modrestclient.class.php';
 /**
+ *
+ * @deprecated To be removed in 2.3. See modRest instead.
+ *
  * @package modx
  * @subpackage rest
  */
@@ -13,7 +16,15 @@ class modRestSockClient extends modRestClient {
      * Extends modRestClient::request to provide socket-specific request
      * handling
      *
-     * {@inheritdoc}
+     * @todo Ensure this strips whitespace that prevents this class from working
+     *
+     * @param string $host The host of the REST server.
+     * @param string $path The path to request to on the REST server.
+     * @param string $method The HTTP method to use for the request. May be GET,
+     * PUT or POST.
+     * @param array $params An array of parameters to send with the request.
+     * @param array $options An array of options to pass to the request.
+     * @return modRestResponse The response object.
      */
     public function request($host,$path,$method = 'GET',array $params = array(),array $options = array()) {
         $method = strtoupper($method);
@@ -29,6 +40,8 @@ class modRestSockClient extends modRestClient {
         if ($method == "GET") {
             $path .= "?" . $q;
         }
+        $ip = $this->modx->request->getClientIp();
+        $ip = $ip['ip'];
 
         $out = $method." ".$purl['path']."/$path HTTP/1.1\r\n"
                 ."Host: $host\r\n"
@@ -39,7 +52,7 @@ class modRestSockClient extends modRestClient {
                 ."Accept-Charset: utf-8;q=0.7,*;q=0.7\r\n"
                 ."Accept-Encoding: gzip, deflate, compress;q=0.9\r\n"
                 /*."Keep-Alive: 300\r\n" */
-                ."Referer: ".$_SERVER['REMOTE_ADDR']."\r\n"
+                ."Referer: ".$ip."\r\n"
                 ."Connection: Close\r\n\r\n";
 
         fwrite($sock,$out);

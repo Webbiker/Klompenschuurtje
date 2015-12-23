@@ -1,16 +1,17 @@
 <?php
 /**
-* Пользовательские фильтры тем английского лексикона
-*
-* @language ru
-* @package modx
-* @subpackage lexicon
-*/
+ * Custom Filters English lexicon topic
+ *
+ * @language en
+ * @package modx
+ * @subpackage lexicon
+ */
 $_lang['ago'] = '[[+time]] назад';
 $_lang['ago_day'] = '[[+time]] день';
 $_lang['ago_days'] = '[[+time]] дней';
 $_lang['ago_hour'] = '[[+time]] час';
 $_lang['ago_hours'] = '[[+time]] часов';
+$_lang['ago_minute'] = '1 минута';
 $_lang['ago_minutes'] = '[[+time]] минут';
 $_lang['ago_month'] = '[[+time]] месяц';
 $_lang['ago_months'] = '[[+time]] месяцев';

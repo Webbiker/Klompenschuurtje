@@ -2,6 +2,18 @@
 /**
  * @package modx
  */
+/**
+ * A group of Resources which can be used for restricting access via ACLs and Permissions.
+ *
+ * @property string $name The name of the Resource Group
+ * @property boolean $private_memgroup Deprecated
+ * @property boolean $private_webgroup Deprecated
+ *
+ * @property modX|xPDO $xpdo
+ * @see modResourceGroupResource
+ * @see modAccessResourceGroup
+ * @package modx
+ */
 class modResourceGroup extends modAccessibleSimpleObject {
     /**
      * Overrides xPDOObject::save to fire modX-specific events.
@@ -58,6 +70,10 @@ class modResourceGroup extends modAccessibleSimpleObject {
      }
 
 
+    /**
+     * Get all Resources within this Resource Group
+     * @return array|null
+     */
     public function getResources() {
         $c= $this->xpdo->newQuery('modResource');
         $c->innerJoin('modResourceGroupResource', 'ResourceGroupResources');
@@ -65,15 +81,43 @@ class modResourceGroup extends modAccessibleSimpleObject {
         return $this->xpdo->getCollection('modResource', $c);
     }
 
+    /**
+     * Get all User Groups attached to this Resource Group
+     * @return array
+     */
     public function getUserGroups() {
         $access= $this->xpdo->getCollection('modAccessResourceGroup', array (
             'target' => $this->get('id'),
             'principal_class' => 'modUserGroup',
         ));
         $groups= array();
+        /** @var modAccessResourceGroup $arg */
         foreach ($access as $arg) {
-            $groups[$arg->get('membergroup')]= $arg->getOne('Target');
+            $groups[$arg->get('target')]= $arg->getOne('Target');
         }
         return $groups;
+    }
+
+    /**
+     * Check to see if the passed user (or current active user) has access to this Resource Group
+     * @param null|modUser $user
+     * @param string $context
+     * @return boolean
+     */
+    public function hasAccess($user = null,$context = '') {
+        /** @var modUser $user */
+        $user = !empty($user) ? $user : $this->xpdo->user;
+        if (is_object($context)) $context = $context->get('key');
+        $resourceGroups = $user->getResourceGroups($context);
+        $hasAccess = false;
+        if (!empty($resourceGroups)) {
+            foreach ($resourceGroups as $resourceGroup) {
+                if (intval($resourceGroup) == $this->get('id')) {
+                    $hasAccess = true;
+                    break;
+                }
+            }
+        }
+        return $hasAccess;
     }
 }

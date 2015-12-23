@@ -2,6 +2,7 @@ MODx.panel.Users = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         id: 'modx-panel-users'
+        ,cls: 'container'
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
@@ -11,12 +12,13 @@ MODx.panel.Users = function(config) {
             ,cls: 'modx-page-header'
         },{
             layout: 'form'
-            ,bodyStyle: 'padding: 15px;'
             ,items: [{
                 html: '<p>'+_('user_management_msg')+'</p>'
+                ,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
                 xtype: 'modx-grid-user'
+                ,cls:'main-wrapper'
                 ,preventRender: true
             }]
         }]
@@ -31,10 +33,16 @@ MODx.grid.User = function(config) {
 
     this.sm = new Ext.grid.CheckboxSelectionModel();
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'security/user.php'
+        url: MODx.config.connector_url
+        ,baseParams: {
+            action: 'security/user/getList'
+            ,usergroup: MODx.request['usergroup'] ? MODx.request['usergroup'] : ''
+        }
         ,fields: ['id','username','fullname','email','gender','blocked','role','active','cls']
         ,paging: true
         ,autosave: true
+        ,save_action: 'security/user/updatefromgrid'
+        ,autosaveErrorMsg: _('user_err_save')
         ,remoteSort: true
         ,viewConfig: {
             forceFit:true
@@ -57,12 +65,16 @@ MODx.grid.User = function(config) {
             ,dataIndex: 'username'
             ,width: 150
             ,sortable: true
+            ,renderer: function(value, p, record){
+                return String.format('<a href="?a=security/user/update&id={0}" title="{1}" class="x-grid-link">{2}</a>', record.id, _('user_update'), Ext.util.Format.htmlEncode( value ) );
+            }
         },{
             header: _('user_full_name')
             ,dataIndex: 'fullname'
             ,width: 180
             ,sortable: true
             ,editor: { xtype: 'textfield' }
+            ,renderer: Ext.util.Format.htmlEncode
         },{
             header: _('email')
             ,dataIndex: 'email'
@@ -73,18 +85,21 @@ MODx.grid.User = function(config) {
             header: _('active')
             ,dataIndex: 'active'
             ,width: 80
+            ,sortable: true
             ,editor: { xtype: 'combo-boolean', renderer: 'boolean' }
         },{
             header: _('user_block')
             ,dataIndex: 'blocked'
             ,width: 80
+            ,sortable: true
             ,editor: { xtype: 'combo-boolean', renderer: 'boolean' }
         }]
         ,tbar: [{
             text: _('user_new')
             ,handler: this.createUser
             ,scope: this
-        },'-',{
+            ,cls:'primary-button'
+        },{
             text: _('bulk_actions')
             ,menu: [{
                 text: _('selected_activate')
@@ -94,23 +109,49 @@ MODx.grid.User = function(config) {
                 text: _('selected_deactivate')
                 ,handler: this.deactivateSelected
                 ,scope: this
-            },'-',{
+            },{
                 text: _('selected_remove')
                 ,handler: this.removeSelected
                 ,scope: this
             }]
         },'->',{
-            xtype: 'textfield'
-            ,name: 'query'
-            ,itemId: 'fld-search'
-            ,emptyText: _('search')
+            xtype: 'modx-combo-usergroup'
+            ,name: 'usergroup'
+            ,id: 'modx-user-filter-usergroup'
+            ,itemId: 'usergroup'
+            ,emptyText: _('user_group')+'...'
+            ,baseParams: {
+                action: 'security/group/getList'
+                ,addAll: true
+            }
+            ,value: MODx.request['usergroup'] ? MODx.request['usergroup'] : ''
+            ,width: 200
             ,listeners: {
-                'change': {fn:this.search,scope:this}
-                ,'render': {fn:function(tf) {
-                    tf.getEl().addKeyListener(Ext.EventObject.ENTER,function() {
-                        this.search(tf);
-                    },this);
+                'select': {fn:this.filterUsergroup,scope:this}
+            }
+        },{
+            xtype: 'textfield'
+            ,name: 'search'
+            ,id: 'modx-user-search'
+            ,cls: 'x-form-filter'
+            ,emptyText: _('search_ellipsis')
+            ,listeners: {
+                'change': {fn: this.search, scope: this}
+                ,'render': {fn: function(cmp) {
+                    new Ext.KeyMap(cmp.getEl(), {
+                        key: Ext.EventObject.ENTER
+                        ,fn: this.blur
+                        ,scope: cmp
+                    });
                 },scope:this}
+            }
+        },{
+            xtype: 'button'
+            ,id: 'modx-filter-clear'
+            ,cls: 'x-form-filter-clear'
+            ,text: _('filter_clear')
+            ,listeners: {
+                'click': {fn: this.clearFilter, scope: this}
             }
         }]
     });
@@ -146,6 +187,13 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
                     ,handler: this.updateUser
                 });
             }
+            if (p.indexOf('pcopy') != -1) {
+                if (m.length > 0) m.push('-');
+                m.push({
+                    text: _('user_duplicate')
+                    ,handler: this.duplicateUser
+                });
+            }
             if (p.indexOf('premove') != -1) {
                 if (m.length > 0) m.push('-');
                 m.push({
@@ -160,7 +208,7 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
     }
 
     ,createUser: function() {
-        location.href = 'index.php?a='+MODx.action['security/user/create'];
+        MODx.loadPage('security/user/create');
     }
 
     ,activateSelected: function() {
@@ -170,7 +218,7 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'activateMultiple'
+                action: 'security/user/activateMultiple'
                 ,users: cs
             }
             ,listeners: {
@@ -189,7 +237,7 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'deactivateMultiple'
+                action: 'security/user/deactivateMultiple'
                 ,users: cs
             }
             ,listeners: {
@@ -210,7 +258,7 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
             ,text: _('user_remove_multiple_confirm')
             ,url: this.config.url
             ,params: {
-                action: 'removeMultiple'
+                action: 'security/user/removeMultiple'
                 ,users: cs
             }
             ,listeners: {
@@ -222,26 +270,39 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
         });
         return true;
     }
-    
+
     ,removeUser: function() {
         MODx.msg.confirm({
             title: _('user_remove')
             ,text: _('user_confirm_remove')
             ,url: this.config.url
             ,params: {
-                action: 'delete'
+                action: 'security/user/delete'
                 ,id: this.menu.record.id
             }
             ,listeners: {
-            	'success': {fn:this.refresh,scope:this}
+                'success': {fn:this.refresh,scope:this}
             }
         });
     }
-    
-    ,updateUser: function() {
-        location.href = 'index.php?a='+MODx.action['security/user/update']+'&id='+this.menu.record.id;
+
+    ,duplicateUser: function() {
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'security/user/duplicate'
+                ,id: this.menu.record.id
+            }
+            ,listeners: {
+                'success': {fn:this.refresh,scope:this}
+            }
+        });
     }
-    				
+
+    ,updateUser: function() {
+        MODx.loadPage('security/user/update', 'id='+this.menu.record.id);
+    }
+
     ,rendGender: function(d,c) {
         switch(d.toString()) {
             case '0':
@@ -252,14 +313,27 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
                 return _('female');
         }
     }
-    
-    ,search: function(tf,nv,ov) {
-        this.getStore().baseParams = {
-            action: 'getList'
-            ,query: tf.getValue()
-        };
+
+    ,filterUsergroup: function(cb,nv,ov) {
+        this.getStore().baseParams.usergroup = Ext.isEmpty(nv) || Ext.isObject(nv) ? cb.getValue() : nv;
         this.getBottomToolbar().changePage(1);
-        this.refresh();
+        //this.refresh();
+        return true;
+    }
+    ,search: function(tf,newValue,oldValue) {
+        var nv = newValue || tf;
+        this.getStore().baseParams.query = Ext.isEmpty(nv) || Ext.isObject(nv) ? '' : nv;
+        this.getBottomToolbar().changePage(1);
+        return true;
+    }
+    ,clearFilter: function() {
+        this.getStore().baseParams = {
+            action: 'security/user/getList'
+        };
+        Ext.getCmp('modx-user-search').reset();
+        Ext.getCmp('modx-user-filter-usergroup').reset();
+        this.getBottomToolbar().changePage(1);
+        //this.refresh();
     }
 });
 Ext.reg('modx-grid-user',MODx.grid.User);

@@ -7,6 +7,8 @@
  * @param string $context If set with action, will output the context info for a
  * custom context by its action
  *
+ * @var modX $modx
+ * @var array $scriptProperties
  * @package modx
  * @subpackage processors.system
  */
@@ -23,14 +25,22 @@ if (!empty($wctx)) {
     $workingContext =& $modx->context;
 }
 
-$customResourceClasses = array();
-$crcs = $workingContext->getOption('custom_resource_classes', '', $modx->_userConfig);
-if (!empty($crcs)) {
-    $crcs = explode(',',$crcs);
-    foreach ($crcs as $crc) {
-        $crc = explode(':',$crc);
-        if (empty($crc) || empty($crc[1])) continue;
-        $customResourceClasses[$crc[0]] = $crc[1];
+/* calculate custom resource classes */
+$modx->lexicon->load('resource');
+$resourceClasses = array();
+$resourceClassesDrop = array();
+$resourceClassNames = $modx->getDescendants('modResource');
+$resourceClassNames = array_diff($resourceClassNames,array('modResource'));
+foreach ($resourceClassNames as $resourceClassName) {
+    $obj = $modx->newObject($resourceClassName);
+    /** @var modResource $obj */
+    if ($obj->showInContextMenu) {
+        $lex = $obj->getContextMenuText();
+        $resourceClasses[$resourceClassName] = $lex;
+    }
+
+    if ($obj->allowDrop != -1) {
+        $resourceClassesDrop[$resourceClassName] = $obj->allowDrop;
     }
 }
 
@@ -46,42 +56,66 @@ $c = array(
     'http_host_remote' => MODX_URL_SCHEME . $workingContext->getOption('http_host', MODX_HTTP_HOST, $modx->_userConfig),
     'user' => $modx->user->get('id'),
     'version' => $modx->version['full_version'],
-    'custom_resource_classes' => $customResourceClasses,
+    'resource_classes' => $resourceClasses,
+    'resource_classes_drop' => $resourceClassesDrop,
 );
+
+// Handle default context
+$ctx = $modx->getContext($modx->getOption('default_context', null, 'web'));
+if ($ctx instanceof modContext && $ctx->prepare()) {
+    $c['default_site_url'] = $ctx->makeUrl($ctx->getOption('site_start'));
+}
 
 /* if custom context, load into MODx.config */
 if (isset($scriptProperties['action']) && $scriptProperties['action'] != '' && isset($modx->actionMap[$scriptProperties['action']])) {
 
-    $action = $modx->actionMap[$scriptProperties['action']];
-    $c['namespace'] = $action['namespace'];
-    $c['namespace_path'] = $action['namespace_path'];
-    $c['help_url'] = $action['help_url'];
+    /* pre-2.3 actions */
+    if (intval($scriptProperties['action']) > 0) {
+        $action = $modx->actionMap[$scriptProperties['action']];
+        $c['namespace'] = $action['namespace'];
+        $c['namespace_path'] = $action['namespace_path'];
+        $c['namespace_assets_path'] = $action['namespace_assets_path'];
+        $c['help_url'] = ltrim($action['help_url'],'/');
+    } else {
+        $namespace = $modx->getOption('namespace',$scriptProperties,'core');
+        /** @var modNamespace $namespace */
+        $namespace = $this->modx->getObject('modNamespace',$namespace);
+        if ($namespace) {
+            $c['namespace'] = $namespace->get('name');
+            $c['namespace_path'] = $namespace->get('path');
+            $c['namespace_assets_path'] = $namespace->get('assets_url');
+        }
+    }
 }
 
-$actions = $modx->request->getAllActionIDs();
+$c = array_merge($modx->config,$workingContext->config,$modx->_userConfig,$c);
 
-$c = array_merge($modx->config,$c);
-
-unset($c['password']);
-unset($c['username']);
+unset($c['password'],$c['username'],$c['mail_smtp_pass'],$c['mail_smtp_user'],$c['proxy_password'],$c['proxy_username'],$c['connections'],$c['connection_init'],$c['connection_mutable'],$c['dbname'],$c['database'],$c['driverOptions'],$c['dsn'],$c['session_name']);
 
 $o = "Ext.namespace('MODx'); MODx.config = ";
 $o .= $modx->toJSON($c);
-$o .= '; MODx.action = ';
-$o .= $modx->toJSON($actions);
 $o .= '; MODx.perm = {};';
+
+// Load actions for backwards compatibility (DEPRECATED)
+$actions = $modx->request->getAllActionIDs();
+$o .= 'MODx.action = ' . $modx->toJSON($actions) . ';';
+
 if ($modx->user) {
     if ($modx->hasPermission('directory_create')) { $o .= 'MODx.perm.directory_create = true;'; }
     if ($modx->hasPermission('resource_tree')) { $o .= 'MODx.perm.resource_tree = true;'; }
     if ($modx->hasPermission('element_tree')) { $o .= 'MODx.perm.element_tree = true;'; }
     if ($modx->hasPermission('file_tree')) { $o .= 'MODx.perm.file_tree = true;'; }
     if ($modx->hasPermission('file_upload')) { $o .= 'MODx.perm.file_upload = true;'; }
+    if ($modx->hasPermission('file_create')) { $o .= 'MODx.perm.file_create = true;'; }
     if ($modx->hasPermission('file_manager')) { $o .= 'MODx.perm.file_manager = true;'; }
     if ($modx->hasPermission('new_chunk')) { $o .= 'MODx.perm.new_chunk  = true;'; }
     if ($modx->hasPermission('new_plugin')) { $o .= 'MODx.perm.new_plugin = true;'; }
     if ($modx->hasPermission('new_snippet')) { $o .= 'MODx.perm.new_snippet = true;'; }
     if ($modx->hasPermission('new_template')) { $o .= 'MODx.perm.new_template = true;'; }
     if ($modx->hasPermission('new_tv')) { $o .= 'MODx.perm.new_tv = true;'; }
+    if ($modx->hasPermission('new_category')) { $o .= 'MODx.perm.new_category = true;'; }
+    if ($modx->hasPermission('resourcegroup_resource_edit')) { $o .= 'MODx.perm.resourcegroup_resource_edit = true;'; }
+    if ($modx->hasPermission('resourcegroup_resource_list')) { $o .= 'MODx.perm.resourcegroup_resource_list = true;'; }
 
     $o .= 'MODx.user = {id:"'.$modx->user->get('id').'",username:"'.$modx->user->get('username').'"}';
 }

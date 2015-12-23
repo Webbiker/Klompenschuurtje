@@ -7,14 +7,19 @@ $xpdo_meta_map['modTransportProvider']= array (
   'package' => 'modx.transport',
   'version' => '1.1',
   'table' => 'transport_providers',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'name' => NULL,
     'description' => NULL,
     'service_url' => NULL,
+    'username' => '',
     'api_key' => '',
     'created' => NULL,
     'updated' => NULL,
+    'active' => 1,
+    'priority' => 10,
+    'properties' => '',
   ),
   'fieldMeta' => 
   array (
@@ -36,6 +41,15 @@ $xpdo_meta_map['modTransportProvider']= array (
       'dbtype' => 'tinytext',
       'phptype' => 'string',
     ),
+    'username' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+      'index' => 'index',
+    ),
     'api_key' => 
     array (
       'dbtype' => 'varchar',
@@ -56,6 +70,31 @@ $xpdo_meta_map['modTransportProvider']= array (
       'dbtype' => 'timestamp',
       'phptype' => 'timestamp',
       'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
+    ),
+    'active' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'boolean',
+      'null' => false,
+      'default' => 1,
+      'index' => 'index',
+    ),
+    'priority' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '4',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 10,
+      'index' => 'index',
+    ),
+    'properties' => 
+    array (
+      'dbtype' => 'mediumtext',
+      'phptype' => 'json',
+      'null' => false,
+      'default' => '',
     ),
   ),
   'indexes' => 
@@ -85,6 +124,54 @@ $xpdo_meta_map['modTransportProvider']= array (
       'columns' => 
       array (
         'api_key' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'username' => 
+    array (
+      'alias' => 'username',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'username' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'active' => 
+    array (
+      'alias' => 'active',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'active' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'priority' => 
+    array (
+      'alias' => 'priority',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'priority' => 
         array (
           'length' => '',
           'collation' => 'A',

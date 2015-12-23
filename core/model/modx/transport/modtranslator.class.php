@@ -7,6 +7,8 @@ require_once MODX_CORE_PATH . 'model/modx/modtranslate095.class.php';
  /**
  * Abstracts the pre-097 site conversion utilities.
  *
+  * @package modx
+  * @subpackage transport
  */
 class modTranslator extends modTranslate095 {
     /**
@@ -24,7 +26,7 @@ class modTranslator extends modTranslate095 {
     /**
     * @var array Can either be an array of array of classname => fields to translate,
     *  empty to skip classes or null to process all standard content
-    *  fields for MODx (use processAllFields())
+    *  fields for MODX (use processAllFields())
     */
     public $classes;
     /**
@@ -32,6 +34,10 @@ class modTranslator extends modTranslate095 {
     */
     public $recursive;
 
+    /**
+     * @param xPDO $modx A reference to the xPDO|modX instance
+     * @param bool $recursive Whether or not this translator will recurse
+     */
     function __construct(xPDO &$modx, $recursive = true) {
         parent :: __construct($modx);
         $this->recursive = $recursive;
@@ -93,7 +99,7 @@ class modTranslator extends modTranslate095 {
     }
 
     /**
-    * Sets the translator to process all standard MODx fields.
+    * Sets the translator to process all standard MODX fields.
     *
     * @param boolean $b If false, will revert to an empty array of classes.
     */

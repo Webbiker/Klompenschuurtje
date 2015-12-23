@@ -1,19 +1,19 @@
-Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-page-import-html' });
-});
-
 MODx.page.ImportHTML = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         formpanel: 'modx-panel-import-html'
         ,buttons: [{
-            process: 'import', text: _('import_site'), method: 'remote'
+            process: 'system/import/html'
+            ,text: _('import_site')
+            ,id: 'modx-abtn-import'
+            ,cls:'primary-button'
+            ,method: 'remote'
         },{
-            process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
+            text: _('cancel')
+            ,id: 'modx-abtn-cancel'
         }]
         ,components: [{
             xtype: 'modx-panel-import-html'
-            ,renderTo: 'modx-import-html-div'
         }]
     });
     MODx.page.ImportHTML.superclass.constructor.call(this,config);

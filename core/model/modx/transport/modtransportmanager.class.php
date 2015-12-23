@@ -1,8 +1,8 @@
 <?php
 /*
- * MODx Revolution
+ * MODX Revolution
  *
- * Copyright 2006-2010 by the MODx Team.
+ * Copyright 2006-2015 by MODX, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -19,15 +19,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
-
 /**
  * @package modx
  * @subpackage transport
  */
-
+/**
+ * @package modx
+ * @subpackage transport
+ */
 class modTransportManager {
 	/**
-	 * @var MODx A reference to the MODx object.
+	 * @var MODX A reference to the MODX object.
 	 */
     public $modx = null;
     /**
@@ -39,14 +41,14 @@ class modTransportManager {
      */
     public $providers = array ();
     /**
-     * @var modWorkspace The active MODx workspace.
+     * @var modWorkspace The active MODX workspace.
      */
     public $workspace = null;
 
     /**
      * Creates an instance of the modTransportManager class.
      *
-     * @param modX &$modx A reference to a modX instance.
+     * @param xPDO &$modx A reference to a modX instance.
      * @return modTransportManager
      */
     function __construct(xPDO &$modx) {
@@ -76,7 +78,7 @@ class modTransportManager {
     }
 
 	/**
-	 * Get the active workspace for the MODx installation.
+	 * Get the active workspace for the MODX installation.
 	 *
      * @access public
 	 * @return modWorkspace
@@ -91,7 +93,7 @@ class modTransportManager {
     }
 
 	/**
-	 * Change the active workspace in MODx.
+	 * Change the active workspace in MODX.
 	 *
      * @access public
 	 * @param integer $workspaceId The PK of the modWorkspace.

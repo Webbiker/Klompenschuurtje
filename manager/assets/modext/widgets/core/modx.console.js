@@ -4,14 +4,15 @@ MODx.Console = function(config) {
     Ext.applyIf(config,{
         title: _('console')
         ,modal: Ext.isIE ? false : true
-        ,shadow: true
+        ,closeAction: 'hide'
+        // ,shadow: true
         ,resizable: false
         ,collapsible: false
-        ,closable: false
+        ,closable: true
         ,maximizable: true
         ,autoScroll: true
         ,height: 400
-        ,width: 650
+        ,width: 600
         ,refreshRate: 2
         ,cls: 'modx-window modx-console'
         ,items: [{
@@ -22,7 +23,7 @@ MODx.Console = function(config) {
         },{
             xtype: 'panel'
             ,itemId: 'body'
-            ,cls: 'x-form-text modx-console-text'
+            ,cls: 'x-panel-bwrap modx-console-text'
         }]
         ,buttons: [{
             text: _('console_download_output')
@@ -30,11 +31,21 @@ MODx.Console = function(config) {
             ,scope: this
         },{
             text: _('ok')
-            ,id: 'modx-console-ok'
+            ,cls: 'primary-button'
             ,itemId: 'okBtn'
             ,disabled: true
             ,scope: this
             ,handler: this.hideConsole
+        }]
+        ,keys: [{
+            key: Ext.EventObject.S
+            ,ctrl: true
+            ,fn: this.download
+            ,scope: this
+        },{
+            key: Ext.EventObject.ENTER
+            ,fn: this.hideConsole
+            ,scope: this
         }]
     });
     MODx.Console.superclass.constructor.call(this,config);
@@ -45,77 +56,88 @@ MODx.Console = function(config) {
     });
     this.on('show',this.init,this);
     this.on('hide',function() {
-        this.getComponent('body').el.update('');
-    });
-    
-};
-Ext.extend(MODx.Console,Ext.Window,{
-    mgr: null
-    ,running: false
-    
-    ,init: function() {
-        Ext.Msg.hide();
-        this.fbar.getComponent('okBtn').setDisabled(true);
-        this.getComponent('body').el.dom.innerHTML = '';
-        
-        this.provider = new Ext.direct.PollingProvider({
-            type:'polling'
-            ,url: MODx.config.connectors_url+'system/index.php'
-            ,interval: 1000
-            ,baseParams: {
-                action: 'console'
-                ,register: this.config.register || ''
-                ,topic: this.config.topic || ''
-                ,show_filename: this.config.show_filename || 0
-                ,format: this.config.format || 'html_log'
-            }
-        });
-        Ext.Direct.addProvider(this.provider);
-        Ext.Direct.on('message', function(e,p) {
-            if (e.data.search('COMPLETED') != -1) {
-                this.provider.disconnect();
-                this.fireEvent('complete');
-                this.fbar.getComponent('okBtn').setDisabled(false);
-            } else {
-                var out = this.getComponent('body');
-                if (out) {
-                    out.el.insertHtml('beforeEnd',e.data);
-                    e.data = '';
-                    out.el.scroll('b', out.el.getHeight(), true);
-                }
-            }
-            delete e;
-        },this);
-    }
-    
-    ,download: function() {
-        var c = this.getComponent('body').getEl().dom.innerHTML || '&nbsp;';
-        MODx.Ajax.request({
-            url: MODx.config.connectors_url+'system/index.php'
-            ,params: {
-                action: 'downloadOutput'
-                ,data: c
-            }
-            ,listeners: {
-                'success':{fn:function(r) {
-                    location.href = MODx.config.connectors_url+'system/index.php?action=downloadOutput&HTTP_MODAUTH='+MODx.siteId+'&download='+r.message;
-                },scope:this}
-            }            
-        });
-    }
-        
-    ,setRegister: function(register,topic) {
-    	this.config.register = register;
-        this.config.topic = topic;
-    }
-    
-    ,hideConsole: function() {
         if (this.provider && this.provider.disconnect) {
             try {
                 this.provider.disconnect();
             } catch (e) {}
         }
         this.fireEvent('shutdown');
+        //this.getComponent('body').el.update('');
+        this.destroy();
+    });
+    this.on('complete',this.onComplete,this);
+};
+Ext.extend(MODx.Console,Ext.Window,{
+    mgr: null
+    ,running: false
+
+    ,init: function() {
+        Ext.Msg.hide();
+        this.fbar.setDisabled(true);
+        this.keyMap.setDisabled(true);
+        this.getComponent('body').el.dom.innerHTML = '';
+        this.provider = new Ext.direct.PollingProvider({
+            type:'polling'
+            ,url: MODx.config.connector_url
+            ,interval: 1000
+            ,baseParams: {
+                action: 'system/console'
+                ,register: this.config.register || ''
+                ,topic: this.config.topic || ''
+                ,clear: false
+                ,show_filename: this.config.show_filename || 0
+                ,format: this.config.format || 'html_log'
+            }
+        });
+        Ext.Direct.addProvider(this.provider);
+        Ext.Direct.on('message', this.onMessage, this);
+    }
+
+    ,onMessage: function(e,p) {
+        var out = this.getComponent('body');
+        if (out) {
+            out.el.insertHtml('beforeEnd',e.data);
+            e.data = '';
+            out.el.scroll('b', out.el.getHeight(), true);
+        }
+        if (e.complete) {
+            this.fireEvent('complete');
+        }
+        delete e;
+    }
+
+    ,onComplete: function() {
+        if (this.provider && this.provider.disconnect) {
+            try {
+                this.provider.disconnect();
+            } catch (e) {}
+        }
+        this.fbar.setDisabled(false);
+        this.keyMap.setDisabled(false);
+    }
+
+    ,download: function() {
+        var c = this.getComponent('body').getEl().dom.innerHTML || '&nbsp;';
+        MODx.Ajax.request({
+            url: MODx.config.connector_url
+            ,params: {
+                action: 'system/downloadoutput'
+                ,data: c
+            }
+            ,listeners: {
+                'success':{fn:function(r) {
+                    location.href = MODx.config.connector_url+'?action=system/downloadOutput&HTTP_MODAUTH='+MODx.siteId+'&download='+r.message;
+                },scope:this}
+            }
+        });
+    }
+
+    ,setRegister: function(register,topic) {
+    	this.config.register = register;
+        this.config.topic = topic;
+    }
+
+    ,hideConsole: function() {
         this.hide();
     }
 });

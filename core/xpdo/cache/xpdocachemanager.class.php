@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006-2010 by  Jason Coward <xpdo@opengeek.com>
+ * Copyright 2010-2015 by MODX, LLC.
  *
  * This file is part of xPDO.
  *
@@ -34,6 +34,7 @@
 class xPDOCacheManager {
     const CACHE_PHP = 0;
     const CACHE_JSON = 1;
+    const CACHE_SERIALIZE = 2;
     const CACHE_DIR = 'objects/';
     const LOG_DIR = 'logs/';
 
@@ -188,15 +189,17 @@ class xPDOCacheManager {
     }
 
     /**
-     * Writes a file to the filesystem
+     * Writes a file to the filesystem.
      *
      * @access public
      * @param string $filename The absolute path to the location the file will
      * be written in.
      * @param string $content The content of the newly written file.
-     * @param string $mode The php file mode to write in. Defaults to 'wb'
+     * @param string $mode The php file mode to write in. Defaults to 'wb'. Note that this method always
+     * uses a (with b or t if specified) to open the file and that any mode except a means existing file
+     * contents will be overwritten.
      * @param array $options An array of options for the function.
-     * @return boolean Returns true if the file was successfully written.
+     * @return int|bool Returns the number of bytes written to the file or false on failure.
      */
     public function writeFile($filename, $content, $mode= 'wb', $options= array()) {
         $written= false;
@@ -219,17 +222,93 @@ class xPDOCacheManager {
         $fmode = (strlen($mode) > 1 && in_array($mode[1], array('b', 't'))) ? "a{$mode[1]}" : 'a';
         $file= @fopen($filename, $fmode);
         if ($file) {
-            if ($append === true || flock($file, LOCK_EX | LOCK_NB)) {
-                if ($append === false) {
+            if ($append === true) {
+                $written= fwrite($file, $content);
+            } else {
+                $locked = false;
+                $attempt = 1;
+                $attempts = (integer) $this->getOption(xPDO::OPT_CACHE_ATTEMPTS, $options, 1);
+                $attemptDelay = (integer) $this->getOption(xPDO::OPT_CACHE_ATTEMPT_DELAY, $options, 1000);
+                while (!$locked && ($attempts === 0 || $attempt <= $attempts)) {
+                    if ($this->getOption('use_flock', $options, true)) {
+                        $locked = flock($file, LOCK_EX | LOCK_NB);
+                    } else {
+                        $lockFile = $this->lockFile($filename, $options);
+                        $locked = $lockFile != false;
+                    }
+                    if (!$locked && $attemptDelay > 0 && ($attempts === 0 || $attempt < $attempts)) {
+                        usleep($attemptDelay);
+                    }
+                    $attempt++;
+                }
+                if ($locked) {
                     fseek($file, 0);
                     ftruncate($file, 0);
+                    $written= fwrite($file, $content);
+                    if ($this->getOption('use_flock', $options, true)) {
+                        flock($file, LOCK_UN);
+                    } else {
+                        $this->unlockFile($filename, $options);
+                    }
                 }
-                $written= fwrite($file, $content);
-                if ($append === false) flock($file, LOCK_UN);
             }
             @fclose($file);
         }
         return ($written !== false);
+    }
+
+    /**
+     * Add an exclusive lock to a file for atomic write operations in multi-threaded environments.
+     *
+     * xPDO::OPT_USE_FLOCK must be set to false (or 0) or xPDO will assume flock is reliable.
+     *
+     * @param string $file The name of the file to lock.
+     * @param array $options An array of options for the process.
+     * @return boolean True only if the current process obtained an exclusive lock for writing.
+     */
+    public function lockFile($file, array $options = array()) {
+        $locked = false;
+        $lockDir = $this->getOption('lock_dir', $options, $this->getCachePath() . 'locks' . DIRECTORY_SEPARATOR);
+        if ($this->writeTree($lockDir, $options)) {
+            $lockFile = $this->lockFileName($file, $options);
+            if (!file_exists($lockFile)) {
+                $myPID = (XPDO_CLI_MODE || !isset($_SERVER['SERVER_ADDR']) ? gethostname() : $_SERVER['SERVER_ADDR']) . '.' . getmypid();
+                $myPID .= mt_rand();
+                $tmpLockFile = "{$lockFile}.{$myPID}";
+                if (file_put_contents($tmpLockFile, $myPID)) {
+                    if (link($tmpLockFile, $lockFile)) {
+                        $locked = true;
+                    }
+                    @unlink($tmpLockFile);
+                }
+            }
+        } else {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, "The lock_dir at {$lockDir} is not writable and could not be created");
+        }
+        if (!$locked) $this->xpdo->log(xPDO::LOG_LEVEL_WARN, "Attempt to lock file {$file} failed");
+        return $locked;
+    }
+
+    /**
+     * Release an exclusive lock on a file created by lockFile().
+     *
+     * @param string $file The name of the file to unlock.
+     * @param array $options An array of options for the process.
+     */
+    public function unlockFile($file, array $options = array()) {
+        @unlink($this->lockFileName($file, $options));
+    }
+
+    /**
+     * Get an absolute path to a lock file for a specified file path.
+     *
+     * @param string $file The absolute path to get the lock filename for.
+     * @param array $options An array of options for the process.
+     * @return string The absolute path for the lock file
+     */
+    protected function lockFileName($file, array $options = array()) {
+        $lockDir = $this->getOption('lock_dir', $options, $this->getCachePath() . 'locks' . DIRECTORY_SEPARATOR);
+        return $lockDir . preg_replace('/\W/', '_', $file) . $this->getOption(xPDO::OPT_LOCKFILE_EXTENSION, $options, '.lock');
     }
 
     /**
@@ -421,7 +500,7 @@ class xPDOCacheManager {
                         if ($file != '.' && $file != '..') { /* Ignore . and .. */
                             $path= $dirname . $file;
                             if (is_dir($path)) {
-                                $suboptions = $this->getOption('deleteTop', $options, false) ? $options : array_merge($options, array('deleteTop' => false));
+                                $suboptions = array_merge($options, array('deleteTop' => !$this->getOption('skipDirs', $options, false)));
                                 if ($subresult= $this->deleteTree($path, $suboptions)) {
                                     $result= array_merge($result, $subresult);
                                 }
@@ -438,7 +517,6 @@ class xPDOCacheManager {
                     }
                     closedir($handle);
                 }
-                $options['deleteTop']= $this->getOption('skipDirs', $options, false) ? false : $this->getOption('deleteTop', $options, false);
                 if ($this->getOption('deleteTop', $options, false)) {
                     if (@ rmdir($dirname)) {
                         array_push($result, $dirname);
@@ -670,6 +748,30 @@ class xPDOCacheManager {
     }
 
     /**
+     * Refresh specific or all cache providers.
+     *
+     * The default behavior is to call clean() with the provided options
+     *
+     * @param array $providers An associative array with keys representing the cache provider key
+     * and the value an array of options.
+     * @param array &$results An associative array for collecting results for each provider.
+     * @return array An array of results for each provider that is refreshed.
+     */
+    public function refresh(array $providers = array(), array &$results = array()) {
+        if (empty($providers)) {
+            foreach ($this->caches as $cacheKey => $cache) {
+                $providers[$cacheKey] = array();
+            }
+        }
+        foreach ($providers as $key => $options) {
+            if (array_key_exists($key, $this->caches) && !array_key_exists($key, $results)) {
+                $results[$key] = $this->clean(array_merge($options, array(xPDO::OPT_CACHE_KEY => $key)));
+            }
+        }
+        return (array_search(false, $results, true) === false);
+    }
+
+    /**
      * Escapes all single quotes in a string
      *
      * @access public
@@ -758,7 +860,7 @@ abstract class xPDOCache {
     public function getCacheKey($key, $options = array()) {
         $prefix = $this->getOption('cache_prefix', $options);
         if (!empty($prefix)) $key = $prefix . $key;
-        return $key;
+        return $this->key . '/' . $key;
     }
 
     /**
@@ -872,11 +974,19 @@ class xPDOFileCache extends xPDOCache {
                 $expireContent= 'if(time() > ' . $expirationTS . '){return null;}';
             }
             $fileName= $this->getCacheKey($key, $options);
-            if (!empty($options['format']) && $options['format'] == xPDOCacheManager::CACHE_JSON) {
-                $content= !is_scalar($var) ? $this->xpdo->toJSON($var) : $var;
-            } else {
-            $content= '<?php ' . $expireContent . ' return ' . var_export($var, true) . ';';
-        }
+            $format = (integer) $this->getOption(xPDO::OPT_CACHE_FORMAT, $options, xPDOCacheManager::CACHE_PHP);
+            switch ($format) {
+                case xPDOCacheManager::CACHE_SERIALIZE:
+                    $content= serialize(array('expires' => $expirationTS, 'content' => $var));
+                    break;
+                case xPDOCacheManager::CACHE_JSON:
+                    $content= $this->xpdo->toJSON(array('expires' => $expirationTS, 'content' => $var));
+                    break;
+                case xPDOCacheManager::CACHE_PHP:
+                default:
+                    $content= '<?php ' . $expireContent . ' return ' . var_export($var, true) . ';';
+                    break;
+            }
             $set= $this->xpdo->cacheManager->writeFile($fileName, $content);
         }
         return $set;
@@ -896,9 +1006,12 @@ class xPDOFileCache extends xPDOCache {
         $deleted= false;
         $cacheKey= $this->getCacheKey($key, array_merge($options, array('cache_ext' => '')));
         if (file_exists($cacheKey) && is_dir($cacheKey)) {
-            $deleted= $this->xpdo->cacheManager->deleteTree($cacheKey, false, true);
+            $results = $this->xpdo->cacheManager->deleteTree($cacheKey, array_merge(array('deleteTop' => false, 'skipDirs' => false, 'extensions' => array('.cache.php')), $options));
+            if ($results !== false) {
+                $deleted = true;
+            }
         } else {
-            $cacheKey.= $this->getOption('cache_ext', $options, '.cache.php');
+            $cacheKey= $this->getCacheKey($key, $options);
             if (file_exists($cacheKey)) {
                 $deleted= @ unlink($cacheKey);
             }
@@ -910,13 +1023,44 @@ class xPDOFileCache extends xPDOCache {
         $value= null;
         $cacheKey= $this->getCacheKey($key, $options);
         if (file_exists($cacheKey)) {
-            if (!empty($options['format']) && $options['format'] == xPDOCacheManager::CACHE_JSON) {
-                $value= file_get_contents($cacheKey);
-            } else {
-                $value= @ include ($cacheKey);
-            }
-            if ($value === null && $this->getOption('removeIfEmpty', $options, true)) {
-                @ unlink($cacheKey);
+            if ($file = @fopen($cacheKey, 'rb')) {
+                $format = (integer) $this->getOption(xPDO::OPT_CACHE_FORMAT, $options, xPDOCacheManager::CACHE_PHP);
+                if (flock($file, LOCK_SH)) {
+                    switch ($format) {
+                        case xPDOCacheManager::CACHE_PHP:
+                            $value= @include $cacheKey;
+                            break;
+                        case xPDOCacheManager::CACHE_JSON:
+                            $payload = stream_get_contents($file);
+                            if ($payload !== false) {
+                                $payload = $this->xpdo->fromJSON($payload);
+                                if (is_array($payload) && isset($payload['expires']) && (empty($payload['expires']) || time() < $payload['expires'])) {
+                                    if (array_key_exists('content', $payload)) {
+                                        $value= $payload['content'];
+                                    }
+                                }
+                            }
+                            break;
+                        case xPDOCacheManager::CACHE_SERIALIZE:
+                            $payload = stream_get_contents($file);
+                            if ($payload !== false) {
+                                $payload = unserialize($payload);
+                                if (is_array($payload) && isset($payload['expires']) && (empty($payload['expires']) || time() < $payload['expires'])) {
+                                    if (array_key_exists('content', $payload)) {
+                                        $value= $payload['content'];
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                    flock($file, LOCK_UN);
+                    if ($value === null && $this->getOption('removeIfEmpty', $options, true)) {
+                        fclose($file);
+                        @ unlink($cacheKey);
+                        return $value;
+                    }
+                }
+                @fclose($file);
             }
         }
         return $value;
@@ -924,6 +1068,7 @@ class xPDOFileCache extends xPDOCache {
 
     public function flush($options= array()) {
         $cacheKey= $this->getCacheKey('', array_merge($options, array('cache_ext' => '')));
-        return $this->xpdo->cacheManager->deleteTree($cacheKey, false, true);
+        $results = $this->xpdo->cacheManager->deleteTree($cacheKey, array_merge(array('deleteTop' => false, 'skipDirs' => false, 'extensions' => array('.cache.php')), $options));
+        return ($results !== false);
     }
 }

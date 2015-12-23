@@ -1,7 +1,3 @@
-Ext.onReady(function(){
-   MODx.load({ xtype: 'modx-page-contexts' }); 
-});
-
 /**
  * Loads the context management page
  * 
@@ -15,10 +11,10 @@ MODx.page.Contexts = function(config) {
 	Ext.applyIf(config,{
 		components: [{
             xtype: 'modx-panel-contexts'
-            ,renderTo: 'modx-panel-contexts-div'
         }]
         ,buttons: [{
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         }]
 	});

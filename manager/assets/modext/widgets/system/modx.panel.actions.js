@@ -11,53 +11,25 @@ MODx.panel.Actions = function(config) {
     Ext.applyIf(config,{
         bodyStyle: ''
         ,id: 'modx-panel-actions'
+		,cls: 'container'
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
-            html: '<h2>'+_('actions')+'</h2>'
+            html: '<h2>'+_('topmenu')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
             ,itemId: 'header'
         },{
-            xtype: 'portal'
-            ,itemId: 'portal'
+            itemId: 'form-menu'
+            ,bwrapCssClass: 'shadowbox'
             ,items: [{
-                columnWidth: .47
-                ,itemId: 'col-action'
-                ,items: [{
-                    title: _('actions')
-                    ,itemId: 'form-action'
-                    ,cls: 'x-panel-header'
-                    ,style: 'padding: 5px;'
-                    ,bodyStyle: 'text-transform: none; font-weight: normal;'
-                    ,layout: 'form'
-                    ,items: [{
-                        html: '<p>'+_('action_desc')+'</p>'
-                        ,border: false
-                    },{
-                        xtype: 'modx-tree-action'
-                        ,itemId: 'tree-action'
-                        ,id: 'modx-tree-action'
-                    }]
-                }]
+                html: '<p>'+_('topmenu_desc')+'</p>'
+                ,bodyCssClass: 'panel-desc'
+                ,border: false
             },{
-                columnWidth: .47
-                ,itemId: 'col-menu'
-                ,items: [{
-                    title: _('topmenu')
-                    ,itemId: 'form-menu'
-                    ,cls: 'x-panel-header'
-                    ,style: 'padding: 5px;'
-                    ,bodyStyle: 'text-transform: none; font-weight: normal;'
-                    ,layout: 'form'
-                    ,items: [{
-                        html: '<p>'+_('topmenu_desc')+'</p>'
-                        ,border: false
-                    },{
-                        xtype: 'modx-tree-menu'
-                        ,itemId: 'tree-menu'
-                        ,id: 'modx-tree-menu'
-                    }]
-                }]
+                xtype: 'modx-tree-menu'
+                ,itemId: 'tree-menu'
+                ,id: 'modx-tree-menu'
+                ,cls: 'main-wrapper'
             }]
         }]
     });

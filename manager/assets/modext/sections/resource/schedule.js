@@ -1,7 +1,3 @@
-Ext.onReady(function() {
-	MODx.load({ xtype: 'modx-page-resource-schedule' });
-});
-
 /**
  * Loads the Site Schedule page
  * 
@@ -15,7 +11,6 @@ MODx.page.ResourceSchedule = function(config) {
 	Ext.applyIf(config,{
         components: [{
             xtype: 'modx-panel-resource-schedule'
-            ,renderTo: 'modx-panel-resource-schedule-div'
         }]
 	});
 	MODx.page.ResourceSchedule.superclass.constructor.call(this,config);

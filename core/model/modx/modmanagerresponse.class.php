@@ -6,130 +6,120 @@
  */
 require_once MODX_CORE_PATH . 'model/modx/modresponse.class.php';
 /**
- * Encapsulates an HTTP response from the MODx manager.
+ * Encapsulates an HTTP response from the MODX manager.
  *
  * {@inheritdoc}
  *
  * @package modx
  */
 class modManagerResponse extends modResponse {
+    /** @var array A cached array of the current modAction object */
     public $action = array();
 
+    public $namespace = 'core';
+    public $namespaces = array();
+
+    protected function _loadNamespaces() {
+        $loaded = false;
+        $cache = $this->modx->call('modNamespace','loadCache',array(&$this->modx));
+        if ($cache) {
+            $this->namespaces = $cache;
+            $loaded = true;
+        }
+        return $loaded;
+    }
+
     /**
-     * Overrides modResponse::outputContent to provide mgr-context specific
-     * response.
-     *
-     * {@inheritdoc}
+     * @param array $options
+     * @return mixed|string
      */
     public function outputContent(array $options = array()) {
-        $modx= & $this->modx;
-        $error= & $this->modx->error;
+        $route = $this->modx->request->action;
+        $this->namespace = $this->modx->request->namespace;
+        if (empty($route)) {
+            $route = $this->namespace == 'core' ? 'welcome' : 'index';
+        }
+        $this->modx->lexicon->load('dashboard','topmenu','file','action');
+        $this->_loadNamespaces();
 
-        $action = '';
-        if (!isset($this->modx->request) || !isset($this->modx->request->action)) {
-            $this->body = $this->modx->error->failure($modx->lexicon('action_err_ns'));
+        if (!array_key_exists($this->namespace,$this->namespaces)) {
+            $this->namespace = 'core';
+            $this->action = array();
         } else {
-            $action =& $this->modx->request->action;
+            $namespace = $this->namespaces[$this->namespace];
+            $this->action['namespace'] = $this->namespace;
+            $this->action['namespace_name'] = $namespace['name'];
+            $this->action['namespace_path'] = $namespace['path'];
+            $this->action['namespace_assets_path'] = $namespace['assets_path'];
+            $this->action['lang_topics'] = '';
+            $this->action['controller'] = $route;
         }
 
-        $theme = $this->modx->getOption('manager_theme',null,'default');
-
-        $this->modx->lexicon->load('dashboard','topmenu','file');
-        if ($action == 0) {
-            $action = $this->modx->getObject('modAction',array(
-                'namespace' => 'core',
-                'controller' => 'welcome',
-            ));
-            $action = $action->get('id');
+        $isDeprecated = false;
+        /* handle 2.2< controllers */
+        if (intval($route) > 0) {
+            $this->modx->request->loadActionMap();
+            $this->action = !empty($this->modx->actionMap[$route]) ? $this->modx->actionMap[$route] : array();
+            $this->namespace = !empty($this->action['namespace']) ? $this->action['namespace'] : 'core';
+            $isDeprecated = true;
         }
 
-        if ($this->modx->hasPermission('frames')) {
-            if (isset($this->modx->actionMap[$action])) {
-                $this->action = $this->modx->actionMap[$action];
-
-                /* get template path */
-                $templatePath = $this->modx->getOption('manager_path') . 'templates/'.$theme.'/';
-                if (!file_exists($templatePath)) {
-                    $templatePath = $this->modx->getOption('manager_path') . 'templates/default/';
-                    $this->modx->config['manager_theme'] = 'default';
-                    $this->modx->smarty->assign('_config',$this->modx->config);
-                }
-
-                /* assign custom action topics to smarty, so can load custom topics for each page */
-                $this->modx->lexicon->load('action');
-                $topics = explode(',',$this->action['lang_topics']);
-                foreach ($topics as $topic) { $this->modx->lexicon->load($topic); }
-                $this->modx->smarty->assign('_lang_topics',$this->action['lang_topics']);
-                $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
-                $this->modx->smarty->assign('_ctx',$this->modx->context->get('key'));
-
-                $this->registerBaseScripts($this->action['haslayout'] ? true : false);
-
-                $this->body = '';
-
-
-                $f = $this->prepareNamespacePath($this->action['controller'],$theme);
-                $f = $this->getControllerFilename($f);
-
-                if (file_exists($f)) {
-                    $this->modx->invokeEvent('OnBeforeManagerPageInit',array(
-                        'action' => $this->action,
-                        'filename' => $f,
-                    ));
-                    if (!empty($this->action['namespace']) && $this->action['namespace'] != 'core') {
-                        $this->modx->smarty->setTemplatePath($this->action['namespace_path']);
-                    }
-
-                    $cbody = include $f;
-                } else {
-                    $cbody = 'Could not find action file at: '.$f;
-                }
-
-                $this->registerCssJs();
-
-                /* reset path to core modx path for header/footer */
-                $this->modx->smarty->setTemplatePath($templatePath);
-
-                /* load header */
-                $controllersPath = $this->modx->getOption('manager_path').'controllers/'.$theme.'/';
-                if (!file_exists($controllersPath)) {
-                    $controllersPath = $this->modx->getOption('manager_path').'controllers/default/';
-                }
-                if ($this->action['haslayout']) {
-                    $this->body .= include_once $controllersPath.'header.php';
-                }
-
-                /* assign later to allow for css/js registering */
-                if (is_array($cbody)) {
-                    $this->modx->smarty->assign('_e', $cbody);
-                    $cbody = $this->modx->smarty->fetch('error.tpl');
-                }
-                $this->body .= $cbody;
-
-                /* load footer */
-                if ($this->action['haslayout']) {
-                    $this->body .= include_once $controllersPath.'footer.php';
-                }
-
-
-            } else {
-                $this->body = $this->modx->error->failure($modx->lexicon('action_err_nfs',array(
-                    'id' => $action,
-                )));
-            }
+        $isLoggedIn = $this->validateAuthentication();
+        if ($isLoggedIn && !$this->checkForMenuPermissions($route)) {
+            $this->body = $this->modx->error->failure($this->modx->lexicon('access_denied'));
         } else {
-            /* doesnt have permissions to view manager */
-            $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
-            $this->modx->smarty->assign('_ctx',$this->modx->context->get('key'));
-
-            $this->body = include_once $this->modx->getOption('manager_path').'controllers/'.$theme.'/security/logout.php';
-
+            $this->modx->loadClass('modManagerController','',false,true);
+            $className = $this->loadControllerClass(!$isDeprecated);
+            $this->instantiateController($className,$isDeprecated ? 'getInstanceDeprecated' : 'getInstance');
+            $this->body = $this->modx->controller->render();
         }
         if (empty($this->body)) {
-            $this->body = $this->modx->error->failure($modx->lexicon('action_err_ns'));
+            $this->body = $this->modx->error->failure($this->modx->lexicon('action_err_ns'));
         }
+        return $this->send();
+    }
+
+    /**
+     * Ensure the user has access to the manager
+     * @return bool|string
+     */
+    public function validateAuthentication() {
+        $isLoggedIn = $this->modx->user->isAuthenticated('mgr');
+        if (!$isLoggedIn) {
+            $alternateLogin = $this->modx->getOption('manager_login_url_alternate',null,'');
+            if (!empty($alternateLogin)) {
+                $this->modx->sendRedirect($alternateLogin);
+                return '';
+            }
+            $this->namespace = 'core';
+            $this->action['namespace'] = 'core';
+            $this->action['namespace_name'] = 'core';
+            $this->action['namespace_path'] = $this->modx->getOption('manager_path',null,MODX_MANAGER_PATH);
+            $this->action['namespace_assets_path'] = $this->modx->getOption('assets_path',null,MODX_ASSETS_PATH);
+            $this->action['lang_topics'] = 'login';
+            $this->action['controller'] = 'security/login';
+        } else if (!$this->modx->hasPermission('frames')) {
+            $this->namespace = 'core';
+            $this->action['namespace'] = 'core';
+            $this->action['namespace_name'] = 'core';
+            $this->action['namespace_path'] = $this->modx->getOption('manager_path',null,MODX_MANAGER_PATH);
+            $this->action['namespace_assets_path'] = $this->modx->getOption('assets_path',null,MODX_ASSETS_PATH);
+            $this->action['lang_topics'] = 'login';
+            $this->action['controller'] = 'security/logout';
+        }
+        return $isLoggedIn;
+    }
+
+    /**
+     * Send the response to the client
+     */
+    public function send() {
         if (is_array($this->body)) {
             $this->modx->smarty->assign('_e', $this->body);
+            if (!file_exists($this->modx->smarty->template_dir.'error.tpl')) {
+                $templatePath = $this->modx->getOption('manager_path') . 'templates/default/';
+                $this->modx->smarty->setTemplatePath($templatePath);
+            }
             echo $this->modx->smarty->fetch('error.tpl');
         } else {
             echo $this->body;
@@ -139,268 +129,146 @@ class modManagerResponse extends modResponse {
     }
 
     /**
-     * Checks Form Customization rules for an object.
+     * Include the correct controller class for the action
      *
-     * @param xPDOObject $obj If passed, will validate against for rules with constraints.
+     * @param bool $prefixNamespace Whether or not to prefix the Namespace name to the class. Default for 2.3+
+     * controllers, set to false for 2.2< deprecated controllers.
+     * @return string
      */
-    public function checkFormCustomizationRules(&$obj = null,$forParent = false) {
-        $overridden = array();
-        
-        $userGroups = $this->modx->user->getUserGroups();
-        $c = $this->modx->newQuery('modActionDom');
-        $c->innerJoin('modFormCustomizationSet','Set');
-        $c->innerJoin('modFormCustomizationProfile','Profile','Set.profile = Profile.id');
-        $c->leftJoin('modFormCustomizationProfileUserGroup','ProfileUserGroup','Profile.id = ProfileUserGroup.profile');
-        $c->leftJoin('modFormCustomizationProfile','UGProfile','UGProfile.id = ProfileUserGroup.profile');
-        $c->where(array(
-            'modActionDom.action' => $this->action['id'],
-            'modActionDom.for_parent' => $forParent,
-            'Set.active' => true,
-            'Profile.active' => true,
-        ));
-        $c->where(array(
-            array(
-                'ProfileUserGroup.usergroup:IN' => $userGroups,
-                array(
-                    'OR:ProfileUserGroup.usergroup:IS' => null,
-                    'AND:UGProfile.active:=' => true,
-                ),
-            ),
-            'OR:ProfileUserGroup.usergroup:=' => null,
-        ),xPDOQuery::SQL_AND,null,2);
-        $c->select(array(
-            'modActionDom.*',
-            'Set.constraint_class',
-            'Set.constraint_field',
-            'Set.constraint',
-            'Set.template',
-        ));
-        /* sort by template to get template default value first
-         * TODO: eventually add rank to Sets to allow more fine-grained control
-         */
-        $c->sortby('Set.template','ASC');
-        $c->sortby('modActionDom.rank','ASC');
-        $domRules = $this->modx->getCollection('modActionDom',$c);
-        $rules = array();
-
-        /* grab parents of current obj */
-        if ($obj) {
-            $rCtx = $obj->get('context_key');
-            $oCtx = $this->modx->context->get('key');
-            if (!empty($rCtx) && $rCtx != 'mgr') {
-                $this->modx->switchContext($rCtx);
-            }
-            $parents = $this->modx->getParentIds($obj->get('id'));
-            /* if on resource/create, set obj id to parent as well */
-            if ($forParent) {
-                $parents[] = $obj->get('id');
-            }
-            if (!empty($rCtx)) {
-                $this->modx->switchContext($oCtx);
-            }
+    public function loadControllerClass($prefixNamespace = true) {
+        $theme = $this->modx->getOption('manager_theme',null,'default');
+        $paths = $this->getNamespacePath($theme);
+        $f = $this->action['controller'];
+        $className = $this->getControllerClassName();
+        if (!class_exists($className) && $this->namespace != 'core' && $prefixNamespace) {
+            $className = ucfirst($this->namespace).$className;
         }
+        if (!class_exists($className)) {
+            $classFile = strtolower($f).'.class.php';
+            $classPath = null;
 
-        foreach ($domRules as $rule) {
-            $template = $rule->get('template');
-            if (!empty($template)) {
-                if ($template != $obj->get('template')) continue;
-            }
-            $constraintClass = $rule->get('constraint_class');
-            if (!empty($constraintClass)) {
-                if (empty($obj) || !($obj instanceof $constraintClass)) continue;
-                $constraintField = $rule->get('constraint_field');
-                $constraint = $rule->get('constraint');
-
-                /* if checking a parent, get all parents up the tree */
-                if (($forParent && $constraintField == 'id') || $constraintField == 'parent') {
-                    if (!in_array($constraint,$parents)) {
-                        continue;
+            foreach ($paths as $controllersPath) {
+                if (!file_exists($controllersPath.$classFile)) {
+                    if (file_exists($controllersPath.strtolower($f).'/index.class.php')) {
+                        $classPath = $controllersPath.strtolower($f).'/index.class.php';
                     }
-                } else { /* otherwise just check constraint */
-                    if ($obj->get($constraintField) != $constraint) {
-                        continue;
+                } else {
+                    $classPath = $controllersPath.$classFile;
+                    break;
+                }
+            }
+
+            /* handle Revo <2.2 controllers */
+            if (empty($classPath)) {
+                $className = 'modManagerControllerDeprecated';
+                $classPath = MODX_CORE_PATH.'model/modx/modmanagercontrollerdeprecated.class.php';
+            }
+
+            if (!file_exists($classPath)) {
+                if (file_exists(strtolower($f).'/index.class.php')) {
+                    $classPath = strtolower($f).'/index.class.php';
+                } else { /* handle Revo <2.2 controllers */
+                    $className = 'modManagerControllerDeprecated';
+                    $classPath = MODX_CORE_PATH.'model/modx/modmanagercontrollerdeprecated.class.php';
+                }
+            }
+
+            ob_start();
+            require_once $classPath;
+            ob_end_clean();
+        }
+        return $className;
+    }
+
+    public function instantiateController($className,$getInstanceMethod = 'getInstance') {
+        try {
+            $c = new $className($this->modx,$this->action);
+            if (!($c instanceof modExtraManagerController) && $getInstanceMethod == 'getInstanceDeprecated') {
+                $getInstanceMethod = 'getInstance';
+            }
+            /* this line allows controller derivatives to decide what instance they want to return (say, for derivative class_key types) */
+            $this->modx->controller = call_user_func_array(array($c,$getInstanceMethod),array($this->modx,$className,$this->action));
+            $this->modx->controller->setProperties($c instanceof SecurityLoginManagerController ? $_POST : array_merge($_GET,$_POST));
+            $this->modx->controller->initialize();
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+        return $this->modx->controller;
+    }
+
+    /**
+     * If this action has a menu item, ensure user has access to menu
+     * @param string $action
+     * @return bool
+     */
+    public function checkForMenuPermissions($action) {
+        $canAccess = true;
+        /** @var modMenu $menu */
+        $menu = $this->modx->getObject('modMenu', array(
+            'action' => $action,
+            'namespace' => $this->namespace,
+        ));
+        if ($menu) {
+            $permissions = $menu->get('permissions');
+            if (!empty($permissions)) {
+                $permissions = explode(',', $permissions);
+                foreach ($permissions as $permission) {
+                    if (!$this->modx->hasPermission($permission)) {
+                        return false;
                     }
                 }
             }
-            if ($rule->get('rule') == 'fieldDefault') {
-                $field = $rule->get('name');
-                if ($field == 'modx-resource-content') $field = 'content';
-                $overridden[$field] = $rule->get('value');
-            }
-            $r = $rule->apply();
-            if (!empty($r)) $rules[] = $r;
         }
-        $ruleOutput = '';
-        if (!empty($rules)) {
-            $ruleOutput .= '<script type="text/javascript">MODx.on("ready",function() {';
-            $ruleOutput .= implode("\n",$rules);
-            $ruleOutput .= '});</script>';
-            $this->modx->regClientStartupHTMLBlock($ruleOutput);
-        }
-        return $overridden;
+        return $canAccess;
     }
 
     /**
-     * Registers the core and base JS scripts
+     * Gets the controller class name from the active modAction object
      *
-     * @access public
+     * @return string
      */
-    public function registerBaseScripts($loadLayout = true) {
-        $managerUrl = $this->modx->getOption('manager_url');
-        if ($this->modx->getOption('concat_js',null,false)) {
-            if ($this->modx->getOption('compress_js',null,false)) {
-                $this->modx->regClientStartupScript($managerUrl.'assets/modext/modext-min.js');
-            } else {
-                $this->modx->regClientStartupScript($managerUrl.'assets/modext/modext.js');
-            }
-        } else {
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/core/modx.localization.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/util/utilities.js');
-
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/core/modx.component.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/core/modx.panel.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/core/modx.tabs.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/core/modx.window.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/core/modx.tree.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/core/modx.combo.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/core/modx.grid.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/core/modx.console.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/core/modx.portal.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/modx.treedrop.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/windows.js');
-
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/resource/modx.tree.resource.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/element/modx.tree.element.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/widgets/system/modx.tree.directory.js');
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/core/modx.view.js');
+    public function getControllerClassName() {
+        $className = $this->action['controller'].(!empty($this->action['class_postfix']) ? $this->action['class_postfix'] : 'ManagerController');
+        $className = explode('/',$className);
+        $o = array();
+        foreach ($className as $k) {
+            $o[] = ucfirst(str_replace(array('.','_','-'),'',$k));
         }
-
-        if ($loadLayout) {
-            $this->modx->regClientStartupScript($managerUrl.'assets/modext/core/modx.layout.js');
-            $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">Ext.onReady(function() {
-    MODx.load({xtype: "modx-layout",accordionPanels: MODx.accordionPanels || [],auth: "'.$this->modx->site_id.'"});
-});</script>');
-        }
+        return implode('',$o);
     }
 
     /**
-     * Prepares the Namespace Path for usage
+     * Get the appropriate path to the controllers directory for the active Namespace.
      *
-     * @access protected
-     * @return string The formatted Namespace path
+     * @param string $theme
+     * @return array An array of paths to the Namespace's controllers directory.
      */
-    protected function prepareNamespacePath($controller,$theme = 'default') {
-        /* set context url and path */
-        $this->modx->config['namespace_path'] = $controller;
-
+    public function getNamespacePath($theme = 'default') {
+        $namespace = array_key_exists($this->namespace,$this->namespaces) ? $this->namespaces[$this->namespace] : $this->namespaces['core'];
         /* find context path */
-        if (isset($this->action['namespace']) && $this->action['namespace'] != 'core') {
-            /* if a custom 3rd party path */
-            $f = $this->action['namespace_path'].$controller;
+        if (isset($namespace['name']) && $namespace['name'] != 'core') {
+            $paths[] = $namespace['path'].'controllers/'.trim($theme,'/').'/';
+            if ($theme != 'default') {
+                $paths[] = $namespace['path'].'controllers/default/';
+            }
+            $paths[] = $namespace['path'].'controllers/';
+
+            /* deprecated old usage */
+            $paths[] = $namespace['path'].trim($theme,'/');
+            if ($theme != 'default') {
+                $paths[] = $namespace['path'].'default/';
+            }
+            $paths[] = $namespace['path'];
 
         } else {
-            $f = $this->action['namespace_path'].'controllers/'.$theme.'/'.$controller;
-            /* if custom theme doesnt have controller, go to default theme */
-            if (!file_exists($f.'.php')) {
-                $f = $this->action['namespace_path'].'controllers/default/'.$controller;
+            $paths[] = $namespace['path'].'controllers/'.trim($theme,'/').'/';
+            if ($theme != 'default') {
+                $paths[] = $namespace['path'].'controllers/default/';
             }
+            $paths[] = $namespace['path'].'controllers/';
         }
-        return $f;
-    }
+        return $paths;
 
-    /**
-     * Gets the parsed controller filename and checks for its existence.
-     *
-     * @access protected
-     * @param string $f The filename to parse.
-     * @return mixed The parsed filename, or boolean false if invalid.
-     */
-    protected function getControllerFilename($f = '') {
-        if (empty($f)) return false;
-
-        /* if action is a directory, load base index.php */
-        if (substr($f,strlen($f)-1,1) == '/') { $f .= 'index'; }
-        /* append .php */
-        if (file_exists($f.'.php')) {
-            $f = $f.'.php';
-        /* for actions that don't have trailing / but reference index */
-        } elseif (file_exists($f.'/index.php')) {
-            $f = $f.'/index.php';
-        } else {
-            $this->modx->log(modX::LOG_LEVEL_ERROR,'Could not find action file at: '.$f);
-            $f = $f.'.php';
-        }
-        return $f;
-    }
-
-    /**
-     * Grabs a stripped version of modx to prevent caching of JS after upgrades
-     *
-     * @access private
-     * @return string The parsed version string
-     */
-    private function _prepareVersionPostfix() {
-        $version = $this->modx->getVersionData();
-        return str_replace(array('.','-'),'',$version['full_version']);
-    }
-
-    /**
-     * Appends a version postfix to a script tag
-     *
-     * @access private
-     * @param string $str The script tag to append the version to
-     * @param string $version The version to append
-     * @return string The adjusted script tag
-     */
-    private function _postfixVersionToScript($str,$version) {
-        $pos = strpos($str,'.js');
-        $pos2 = strpos($str,'src="'); /* only apply to externals */
-        if ($pos && $pos2) {
-            $s = substr($str,0,strpos($str,'"></script>'));
-            if (!empty($s) && substr($s,strlen($s)-3,strlen($s)) == '.js') {
-                $str = $s.'?v='.$version.'"></script>';
-            }
-        }
-        return $str;
-    }
-
-    /**
-     * Registers CSS/JS to manager interface
-     */
-    public function registerCssJs() {
-        $versionPostFix = $this->_prepareVersionPostfix();
-        /* if true, use compressed JS */
-        if ($this->modx->getOption('compress_js',null,false)) {
-            foreach ($this->modx->sjscripts as &$scr) {
-                $pos = strpos($scr,'.js');
-                if ($pos) {
-                    $newUrl = substr($scr,0,$pos).'-min'.substr($scr,$pos,strlen($scr));
-                } else { continue; }
-                $pos = strpos($newUrl,'modext/');
-                if ($pos) {
-                    $pos = $pos+7;
-                    $newUrl = substr($newUrl,0,$pos).'build/'.substr($newUrl,$pos,strlen($newUrl));
-                }
-
-                $path = str_replace(array(
-                    $this->modx->getOption('manager_url').'assets/modext/',
-                    '<script type="text/javascript" src="',
-                    '"></script>',
-                ),'',$newUrl);
-
-                if (file_exists($this->modx->getOption('manager_path').'assets/modext/'.$path)) {
-                    $scr = $newUrl;
-                }
-                /* append version string */
-                $scr = $this->_postfixVersionToScript($scr,$versionPostFix);
-            }
-        } else {
-            foreach ($this->modx->sjscripts as &$scr) {
-                $scr = $this->_postfixVersionToScript($scr,$versionPostFix);
-            }
-        }
-        /* assign css/js to header */
-        $this->modx->smarty->assign('cssjs',$this->modx->sjscripts);
     }
 
     /**
@@ -416,6 +284,7 @@ class modManagerResponse extends modResponse {
         $topics[] = $topic;
         return $this->setLangTopics($topics);
     }
+
     /**
      * Adds a lexicon topic to this page's language topics to load
      *
@@ -425,6 +294,7 @@ class modManagerResponse extends modResponse {
         $topics = $this->modx->smarty->get_template_vars('_lang_topics');
         return explode(',',$topics);
     }
+
     /**
      * Sets the language topics for this page
      *

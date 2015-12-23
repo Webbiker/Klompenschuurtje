@@ -6,7 +6,7 @@
  */
 require_once MODX_CORE_PATH . 'model/modx/modrequest.class.php';
 /**
- * Encapsulates the interaction of MODx manager with an HTTP request.
+ * Encapsulates the interaction of MODX manager with an HTTP request.
  *
  * {@inheritdoc}
  *
@@ -33,12 +33,16 @@ class modManagerRequest extends modRequest {
      * @var mixed The default action to load from.
      * @access public
      */
-    public $defaultAction = 0;
+    public $defaultAction = 'welcome';
+
+    public $namespace = 'core';
+    public $namespaceVar = 'namespace';
 
     /**
      * Instantiates a modManagerRequest object.
      *
-     * {@inheritdoc}
+     * @param modX $modx
+     * @return modManagerRequest
      */
     function __construct(modX & $modx) {
         parent :: __construct($modx);
@@ -52,6 +56,8 @@ class modManagerRequest extends modRequest {
      * @return boolean True if successful.
      */
     public function initialize() {
+        $this->sanitizeRequest();
+
         if (!defined('MODX_INCLUDES_PATH')) {
             define('MODX_INCLUDES_PATH',$this->modx->getOption('manager_path').'includes/');
         }
@@ -69,14 +75,13 @@ class modManagerRequest extends modRequest {
         $this->modx->smarty->setCachePath($this->modx->context->get('key').'/smarty/'.$theme.'/');
 
         $this->modx->smarty->assign('_config',$this->modx->config);
-        $this->modx->smarty->assign_by_ref('modx',$this->modx);
+        $this->modx->smarty->assignByRef('modx',$this->modx);
 
-        /* send anti caching headers */
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
-        header('Cache-Control: no-store, no-cache, must-revalidate');
-        header('Cache-Control: post-check=0, pre-check=0', false);
-        header('Pragma: no-cache');
+        if (!array_key_exists('a', $_REQUEST)) {
+            $_REQUEST[$this->actionVar] = $this->modx->getOption('welcome_action', null, $this->defaultAction);
+            $_REQUEST[$this->namespaceVar] = $this->modx->getOption('welcome_namespace', null, 'core');
+        }
+
         /* send the charset header */
         header('Content-Type: text/html; charset='.$this->modx->getOption('modx_charset'));
 
@@ -88,8 +93,6 @@ class modManagerRequest extends modRequest {
         /* include version info */
         if ($this->modx->version === null) $this->modx->getVersionData();
 
-        /* if not validated, load login page */
-        $modx = & $this->modx;
 
         if ($this->modx->getOption('manager_language')) {
             $this->modx->setOption('cultureKey',$this->modx->getOption('manager_language'));
@@ -97,50 +100,11 @@ class modManagerRequest extends modRequest {
 
         /* load default core cache file of lexicon strings */
         $this->modx->lexicon->load('core:default');
-
-        if (!isset($this->modx->user) || !$this->modx->user->isAuthenticated('mgr')) {
-            $theme = $this->modx->getOption('manager_theme',null,'default');
-            include_once $this->modx->getOption('manager_path') . 'controllers/'.$theme.'/security/login.php';
-            @session_write_close();
-            exit();
-        } else {
-            /* log user action */
-            if (getenv('HTTP_CLIENT_IP')) {
-                $ip= getenv('HTTP_CLIENT_IP');
-            } else {
-                if (getenv('HTTP_X_FORWARDED_FOR')) {
-                    $ip= getenv('HTTP_X_FORWARDED_FOR');
-                } else {
-                    if (getenv('REMOTE_ADDR')) {
-                        $ip= getenv('REMOTE_ADDR');
-                    } else {
-                        $ip= 'UNKNOWN';
-                    }
-                }
-            }
-            $_SESSION['ip']= $ip;
-            $itemid= isset ($_REQUEST[$this->modx->getOption('request_param_id')]) ? $_REQUEST[$this->modx->getOption('request_param_id')] : 0;
-            $lasthittime= time();
-            $a= isset ($_REQUEST['a']) ? $_REQUEST['a'] : '';
-            if ($a != 1 && $a != 0) {
-                $itemid= intval($itemid);
-                $activeUserTbl= $this->modx->getTableName('modActiveUser');
-                $sql= "REPLACE INTO {$activeUserTbl} (internalKey, username, lasthit, action, id, ip) values(" . $this->modx->getLoginUserID('mgr') . ", '{$_SESSION['mgrShortname']}', '{$lasthittime}', '{$a}', {$itemid}, '{$ip}')";
-                if (!$rs= $this->modx->exec($sql)) {
-                    $this->modx->log(modX::LOG_LEVEL_ERROR, 'Error logging active user information! SQL: ' . $sql . "\n" . print_r($this->modx->errorInfo(), 1));
-                }
-            }
-        }
-
-        if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
-            $this->loadActionMap();
-        }
-
         return true;
     }
 
     /**
-     * The primary MODx manager request handler (a.k.a. controller).
+     * The primary MODX manager request handler (a.k.a. controller).
      *
      * @access public
      * @return boolean True if a request is handled without interruption.
@@ -152,7 +116,12 @@ class modManagerRequest extends modRequest {
         $this->modx->invokeEvent('OnHandleRequest');
 
         /* save page to manager object. allow custom actionVar choice for extending classes. */
-        $this->action = isset($_REQUEST[$this->actionVar]) ? $_REQUEST[$this->actionVar] : $this->defaultAction;
+        $this->action = !empty($_REQUEST[$this->actionVar]) ? trim($_REQUEST[$this->actionVar]) : $this->defaultAction;
+        $this->action = preg_replace("/[^A-Za-z0-9_\-\/]/",'',$this->action);
+        $this->action = trim(trim(str_replace('//','',$this->action),'/'));
+        $this->namespace = !empty($_REQUEST[$this->namespaceVar]) ? trim($_REQUEST[$this->namespaceVar]) : 'core';
+        $this->namespace = preg_replace("/[^A-Za-z0-9_\-\/]/",'',$this->namespace);
+        $this->namespace = trim(trim(str_replace('//','',$this->namespace),'/'));
 
         /* invoke OnManagerPageInit event */
         $this->modx->invokeEvent('OnManagerPageInit',array('action' => $this->action));
@@ -160,14 +129,17 @@ class modManagerRequest extends modRequest {
     }
 
     /**
-     * {@inheritdoc}
-     *
      * This implementation adds register logging capabilities via $_POST vars
      * when the error handler is loaded.
+     *
+     * @param string $class
      */
     public function loadErrorHandler($class = 'modError') {
         parent :: loadErrorHandler($class);
-        $this->registerLogging($_POST);
+        $data = array_merge($_POST, array(
+            'register_class' => 'registry.modFileRegister'
+        ));
+        $this->registerLogging($data);
     }
 
     /**
@@ -179,7 +151,11 @@ class modManagerRequest extends modRequest {
     public function loadActionMap() {
         $loaded = false;
         $cacheKey= $this->modx->context->get('key') . '/actions';
-        $map = $this->modx->cacheManager->get($cacheKey);
+        $map = $this->modx->cacheManager->get($cacheKey, array(
+            xPDO::OPT_CACHE_KEY => $this->modx->getOption('cache_action_map_key', null, 'action_map'),
+            xPDO::OPT_CACHE_HANDLER => $this->modx->getOption('cache_action_map_handler', null, $this->modx->getOption(xPDO::OPT_CACHE_HANDLER)),
+            xPDO::OPT_CACHE_FORMAT => (integer) $this->modx->getOption('cache_action_map_format', null, $this->modx->getOption(xPDO::OPT_CACHE_FORMAT, null, xPDOCacheManager::CACHE_PHP)),
+        ));
         if (!$map) {
             $map = $this->modx->cacheManager->generateActionMap($cacheKey);
         }
@@ -191,7 +167,7 @@ class modManagerRequest extends modRequest {
     }
 
     /**
-     * Prepares the MODx response to a mgr request that is being handled.
+     * Prepares the MODX response to a mgr request that is being handled.
      *
      * @access public
      * @param array $options An array of options

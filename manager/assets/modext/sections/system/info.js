@@ -1,6 +1,6 @@
 /**
  * Loads the system info page
- * 
+ *
  * @class MODx.page.SystemInfo
  * @extends MODx.Component
  * @param {Object} config An object of config properties
@@ -11,7 +11,6 @@ MODx.page.SystemInfo = function(config) {
     Ext.applyIf(config,{
         components: [{
             xtype: 'modx-panel-system-info'
-            ,renderTo: 'modx-panel-system-info-div'
             ,data: config.data
         }]
     });
@@ -22,106 +21,110 @@ Ext.reg('modx-page-system-info',MODx.page.SystemInfo);
 
 
 var viewPHPInfo = function() {
-    window.location.href= MODx.config.connectors_url+'system/phpinfo.php?HTTP_MODAUTH='+MODx.siteId;
+    window.open(MODx.config.connector_url+'?action=system/phpinfo&HTTP_MODAUTH='+MODx.siteId);
 };
 
 MODx.panel.SystemInfo = function(config) {
     config = config || {};
-
     var info = [{
-        html: '<p>'+_('sysinfo_desc')+'</p>'
-        ,id: 'modx-sysinfo-msg'
-    },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('modx_version')
+        fieldLabel: _('modx_version')
         ,name: 'modx_version'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('version_codename')
+        fieldLabel: _('version_codename')
         ,name: 'code_name'
     },{
         html: '<a href="javascript:;" onclick="viewPHPInfo();return false;">'+_('view')+'</a>'
         ,fieldLabel: 'phpinfo()'
         ,name: 'phpinfo'
-        ,value: ''
+        ,xtype: 'container'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('servertime')
+        fieldLabel: _('servertime')
         ,name: 'servertime'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('localtime')
+        fieldLabel: _('localtime')
         ,name: 'localtime'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('serveroffset')
+        fieldLabel: _('serveroffset')
         ,name: 'serveroffset'
     },{
         html: '<hr />'
+        ,xtype: 'container'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('extjs_version')
+        fieldLabel: _('extjs_version')
         ,name: 'extjs_version'
-        ,value: '3.3.0'
+        ,value: '3.4.1'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('smarty_version')
+        fieldLabel: _('smarty_version')
         ,name: 'smarty_version'
         ,value: '3.0.4'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('phpmailer_version')
+        fieldLabel: _('phpmailer_version')
         ,name: 'phpmailer_version'
-        ,value: '2.0.4'
+        ,value: '5.2.13'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('magpie_version')
+        fieldLabel: _('magpie_version')
         ,name: 'magpie_version'
-        ,value: '0.7a'
+        ,value: '0.72'
     },{
         html: '<hr />'
+        ,xtype: 'container'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('database_type')
+        fieldLabel: _('database_type')
         ,name: 'database_type'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('database_version')
+        fieldLabel: _('database_version')
         ,name: 'database_version'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('database_charset')
+        fieldLabel: _('database_charset')
         ,name: 'database_charset'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('database_name')
+        fieldLabel: _('database_name')
         ,name: 'database_name'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('database_server')
+        fieldLabel: _('database_server')
         ,name: 'database_server'
     },{
-        xtype: 'statictextfield'
-        ,fieldLabel: _('table_prefix')
+        fieldLabel: _('table_prefix')
         ,name: 'table_prefix'
     }];
     if (config.data) {
         for (var c in config.data) {
-            info.push({html: '<hr />'});
+            info.push({
+                html: '<hr />'
+                ,xtype: 'container'
+            });
             for (var d in config.data[c]) {
                 info.push({
-                    xtype: 'statictextfield'
-                    ,fieldLabel: d
+                    fieldLabel: d
                     ,name: d
                     ,value: config.data[c][d]
                 });
             }
         }
     }
-    Ext.applyIf(config,{
+    var pnl = [{
+        html: '<p>'+_('sysinfo_desc')+'</p>'
+        ,id: 'modx-sysinfo-msg'
+        ,bodyCssClass: 'panel-desc'
+    },{
+        xtype: 'panel'
+        ,border: false
+        ,cls:'main-wrapper'
+        ,layout: 'form'
+        ,defaults: {
+            border: false
+            ,msgTarget: 'side'
+            ,anchor: '100%'
+        }
+        ,defaultType: 'displayfield'
+        ,items: [info]
+    }];
+
+    Ext.applyIf(config, {
         id: 'modx-panel-system-info'
-        ,url: MODx.config.connectors_url+'system/index.php'
-        ,layout: 'fit'
+        ,url: MODx.config.connector_url
+        ,layout: 'anchor'
+        ,cls: 'container'
         ,items: [{
             html: '<h2>'+_('view_sysinfo')+'</h2>'
             ,id: 'modx-error-log-header'
@@ -130,34 +133,37 @@ MODx.panel.SystemInfo = function(config) {
             ,anchor: '100%'
         },MODx.getPageStructure([{
             title: _('view_sysinfo')
-            ,bodyStyle: 'padding: 15px;'
             ,layout: 'form'
             ,id: 'modx-plugin-form'
             ,labelWidth: 230
-            ,defaults: { border: false ,msgTarget: 'side', anchor: '97%'}
-            ,items: info
+            ,defaults: { border: false }
+            ,items: pnl
         },{
             title: _('db_header')
-            ,bodyStyle: 'padding: 15px;'
             ,id: 'modx-sysinfo-dbtables'
+            ,layout: 'anchor'
             ,items: [{
-                html: '<p>'+_('db_info')+'</p>'
+                html: '<p>'+_('db_info_' + MODx.config.dbtype)+'</p>'
                 ,id: 'modx-sysinfo-dbtables-msg'
+                ,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
                 xtype: 'modx-grid-databasetables'
+                ,cls:'main-wrapper'
                 ,preventRender: true
             }]
         },{
             title: _('recent_docs')
-            ,bodyStyle: 'padding: 15px;'
             ,id: 'modx-sysinfo-recent-docs'
+            ,layout: 'anchor'
             ,items: [{
                 html: '<p>'+_('sysinfo_activity_message')+'</p>'
                 ,id: 'modx-sysinfo-recent-docs-msg'
+                ,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
                 xtype: 'modx-grid-resource-active'
+                ,cls:'main-wrapper'
                 ,title: _('recent_docs')
                 ,preventRender: true
             }]
@@ -169,7 +175,7 @@ MODx.panel.SystemInfo = function(config) {
         }
     });
     MODx.panel.SystemInfo.superclass.constructor.call(this,config);
-}
+};
 Ext.extend(MODx.panel.SystemInfo,MODx.FormPanel,{
 
     initialized: false
@@ -181,13 +187,16 @@ Ext.extend(MODx.panel.SystemInfo,MODx.FormPanel,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'info'
+                action: 'system/info'
             }
             ,listeners: {
-            	'success': {fn:function(r) {
-                    this.getForm().setValues(r.object);
-                    this.initialized = true;
-            	},scope:this}
+                'success': {
+                    fn: function(r) {
+                        this.getForm().setValues(r.object);
+                        this.initialized = true;
+                    }
+                    ,scope: this
+                }
             }
         });
     }

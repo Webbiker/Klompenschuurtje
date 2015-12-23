@@ -1,11 +1,22 @@
 <?php
 /**
+ * @package modx
+ */
+/**
  * Assists with directory/file manipulation
  *
  * @package modx
  */
 class modFileHandler {
+    /**
+     * An array of configuration properties for the class
+     * @var array $config
+     */
     public $config = array();
+    /**
+     * The current context in which this File Manager instance should operate
+     * @var modContext|null $context
+     */
     public $context = null;
 
     /**
@@ -55,18 +66,12 @@ class modFileHandler {
     /**
      * Get the modX base path for the user.
      *
-     * @param string $prependBasePath If true, will prepend the modX base path
-     * to the return value. Defaults to true.
      * @return string The base path
      */
-    public function getBasePath($prependBasePath = false) {
-        $root = $this->context->getOption('filemanager_path', '', $this->config);
-        if (empty($root)) {
-            /* TODO: deprecated - remove this in 2.1 */
-            $root = $this->context->getOption('rb_base_dir', MODX_BASE_PATH, $this->config);
-        }
+    public function getBasePath() {
+        $basePath = $this->context->getOption('filemanager_path', '', $this->config);
         /* expand placeholders */
-        $root = str_replace(array(
+        $basePath = str_replace(array(
             '{base_path}',
             '{core_path}',
             '{assets_path}',
@@ -74,29 +79,29 @@ class modFileHandler {
             $this->context->getOption('base_path', MODX_BASE_PATH, $this->config),
             $this->context->getOption('core_path', MODX_CORE_PATH, $this->config),
             $this->context->getOption('assets_path', MODX_ASSETS_PATH, $this->config),
-        ), $root);
-
-        /* check for absolute/relative */
-        $relative = $this->context->getOption('filemanager_path_relative', true, $this->config);
-        if ($relative || $prependBasePath) {
-            $root = $this->context->getOption('base_path', MODX_BASE_PATH, $this->config) . $root;
-        }
-
-        return $this->postfixSlash($root);
+        ), $basePath);
+        return !empty($basePath) ? $this->postfixSlash($basePath) : $basePath;
     }
 
     /**
      * Get base URL of file manager
+     *
+     * @return string The base URL
      */
-    public function getBaseUrl($getRelative = false) {
+    public function getBaseUrl() {
         $baseUrl = $this->context->getOption('filemanager_url', $this->context->getOption('rb_base_url', MODX_BASE_URL, $this->config), $this->config);
 
-        /* check for absolute/relative */
-        $sourceRelative = $this->context->getOption('filemanager_url_relative', true, $this->config);
-        if (!$getRelative && $sourceRelative) {
-            $baseUrl = $this->context->getOption('base_url', MODX_BASE_URL, $this->config) . $baseUrl;
-        }
-        return $this->postfixSlash($baseUrl);
+        /* expand placeholders */
+        $baseUrl = str_replace(array(
+            '{base_url}',
+            '{core_url}',
+            '{assets_url}',
+        ), array(
+            $this->context->getOption('base_url', MODX_BASE_PATH, $this->config),
+            $this->context->getOption('core_url', MODX_CORE_PATH, $this->config),
+            $this->context->getOption('assets_url', MODX_ASSETS_PATH, $this->config),
+        ), $baseUrl);
+        return !empty($baseUrl) ? $this->postfixSlash($baseUrl) : $baseUrl;
     }
 
     /**
@@ -106,13 +111,15 @@ class modFileHandler {
      * @return string The sanitized path
      */
     public function sanitizePath($path) {
-        $path = str_replace(array('../', './'), '', $path);
-        $path = strtr($path, '\\', '/');
-        $path = str_replace('//', '/', $path);
-
-        return $path;
+        return preg_replace(array('/\.*[\/|\\\]/i', '/[\/|\\\]+/i'), array('/', '/'), $path);
     }
 
+    /**
+     * Ensures that the passed path has a / at the end
+     * 
+     * @param string $path
+     * @return string The postfixed path
+     */
     public function postfixSlash($path) {
         $len = strlen($path);
         if (substr($path, $len - 1, $len) != '/') {
@@ -121,6 +128,12 @@ class modFileHandler {
         return $path;
     }
 
+    /**
+     * Gets the directory path for a given file
+     *
+     * @param string $fileName The path for a file
+     * @return string The directory path of the given file
+     */
     public function getDirectoryFromFile($fileName) {
         $dir = dirname($fileName);
         return $this->postfixSlash($dir);
@@ -146,8 +159,11 @@ class modFileHandler {
 }
 
 /**
- * Abstract class for handling file system resources (files or folders). Not to
- * be instantiated directly - you should implement your own derivative class.
+ * Abstract class for handling file system resources (files or folders).
+ *
+ * Not to be instantiated directly - you should implement your own derivative class.
+ *
+ * @package modx
  */
 abstract class modFileSystemResource {
     /**
@@ -273,6 +289,8 @@ abstract class modFileSystemResource {
      * Alias for chgrp
      *
      * @see chgrp
+     * @param string $grp
+     * @return boolean
      */
     public function setGroup($grp) {
         return $this->chgrp($grp);
@@ -306,8 +324,8 @@ abstract class modFileSystemResource {
     /**
      * Gets the parent containing directory of this fs resource
      *
-     * @param <type> $raw Whether or not to return a modDirectory or string path
-     * @return modDirectory/string Returns either a modDirectory object of the
+     * @param boolean $raw Whether or not to return a modDirectory or string path
+     * @return modDirectory|string Returns either a modDirectory object of the
      * parent directory, or the absolute path of the parent, depending on
      * whether or not $raw is set to true.
      */
@@ -316,13 +334,15 @@ abstract class modFileSystemResource {
         $ppath = str_replace('//', '/', $ppath);
         if ($raw) return $ppath;
 
-        $directory = $this->fileHandler->make($ppath);
+        $directory = $this->fileHandler->make($ppath,array(),'modDirectory');
         return $directory;
     }
 }
 
 /**
  * File implementation of modFileSystemResource
+ *
+ * @package modx
  */
 class modFile extends modFileSystemResource {
     /**
@@ -332,6 +352,8 @@ class modFile extends modFileSystemResource {
 
     /**
      * @see modFileSystemResource.parseMode
+     * @param string $mode
+     * @return boolean
      */
     protected function parseMode($mode = '') {
         if (empty($mode)) $mode = $this->fileHandler->context->getOption('new_file_permissions', '0644', $this->fileHandler->config);
@@ -351,14 +373,16 @@ class modFile extends modFileSystemResource {
 
         $fp = @fopen($this->path, 'w+');
         if ($fp) {
-            $result = @fwrite($fp, $content);
+            @fwrite($fp, $content);
             @fclose($fp);
+
+            $result = file_exists($this->path);
         }
         return $result;
     }
 
     /**
-     * Temporarly set (but not save) the content of the file
+     * Temporarily set (but not save) the content of the file
      * @param string $content The content
      */
     public function setContent($content) {
@@ -371,13 +395,22 @@ class modFile extends modFileSystemResource {
      * @return string The contents of the file
      */
     public function getContents() {
-        return @file_get_contents($this->path);
+        $content = @file_get_contents($this->path);
+
+        if ($content === false) {
+            $content = $this->content;
+        }
+
+        return $content;
     }
 
     /**
      * Alias for save()
      *
      * @see modDirectory::write
+     * @param string $content
+     * @param string $mode
+     * @return boolean
      */
     public function write($content = null, $mode = 'w+') {
         return $this->save($content, $mode);
@@ -388,7 +421,8 @@ class modFile extends modFileSystemResource {
      *
      * @param string $content Optional. If not using setContent, this will set
      * the content to write.
-     * @return mixed The result of the fwrite
+     * @param string $mode The mode in which to write
+     * @return boolean The result of the fwrite
      */
     public function save($content = null, $mode = 'w+') {
         if ($content !== null) $this->content = $content;
@@ -409,7 +443,17 @@ class modFile extends modFileSystemResource {
      * @return int The size of the file, in bytes
      */
     public function getSize() {
-        return filesize($this->path);
+        $size = @filesize($this->path);
+
+        if ($size === false) {
+            if ( function_exists('mb_strlen') ) {
+                $size = mb_strlen($this->content, '8bit');
+            } else {
+                $size = strlen($this->content);
+            }
+        }
+
+        return $size;
     }
 
     /**
@@ -418,7 +462,7 @@ class modFile extends modFileSystemResource {
      * @param string $timeFormat The format, in strftime format, of the time
      * @return string The formatted time
      */
-    public function getLastAccessed($timeFormat = '%b %d, %Y %H:%I:%S %p') {
+    public function getLastAccessed($timeFormat = '%b %d, %Y %I:%M:%S %p') {
         return strftime($timeFormat, fileatime($this->path));
     }
 
@@ -428,7 +472,7 @@ class modFile extends modFileSystemResource {
      * @param string $timeFormat The format, in strftime format, of the time
      * @return string The formatted time
      */
-    public function getLastModified($timeFormat = '%b %d, %Y %H:%I:%S %p') {
+    public function getLastModified($timeFormat = '%b %d, %Y %I:%M:%S %p') {
         return strftime($timeFormat, filemtime($this->path));
     }
 
@@ -451,6 +495,29 @@ class modFile extends modFileSystemResource {
     }
 
     /**
+     * Sends the file as a download
+     * 
+     * @param array $options Optional configuration options like mimetype and filename
+     * 
+     * @return downloadable file
+     */
+    public function download($options = array()) {
+        $options = array_merge(array(
+            'mimetype' => 'application/octet-stream',
+            'filename' => $this->getBasename(),
+        ), $options);
+
+        $output = $this->getContents();
+
+        header('Content-type: ' . $options['mimetype']);
+        header('Content-Disposition: attachment; filename=' . $options['filename']);
+        header('Content-Length: ' . $this->getSize());
+        
+        echo $output;
+        die();
+    }
+
+    /**
      * Deletes the file from the filesystem
      *
      * @return boolean True if successful
@@ -463,6 +530,8 @@ class modFile extends modFileSystemResource {
 
 /**
  * Representation of a directory
+ *
+ * @package modx
  */
 class modDirectory extends modFileSystemResource {
     /**
@@ -473,13 +542,21 @@ class modDirectory extends modFileSystemResource {
      */
     public function create($mode = '') {
         $mode = $this->parseMode($mode);
+        if (empty($mode)) {
+            $mode = $this->fileHandler->modx->getOption('new_folder_permissions',null,0775);
+        }
         if ($this->exists()) return false;
 
-        return $this->fileHandler->modx->cacheManager->writeTree($this->path);
+        return $this->fileHandler->modx->cacheManager->writeTree($this->path,array(
+            'new_folder_permissions' => $mode,
+        ));
     }
 
     /**
      * @see modFileSystemResource::parseMode
+     *
+     * @param string $mode
+     * @return boolean
      */
     protected function parseMode($mode = '') {
         if (empty($mode)) $mode = $this->fileHandler->context->getOption('new_folder_permissions', '0755', $this->fileHandler->config);

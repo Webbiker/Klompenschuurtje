@@ -2,6 +2,7 @@ MODx.panel.FCProfiles = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         id: 'modx-panel-fc-profiles'
+		,cls: 'container'
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
              html: '<h2>'+_('form_customization')+'</h2>'
@@ -10,15 +11,17 @@ MODx.panel.FCProfiles = function(config) {
             ,id: 'modx-fcp-header'
         },MODx.getPageStructure([{
             title: _('profiles')
-            ,bodyStyle: 'padding: 15px;'
             ,autoHeight: true
+			,layout: "form"
             ,items: [{
                 html: '<p>'+_('form_customization_msg')+'</p>'
+				,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
                 title: ''
                 ,preventRender: true
                 ,xtype: 'modx-grid-fc-profile'
+				,cls:'main-wrapper'
             }]
         }],{
             id: 'modx-form-customization-tabs'
@@ -34,10 +37,14 @@ MODx.grid.FCProfile = function(config) {
     this.sm = new Ext.grid.CheckboxSelectionModel();
     Ext.applyIf(config,{
         id: 'modx-grid-fc-profile'
-        ,url: MODx.config.connectors_url+'security/forms/profile.php'
+        ,url: MODx.config.connector_url
+        ,baseParams: {
+            action: 'security/forms/profile/getlist'
+        }
         ,fields: ['id','name','description','usergroups','active','rank','sets','perm']
         ,paging: true
         ,autosave: true
+        ,save_action: 'security/forms/profile/updatefromgrid'
         ,sm: this.sm
         ,remoteSort: true
         ,columns: [this.sm,{
@@ -76,7 +83,8 @@ MODx.grid.FCProfile = function(config) {
             text: _('profile_create')
             ,scope: this
             ,handler: this.createProfile
-        },'-',{
+            ,cls:'primary-button'
+        },{
             text: _('bulk_actions')
             ,menu: [{
                 text: _('selected_activate')
@@ -86,15 +94,16 @@ MODx.grid.FCProfile = function(config) {
                 text: _('selected_deactivate')
                 ,handler: this.deactivateSelected
                 ,scope: this
-            },'-',{
+            },{
                 text: _('selected_remove')
                 ,handler: this.removeSelected
                 ,scope: this
             }]
-        },{
+        },'->',{
             xtype: 'textfield'
             ,name: 'search'
             ,id: 'modx-fcp-search'
+            ,cls: 'x-form-filter'
             ,emptyText: _('filter_by_search')
             ,listeners: {
                 'change': {fn: this.search, scope: this}
@@ -112,6 +121,7 @@ MODx.grid.FCProfile = function(config) {
         },{
             xtype: 'button'
             ,id: 'modx-filter-clear'
+            ,cls: 'x-form-filter-clear'
             ,text: _('filter_clear')
             ,listeners: {
                 'click': {fn: this.clearFilter, scope: this}
@@ -165,7 +175,7 @@ Ext.extend(MODx.grid.FCProfile,MODx.grid.Grid,{
             if (p.indexOf('premove') != -1) {
                 m.push('-',{
                     text: _('remove')
-                    ,handler: this.confirm.createDelegate(this,['remove','profile_remove_confirm'])
+                    ,handler: this.confirm.createDelegate(this,['security/forms/profile/remove','profile_remove_confirm'])
                 });
             }
         }
@@ -179,16 +189,15 @@ Ext.extend(MODx.grid.FCProfile,MODx.grid.Grid,{
         var nv = newValue || tf;
         this.getStore().baseParams.search = Ext.isEmpty(nv) || Ext.isObject(nv) ? '' : nv;
         this.getBottomToolbar().changePage(1);
-        this.refresh();
+        //this.refresh();
         return true;
     }
     ,clearFilter: function() {
     	this.getStore().baseParams = {
-            action: 'getList'
+            action: 'security/forms/profile/getlist'
     	};
         Ext.getCmp('modx-fcp-search').reset();
     	this.getBottomToolbar().changePage(1);
-        this.refresh();
     }
 
     ,createProfile: function(btn,e) {
@@ -208,13 +217,13 @@ Ext.extend(MODx.grid.FCProfile,MODx.grid.Grid,{
 
     ,updateProfile: function(btn,e) {
         var r = this.menu.record;
-        location.href = '?a='+MODx.action['security/forms/profile/update']+'&id='+r.id;
+        location.href = '?a=security/forms/profile/update&id='+r.id;
     }
     ,duplicateProfile: function(btn,e) {
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'duplicate'
+                action: 'security/forms/profile/duplicate'
                 ,id: this.menu.record.id
             }
             ,listeners: {
@@ -227,7 +236,7 @@ Ext.extend(MODx.grid.FCProfile,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'activate'
+                action: 'security/forms/profile/activate'
                 ,id: this.menu.record.id
             }
             ,listeners: {
@@ -243,7 +252,7 @@ Ext.extend(MODx.grid.FCProfile,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'activateMultiple'
+                action: 'security/forms/profile/activateMultiple'
                 ,profiles: cs
             }
             ,listeners: {
@@ -259,7 +268,7 @@ Ext.extend(MODx.grid.FCProfile,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'deactivate'
+                action: 'security/forms/profile/deactivate'
                 ,id: this.menu.record.id
             }
             ,listeners: {
@@ -274,7 +283,7 @@ Ext.extend(MODx.grid.FCProfile,MODx.grid.Grid,{
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
-                action: 'deactivateMultiple'
+                action: 'security/forms/profile/deactivateMultiple'
                 ,profiles: cs
             }
             ,listeners: {
@@ -295,7 +304,7 @@ Ext.extend(MODx.grid.FCProfile,MODx.grid.Grid,{
             ,text: _('profile_remove_multiple_confirm')
             ,url: this.config.url
             ,params: {
-                action: 'removeMultiple'
+                action: 'security/forms/profile/removeMultiple'
                 ,profiles: cs
             }
             ,listeners: {
@@ -315,35 +324,37 @@ MODx.window.CreateFCProfile = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('profile_create')
-        ,url: MODx.config.connectors_url+'security/forms/profile.php'
-        ,action: 'create'
-        ,height: 150
-        ,width: 375
+        ,url: MODx.config.connector_url
+        ,action: 'security/forms/profile/create'
+        // ,height: 150
+        // ,width: 375
         ,fields: [{
             xtype: 'textfield'
             ,name: 'name'
             ,fieldLabel: _('name')
             ,id: 'modx-fccp-name'
             ,allowBlank: false
-            ,anchor: '90%'
+            ,anchor: '100%'
 
         },{
             xtype: 'textarea'
             ,name: 'description'
             ,fieldLabel: _('description')
             ,id: 'modx-fccp-description'
-            ,anchor: '90%'
+            ,anchor: '100%'
 
         },{
-            xtype: 'checkbox'
-            ,fieldLabel: _('active')
+            xtype: 'xcheckbox'
+            ,boxLabel: _('active')
+            ,hideLabel: true
             ,name: 'active'
             ,id: 'modx-fccp-active'
             ,inputValue: 1
             ,value: 1
             ,checked: true
-            ,anchor: '90%'
+            ,anchor: '100%'
         }]
+        ,keys: []
     });
     MODx.window.CreateFCProfile.superclass.constructor.call(this,config);
 };

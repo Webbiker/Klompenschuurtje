@@ -7,23 +7,31 @@ $xpdo_meta_map['modElement']= array (
   'package' => 'modx',
   'version' => '1.1',
   'table' => 'site_element',
-  'aggregates' => 
+  'extends' => 'modAccessibleSimpleObject',
+  'fields' => 
   array (
-    'PropertySets' => 
+    'source' => 0,
+    'property_preprocess' => 0,
+  ),
+  'fieldMeta' => 
+  array (
+    'source' => 
     array (
-      'class' => 'modElementPropertySet',
-      'local' => 'id',
-      'foreign' => 'element',
-      'owner' => 'local',
-      'cardinality' => 'many',
+      'dbtype' => 'int',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
+      'index' => 'fk',
     ),
-    'CategoryAcls' => 
+    'property_preprocess' => 
     array (
-      'class' => 'modAccessCategory',
-      'local' => 'category',
-      'foreign' => 'target',
-      'owner' => 'local',
-      'cardinality' => 'many',
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'attributes' => 'unsigned',
+      'phptype' => 'boolean',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'composites' => 
@@ -35,6 +43,25 @@ $xpdo_meta_map['modElement']= array (
       'foreign' => 'target',
       'owner' => 'local',
       'cardinality' => 'many',
+    ),
+  ),
+  'aggregates' => 
+  array (
+    'CategoryAcls' => 
+    array (
+      'class' => 'modAccessCategory',
+      'local' => 'category',
+      'foreign' => 'target',
+      'owner' => 'local',
+      'cardinality' => 'many',
+    ),
+    'Source' => 
+    array (
+      'class' => 'sources.modMediaSource',
+      'local' => 'source',
+      'foreign' => 'id',
+      'owner' => 'foreign',
+      'cardinality' => 'one',
     ),
   ),
 );

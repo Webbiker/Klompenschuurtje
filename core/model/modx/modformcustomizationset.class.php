@@ -1,19 +1,39 @@
 <?php
 /**
  * @package modx
- * @subpackage mysql
+ */
+/**
+ * A collection of rules for the related Form Customization Profile. Can be applied to different "actions", or pages,
+ * within the manager. Also can set a constraint on the set so that it only applies under certain circumstances, or
+ * with a certain template.
+ *
+ * @property int $profile The ID of the Profile this set belongs to
+ * @property int $action The ID of the modAction this set is tied to
+ * @property string $description A description of the set provided by the user
+ * @property boolean $active Whether or not this set is active, and will have its rules applied.
+ * @property int $template If set to a non-zero value, will only apply rules if the Resource has the specified Template ID
+ * @property string $constraint Optional. The value of the constraint_field on constraint_class to check against to see if rules should be applied.
+ * @property string $constraint_field Optional. The field name of the constraint_class to check against with the constraint value to see if rules should be applied.
+ * @property string $constraint_class Optional. The class of the constraint_field to check against with the constraint value to see if rules should be applied.
+ * @see modCustomizationProfile
+ * @see modActionDom
+ * @package modx
  */
 class modFormCustomizationSet extends xPDOSimpleObject {
-
+    /**
+     * Get the formatted data for the FC Set
+     * 
+     * @return array
+     */
     public function getData() {
         $setArray = array();
 
         /* get fields */
         $c = $this->xpdo->newQuery('modActionField');
         $c->innerJoin('modActionField','Tab','Tab.name = modActionField.tab');
+        $c->select($this->xpdo->getSelectColumns('modActionField','modActionField'));
         $c->select(array(
-            'modActionField.*',
-            'Tab.rank AS tab_rank',
+            'tab_rank' => 'Tab.rank',
         ));
         $c->where(array(
             'action' => $this->get('action'),
@@ -23,6 +43,7 @@ class modFormCustomizationSet extends xPDOSimpleObject {
         $c->sortby('modActionField.rank','ASC');
         $fields = $this->xpdo->getCollection('modActionField',$c);
 
+        /** @var modActionField $field */
         foreach ($fields as $field) {
             $c = $this->xpdo->newQuery('modActionDom');
             $c->where(array(
@@ -35,6 +56,7 @@ class modFormCustomizationSet extends xPDOSimpleObject {
             $fieldArray['visible'] = true;
             $fieldArray['label'] = '';
             $fieldArray['default_value'] = '';
+            /** @var modActionDom $rule */
             foreach ($rules as $rule) {
                 switch ($rule->get('rule')) {
                     case 'fieldVisible':
@@ -59,8 +81,8 @@ class modFormCustomizationSet extends xPDOSimpleObject {
             $c = $this->xpdo->newQuery('modTemplateVar');
             $c->leftJoin('modCategory','Category');
             $c->innerJoin('modTemplateVarTemplate','TemplateVarTemplates');
+            $c->select($this->xpdo->getSelectColumns('modTemplateVar', 'modTemplateVar'));
             $c->select(array(
-                'modTemplateVar.*',
                 'Category.category AS category_name',
             ));
             $c->where(array(
@@ -73,14 +95,15 @@ class modFormCustomizationSet extends xPDOSimpleObject {
         } else {
             $c = $this->xpdo->newQuery('modTemplateVar');
             $c->leftJoin('modCategory','Category');
+            $c->select($this->xpdo->getSelectColumns('modTemplateVar', 'modTemplateVar'));
             $c->select(array(
-                'modTemplateVar.*',
                 'Category.category AS category_name',
             ));
             $c->sortby('Category.category','ASC');
             $c->sortby('modTemplateVar.name','ASC');
             $tvs = $this->xpdo->getCollection('modTemplateVar',$c);
         }
+        /** @var modTemplateVar $tv */
         foreach ($tvs as $tv) {
             $c = $this->xpdo->newQuery('modActionDom');
             $c->where(array(
@@ -98,6 +121,7 @@ class modFormCustomizationSet extends xPDOSimpleObject {
             $tvArray['default_value'] = $tv->get('default_text');
             $tvArray['tab'] = 'modx-panel-resource-tv';
             $tvArray['rank'] = '';
+            /** @var modActionDom $rule */
             foreach ($rules as $rule) {
                 switch ($rule->get('rule')) {
                     case 'tvVisible':
@@ -133,6 +157,7 @@ class modFormCustomizationSet extends xPDOSimpleObject {
         $c->sortby('rank','ASC');
         $tabs = $this->xpdo->getCollection('modActionField',$c);
 
+        /** @var modActionField $tab */
         foreach ($tabs as $tab) {
             $c = $this->xpdo->newQuery('modActionDom');
             $c->where(array(

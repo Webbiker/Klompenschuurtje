@@ -1,10 +1,26 @@
 <?php
 /**
+ * @package modx
+ */
+/**
  * Represents a chunk of static HTML content.
+ *
+ * @property string $name The name of the Chunk.
+ * @property string $description A user-provided description of the Chunk
+ * @property int $editor_type Deprecated
+ * @property int $category The ID of the Category this chunk resides in. Defaults to 0.
+ * @property boolean $cache_type Deprecated
+ * @property string $content The contents of the Chunk
+ * @property boolean $locked Whether or not this chunk can only be edited by Administrators
+ * @property array $properties An array of default properties for this Chunk
  *
  * @package modx
  */
 class modChunk extends modElement {
+    /**
+     * Overrides modElement::__construct to set the tag token for this Element
+     * @param xPDO $xpdo A reference to the xPDO|modX instance
+     */
     function __construct(& $xpdo) {
         parent :: __construct($xpdo);
         $this->setToken('$');
@@ -27,7 +43,7 @@ class modChunk extends modElement {
             ));
         }
 
-        $saved = parent :: save($cacheFlag);
+        $saved = parent::save($cacheFlag);
 
         if ($saved && $this->xpdo instanceof modX) {
             $this->xpdo->invokeEvent('OnChunkSave',array(
@@ -38,7 +54,7 @@ class modChunk extends modElement {
 
         } else if (!$saved && !empty($this->xpdo->lexicon)) {
             $msg = $isNew ? $this->xpdo->lexicon('chunk_err_create') : $this->xpdo->lexicon('chunk_err_save');
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,$msg.$this->toArray());
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,$msg.' '.print_r($this->toArray(),true));
         }
 
         return $saved;
@@ -81,7 +97,7 @@ class modChunk extends modElement {
      */
     public function process($properties= null, $content= null) {
         parent :: process($properties, $content);
-        if (!$this->_processed) {
+        if (!$this->_processed || !$this->isCacheable()) {
             /* copy the content into the output buffer */
             $this->_output= $this->_content;
             if (is_string($this->_output) && !empty ($this->_output)) {
@@ -90,7 +106,16 @@ class modChunk extends modElement {
 
                 /* collect element tags in the output and process them */
                 $maxIterations= intval($this->xpdo->getOption('parser_max_iterations',null,10));
-                $this->xpdo->parser->processElementTags($this->_tag, $this->_output, false, false, '[[', ']]', array(), $maxIterations);
+                $this->xpdo->parser->processElementTags(
+                    $this->_tag,
+                    $this->_output,
+                    $this->xpdo->parser->isProcessingUncacheable(),
+                    $this->xpdo->parser->isRemovingUnprocessed(),
+                    '[[',
+                    ']]',
+                    array(),
+                    $maxIterations
+                );
 
                 /* remove the placeholders set from the properties of this element and restore global values */
                 if (isset($scope['keys'])) $this->xpdo->unsetPlaceholders($scope['keys']);
@@ -101,37 +126,8 @@ class modChunk extends modElement {
             $this->_processed= true;
         }
 
+        $this->xpdo->parser->setProcessingElement(false);
         /* finally, return the processed element content */
         return $this->_output;
-    }
-
-    /**
-     * Get the source content of this chunk.
-     *
-     * @access public
-     * @param array $options
-     * @return string The source content.
-     */
-    public function getContent(array $options = array()) {
-        if (!is_string($this->_content) || $this->_content === '') {
-            if (isset($options['content'])) {
-                $this->_content = $options['content'];
-            } else {
-                $this->_content = $this->get('snippet');
-            }
-        }
-        return $this->_content;
-    }
-
-    /**
-     * Set the source content of this chunk.
-     *
-     * @access public
-     * @param string $content
-     * @param array $options
-     * @return string True if successfully set
-     */
-    public function setContent($content, array $options = array()) {
-        return $this->set('snippet', $content);
     }
 }

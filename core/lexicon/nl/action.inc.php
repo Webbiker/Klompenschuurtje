@@ -1,18 +1,16 @@
 <?php
 /**
- * Action Dutch lexicon topic
+ * Action English lexicon topic
  *
- * @language nl
+ * @language en
  * @package modx
  * @subpackage lexicon
- * 
- * @author Bert Oost, <bertoost85@gmail.com>
  */
 $_lang['action'] = 'Actie';
-$_lang['action_confirm_remove'] = 'Weet je zeker dat je deze actie wilt verwijderen? Dit kan eventueel de werking van jouw MODx manager beïnvloeden.';
+$_lang['action_confirm_remove'] = 'Weet je zeker dat je deze actie wilt verwijderen? Dit kan eventueel de werking van jouw MODX manager beï¿½nvloeden.';
 $_lang['action_create'] = 'Nieuwe actie';
 $_lang['action_create_here'] = 'Nieuwe actie hier';
-$_lang['action_desc'] = 'Acties zijn abstracties van MODx controllers. Ze kunnen worden gebruikt om aangepaste manager pagina\'s te maken, evenals de reorganisatie van het top menu van de MODx manager.';
+$_lang['action_desc'] = 'Acties zijn abstracties van MODX controllers. Ze kunnen worden gebruikt om aangepaste manager pagina\'s te maken, evenals de reorganisatie van het top menu van de MODX manager.';
 $_lang['action_err_create'] = 'Er is een fout opgetreden tijdens het maken van de actie.';
 $_lang['action_err_nf'] = 'Actie niet gevonden!';
 $_lang['action_err_ns'] = 'Geen actie gespecificeerd!';
@@ -26,6 +24,7 @@ $_lang['action_remove'] = 'Actie verwijderen';
 $_lang['action_update'] = 'Actie aanpassen';
 $_lang['actions'] = 'Acties';
 $_lang['controller'] = 'Controller';
+$_lang['controller_err_ae'] = 'Controller met dit pad bestaat al voor deze Namespace.';
 $_lang['controller_err_nf'] = 'Controller bestand niet gevonden!';
 $_lang['controller_err_ns'] = 'Geen controller gespecificeerd!';
 $_lang['controller_parent'] = 'Bovenliggende controller';

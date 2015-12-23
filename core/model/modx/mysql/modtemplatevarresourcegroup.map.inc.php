@@ -7,6 +7,7 @@ $xpdo_meta_map['modTemplateVarResourceGroup']= array (
   'package' => 'modx',
   'version' => '1.1',
   'table' => 'site_tmplvar_access',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'tmplvarid' => 0,
@@ -29,6 +30,29 @@ $xpdo_meta_map['modTemplateVarResourceGroup']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
+    ),
+  ),
+  'indexes' => 
+  array (
+    'tmplvar_template' => 
+    array (
+      'alias' => 'tmplvar_template',
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'tmplvarid' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+        'documentgroup' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
     ),
   ),
   'aggregates' => 

@@ -11,22 +11,35 @@ MODx.page.UpdateUser = function(config) {
 	Ext.applyIf(config,{
        formpanel: 'modx-panel-user'
        ,actions: {
-            'new': MODx.action['security/user/create']
-            ,edit: MODx.action['security/user/update']
-            ,cancel: MODx.action['security/user']
+            'new': 'security/user/create'
+            ,edit: 'security/user/update'
+            ,cancel: 'security/user'
        }
         ,buttons: [{
-            process: 'update', text: _('save'), method: 'remote'
-            ,checkDirty: true
+            process: 'security/user/update'
+            ,text: _('save')
+            ,id: 'modx-abtn-save'
+            ,cls: 'primary-button'
+            ,method: 'remote'
+            // ,checkDirty: true
             ,keys: [{
                 key: MODx.config.keymap_save || 's'
-                ,alt: true
                 ,ctrl: true
             }]
-        },'-',{
-            process: 'cancel', text: _('cancel'), params: {a:MODx.action['security/user']}
-        },'-',{
+        },{
+            text: _('cancel')
+            ,id: 'modx-abtn-cancel'
+            ,handler: function() {
+                MODx.loadPage('security/user')
+            }
+        },{
+            text: _('delete')
+            ,id: 'modx-abtn-delete'
+            ,handler: this.removeUser
+            ,scope: this
+        },{
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         }]
         ,components: [{
@@ -40,5 +53,22 @@ MODx.page.UpdateUser = function(config) {
 	});
 	MODx.page.UpdateUser.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.page.UpdateUser,MODx.Component);
+Ext.extend(MODx.page.UpdateUser,MODx.Component,{
+    removeUser: function(btn,e) {
+        MODx.msg.confirm({
+            title: _('user_remove')
+            ,text: _('user_confirm_remove')
+            ,url: MODx.config.connector_url
+            ,params: {
+                action: 'security/user/delete'
+                ,id: this.config.user
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    MODx.loadPage('security/user');
+                },scope:this}
+            }
+        });
+    }
+});
 Ext.reg('modx-page-user-update',MODx.page.UpdateUser);

@@ -11,15 +11,15 @@ MODx.grid.TemplateVarTemplate = function(config) {
     var tt = new Ext.ux.grid.CheckColumn({
         header: _('access')
         ,dataIndex: 'access'
-        ,width: 40
+        ,width: 50
         ,sortable: true
     });
     Ext.applyIf(config,{
         id: 'modx-grid-tv-template'
-        ,url: MODx.config.connectors_url+'element/tv/template.php'
+        ,url: MODx.config.connector_url
         ,fields: ['id','templatename','description','access','menu']
         ,baseParams: {
-            action: 'getList'
+            action: 'element/tv/template/getList'
             ,tv: config.tv
         }
         ,saveParams: {
@@ -37,7 +37,7 @@ MODx.grid.TemplateVarTemplate = function(config) {
         },{
             header: _('description')
             ,dataIndex: 'description'
-            ,width: 350
+            ,width: 300
         },tt]
     });
     MODx.grid.TemplateVarTemplate.superclass.constructor.call(this,config);

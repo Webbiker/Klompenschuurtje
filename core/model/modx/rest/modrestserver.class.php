@@ -1,8 +1,8 @@
 <?php
 /*
- * MODx Revolution
+ * MODX Revolution
  *
- * Copyright 2006, 2007, 2008, 2009, 2010 by the MODx Team.
+ * Copyright 2006-2015 by MODX, LLC.
  *
  * All rights reserved.
  *
@@ -21,12 +21,14 @@
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-
 /**
  * @package modx
+ * @subpackage rest
  */
 /**
  * An extendable class for handling REST requests.
+ *
+ * @deprecated To be removed in 2.3. See modRestService instead.
  *
  * @package modx
  * @subpackage rest
@@ -53,6 +55,10 @@ class modRestServer {
      */
     protected $error = false;
 
+    /**
+     * @param modX $modx A reference to the modX object
+     * @param array $config An array of configuration options
+     */
     function __construct(modX &$modx,array $config = array()) {
         $this->modx =& $modx;
         $this->config = array_merge(array(
@@ -64,7 +70,7 @@ class modRestServer {
             modRestServer::OPT_FORMAT => 'xml',
             modRestServer::OPT_PROCESSORS_PATH => '',
             modRestServer::OPT_REQUEST_VAR => 'p',
-            modRestServer::OPT_REALM => 'MODx',
+            modRestServer::OPT_REALM => 'MODX',
             modRestServer::OPT_RENDERERS => 'renderers',
             modRestServer::OPT_ERROR_DATA_NODE => 'data',
             modRestServer::OPT_ERROR_NODE => 'error',
@@ -151,7 +157,7 @@ class modRestServer {
         ));
         if (empty($user)) return $this->deny($this->modx->lexicon('user_err_nf'));
 
-        if ($user->get('password') != md5($_REQUEST[$this->config[modRestServer::OPT_AUTH_PASS_VAR]])) {
+        if (!$user->passwordMatches($_REQUEST[$this->config[modRestServer::OPT_AUTH_PASS_VAR]])) {
             return $this->deny($this->modx->lexicon('user_err_password'));
         }
         return true;
@@ -171,8 +177,9 @@ class modRestServer {
     /**
      * Handles success messages
      *
-     * @param array/xPDOObject $data The data to pass and encode
+     * @param array|xPDOObject $data The data to pass and encode
      * @param string $root
+     * @return string The encoded message
      */
     public function success($data,$root = '') {
         header($_SERVER['SERVER_PROTOCOL'].' 200 OK');
@@ -184,7 +191,7 @@ class modRestServer {
      *
      * @access public
      * @param string $message An error message
-     * @param array/xPDOObject $data Any additional data
+     * @param array|xPDOObject $data Any additional data
      * @param string $type The type of the error message
      * @return string
      */
@@ -206,9 +213,9 @@ class modRestServer {
      * Encodes the data to the specified format. Defaults to XML.
      *
      * @access public
-     * @param array/xPDOObject $data
+     * @param array|xPDOObject $data
      * @param string $root
-     * @return string
+     * @return string The encoded message
      */
     public function encode($data,$root = '') {
         $output = '';
@@ -245,24 +252,41 @@ class modRestServer {
         return $output;
     }
 
-
-
+    /**
+     * Sets HTTP 204 response headers
+     * @param string $output The outputted response to send
+     * @return string
+     */
     private function _err204($output = '') {
         header($_SERVER['SERVER_PROTOCOL'].' 204 No Content');
         return $output;
     }
 
+    /**
+     * Sets HTTP 400 response headers
+     * @param string $output The outputted response to send
+     * @return string
+     */
     private function _err400($output = '') {
         header($_SERVER['SERVER_PROTOCOL'].' 400 Bad Request');
         return '';
     }
 
+    /**
+     * Sets HTTP 401 response headers
+     * @return string
+     */
     private function _err401() {
         header('WWW-Authenticate: Basic realm="'.$this->config['realm'].'"');
         header($_SERVER['SERVER_PROTOCOL'].' 401 Unauthorized');
         return '';
     }
 
+    /**
+     * Sets HTTP 404 response headers
+     * @param array $scriptProperties An array of properties
+     * @return string
+     */
     private function _err404($scriptProperties = array()) {
         header("{$_SERVER['SERVER_PROTOCOL']} 404 Not Found");
         $output = '<h2>404 Not Found</h2>';
@@ -273,23 +297,43 @@ class modRestServer {
         return $output;
     }
 
+    /**
+     * Sets HTTP 405 response headers
+     * @param string $allowed A comma-separated list of allowed protocols
+     * @return string
+     */
     private function _err405($allowed = 'GET, HEAD') {
         header($_SERVER['SERVER_PROTOCOL'].' 405 Method Not Allowed');
         header('Allow: '.$allowed);
         return '';
     }
 
+    /**
+     * Sets HTTP 406 response headers
+     * @param string $output The outputted response to send
+     * @return string
+     */
     private function _err406($output = '') {
         header($_SERVER['SERVER_PROTOCOL'].' 406 Not Acceptable');
         $output = join(', ', array_keys($this->config[modRestServer::OPT_RENDERERS]));
         return $output;
     }
 
+    /**
+     * Sets HTTP 411 response headers
+     * @param string $output The outputted response to send
+     * @return string
+     */
     private function _err411($output = '') {
         header($_SERVER['SERVER_PROTOCOL'].' 411 Length Required');
         return '';
     }
 
+    /**
+     * Sets HTTP 500 response headers
+     * @param string $output The outputted response to send
+     * @return string
+     */
     private function _err500($output = '') {
         header($_SERVER['SERVER_PROTOCOL'].' 500 Internal Server Error');
         return '';
@@ -301,6 +345,7 @@ class modRestServer {
      * @access protected
      * @param array $array
      * @param integer $level
+     * @return string
      */
     protected function array2xml($array,$level=1) {
         $xml = '';

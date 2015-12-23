@@ -1,6 +1,6 @@
 /**
  * Loads the create resource page
- * 
+ *
  * @class MODx.page.CreateResource
  * @extends MODx.Component
  * @param {Object} config An object of config properties
@@ -9,24 +9,21 @@
 MODx.page.CreateResource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'resource/index.php'
+        url: MODx.config.connector_url
         ,formpanel: 'modx-panel-resource'
         ,id: 'modx-page-update-resource'
         ,which_editor: 'none'
-    	,actions: {
-            'new': MODx.action['resource/create']
-            ,edit: MODx.action['resource/update']
-            ,cancel: MODx.action['welcome']
-        }
+        ,action: 'resource/create'
     	,buttons: this.getButtons(config)
-    	,loadStay: true
         ,components: [{
-            xtype: 'modx-panel-resource'
-            ,renderTo: 'modx-panel-resource-div'
+            xtype: config.panelXType || 'modx-panel-resource'
+            ,renderTo: config.panelRenderTo || 'modx-panel-resource-div'
             ,resource: 0
             ,record: config.record
-            ,access_permissions: config.access_permissions
             ,publish_document: config.publish_document
+            ,show_tvs: config.show_tvs
+            ,mode: config.mode
+            ,url: config.url
         }]
     });
     MODx.page.CreateResource.superclass.constructor.call(this,config);
@@ -36,26 +33,27 @@ Ext.extend(MODx.page.CreateResource,MODx.Component,{
         var btns = [];
         if (cfg.canSave == 1) {
             btns.push({
-                process: 'create'
+                process: 'resource/create'
+                ,reload: true
                 ,text: _('save')
+                ,id: 'modx-abtn-save'
+                ,cls:'primary-button'
                 ,method: 'remote'
-                ,checkDirty: cfg.record.richtext ? false : true
+                //,checkDirty: true
                 ,keys: [{
                     key: MODx.config.keymap_save || 's'
-                    ,alt: true
                     ,ctrl: true
                 }]
             });
-            btns.push('-');
+
         }
         btns.push({
-            process: 'cancel'
-            ,text: _('cancel')
-            ,params: { a: MODx.action['welcome'] }
+            text: _('cancel')
+            ,id: 'modx-abtn-cancel'
         });
-        btns.push('-');
         btns.push({
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         });
         return btns;

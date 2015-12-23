@@ -10,13 +10,16 @@ require_once MODX_CORE_PATH . 'model/modx/mail/modmail.class.php';
 /**
  * PHPMailer implementation of the modMail service.
  *
- * {@inheritdoc}
+ * @package modx
+ * @subpackage mail
  */
 class modPHPMailer extends modMail {
     /**
      * Constructs a new instance of the modPHPMailer class.
      *
-     * {@inheritdoc}
+     * @param modX $modx A reference to the modX instance
+     * @param array $attributes An array of attributes for the instance
+     * @return modPHPMailer
      */
     function __construct(modX &$modx, array $attributes= array()) {
         parent :: __construct($modx, $attributes);
@@ -28,7 +31,8 @@ class modPHPMailer extends modMail {
      * Sets a PHPMailer attribute corresponding to the modX::MAIL_* constants or
      * a custom key.
      *
-     * {@inheritdoc}
+     * @param string $key The attribute key to set
+     * @param mixed $value The value to set
      */
     public function set($key, $value) {
         parent :: set($key, $value);
@@ -56,6 +60,7 @@ class modPHPMailer extends modMail {
                 break;
             case modMail::MAIL_FROM :
                 $this->mailer->From= $this->attributes[$key];
+                $this->mailer->Sender= $this->attributes[$key];
                 break;
             case modMail::MAIL_FROM_NAME :
                 $this->mailer->FromName= $this->attributes[$key];
@@ -64,7 +69,7 @@ class modPHPMailer extends modMail {
                 $this->mailer->Hostname= $this->attributes[$key];
                 break;
             case modMail::MAIL_LANGUAGE :
-                $this->mailer->SetLanguage($this->attributes[$key]);
+                $this->mailer->setLanguage($this->attributes[$key]);
                 break;
             case modMail::MAIL_PRIORITY :
                 $this->mailer->Priority= $this->attributes[$key];
@@ -117,7 +122,10 @@ class modPHPMailer extends modMail {
     /**
      * Adds an address to the mailer
      *
-     * {@inheritdoc}
+     * @param string $type The type of address (to, reply-to, bcc, cc)
+     * @param string $email The email address to address to
+     * @param string $name The name of the email address
+     * @return boolean True if was addressed
      */
     public function address($type, $email, $name= '') {
         $set= false;
@@ -127,16 +135,16 @@ class modPHPMailer extends modMail {
                 $type= strtolower($type);
                 switch ($type) {
                     case 'to' :
-                        $this->mailer->AddAddress($email, $name);
+                        $this->mailer->addAddress($email, $name);
                         break;
                     case 'cc' :
-                        $this->mailer->AddCC($email, $name);
+                        $this->mailer->addCC($email, $name);
                         break;
                     case 'bcc' :
-                        $this->mailer->AddBCC($email, $name);
+                        $this->mailer->addBCC($email, $name);
                         break;
                     case 'reply-to' :
-                        $this->mailer->AddReplyTo($email, $name);
+                        $this->mailer->addReplyTo($email, $name);
                         break;
                 }
             }
@@ -151,12 +159,13 @@ class modPHPMailer extends modMail {
     /**
      * Adds a custom header to the mailer
      *
-     * {@inheritdoc}
+     * @param string $header The header to set
+     * @return boolean True if the header was successfully set
      */
     public function header($header) {
         $set= parent :: header($header);
         if ($set) {
-            $this->mailer->AddCustomHeader($header);
+            $this->mailer->addCustomHeader($header);
         }
         return $set;
     }
@@ -164,35 +173,51 @@ class modPHPMailer extends modMail {
     /**
      * Send the email, applying any attributes to the mailer before sending.
      *
-     * {@inheritdoc}
+     * @param array $attributes An array of attributes to pass when sending
+     * @return boolean True if the email was successfully sent
      */
     public function send(array $attributes= array()) {
-        $sent = parent :: send($attributes);
-        $sent = $this->mailer->Send();
+        parent :: send($attributes);
+
+        $sent = $this->mailer->send();
+        if ($sent !== true) {
+            $this->error = $this->modx->getService('error.modError');
+            $this->error->addError($this->mailer->ErrorInfo);
+        }
+
         return $sent;
     }
 
     /**
      * Resets all PHPMailer attributes, including recipients and attachments.
      *
-     * {@inheritdoc}
+     * @param array $attributes An array of attributes to pass when resetting
      */
-    public function reset($attributes= array()) {
+    public function reset(array $attributes= array()) {
         parent :: reset($attributes);
-        $this->mailer->ClearAllRecipients();
-        $this->mailer->ClearAttachments();
-        $this->mailer->IsHTML(false);
+        $this->mailer->clearAllRecipients();
+        $this->mailer->clearReplyTos();
+        $this->mailer->clearAttachments();
+        $this->mailer->clearCustomHeaders();
+        $this->mailer->isHTML(false);
     }
 
     /**
      * Loads the PHPMailer object used to send the emails in this implementation.
      *
-     * {@inheritdoc}
+     * @return boolean True if the mailer class was successfully loaded
      */
     protected function _getMailer() {
         $success= false;
         if (!$this->mailer || !($this->mailer instanceof PHPMailer)) {
             if ($this->mailer= new PHPMailer()) {
+                // Make sure PHPMailer autoloader is loaded
+                if (version_compare(PHP_VERSION, '5.1.2', '>=')) {
+                    $autoload = spl_autoload_functions();
+                    if ($autoload === false or !in_array('PHPMailerAutoload', $autoload)) {
+                        require 'phpmailer/PHPMailerAutoload.php';
+                    }
+                }
                 if (!empty($this->attributes)) {
                     foreach ($this->attributes as $attrKey => $attrVal) {
                         $this->set($attrKey, $attrVal);
@@ -210,21 +235,37 @@ class modPHPMailer extends modMail {
     /**
      * Attaches a file to the mailer.
      *
-     * {@inheritdoc}
+     * @param mixed $file The file to attach
+     * @param string $name The name of the file to attach as
+     * @param string $encoding The encoding of the attachment
+     * @param string $type The header type of the attachment
      */
     public function attach($file,$name = '',$encoding = 'base64',$type = 'application/octet-stream') {
         parent :: attach($file);
-        $this->mailer->AddAttachment($file,$name,$encoding,$type);
+        $this->mailer->addAttachment($file,$name,$encoding,$type);
+    }
+
+    /**
+     * Embeds image inside message body.
+     *
+     * @param mixed $image Absolute path to image
+     * @param string $cid Id of the image by wich it will be available in html.
+     *        Example: <img src="cid:<$cid>" />
+     * @param string $name The name of the image to attach as
+     * @param string $encoding The encoding of the attachment
+     * @param string $type The header type of the attachment
+     */
+    public function embedImage($image, $cid, $name = '', $encoding = 'base64', $type = 'application/octet-stream') {
+      parent :: embedImage($image,$cid);
+      $this->mailer->addEmbeddedImage('/'.$image,$cid,$name,$encoding,$type);
     }
 
     /**
      * Clears all existing attachments.
-     *
-     * {@inheritdoc}
      */
     public function clearAttachments() {
         parent :: clearAttachments();
-        $this->mailer->ClearAttachments();
+        $this->mailer->clearAttachments();
     }
 
     /**
@@ -234,6 +275,6 @@ class modPHPMailer extends modMail {
      * @param boolean $toggle True to set to HTML.
      */
     public function setHTML($toggle) {
-        $this->mailer->IsHTML($toggle);
+        $this->mailer->isHTML($toggle);
     }
 }

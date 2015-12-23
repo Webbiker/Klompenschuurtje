@@ -7,9 +7,10 @@ $xpdo_meta_map['modEvent']= array (
   'package' => 'modx',
   'version' => '1.1',
   'table' => 'system_eventnames',
+  'extends' => 'xPDOObject',
   'fields' => 
   array (
-    'name' => '',
+    'name' => NULL,
     'service' => 0,
     'groupname' => '',
   ),
@@ -21,8 +22,7 @@ $xpdo_meta_map['modEvent']= array (
       'precision' => '50',
       'phptype' => 'string',
       'null' => false,
-      'default' => '',
-      'index' => 'unique',
+      'index' => 'pk',
     ),
     'service' => 
     array (
@@ -44,10 +44,10 @@ $xpdo_meta_map['modEvent']= array (
   ),
   'indexes' => 
   array (
-    'name' => 
+    'PRIMARY' => 
     array (
-      'alias' => 'name',
-      'primary' => false,
+      'alias' => 'PRIMARY',
+      'primary' => true,
       'unique' => true,
       'type' => 'BTREE',
       'columns' => 

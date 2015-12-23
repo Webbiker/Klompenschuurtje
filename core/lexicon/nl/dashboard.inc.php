@@ -1,12 +1,10 @@
 <?php
 /**
- * Welcome Page Dutch lexicon topic
+ * Welcome Page English lexicon topic
  *
- * @language nl
+ * @language en
  * @package modx
  * @subpackage lexicon
- * 
- * @author MJ Hofland, veiliggesteld.nl
  */
 $_lang['active_users_none'] = 'Er zijn geen actieve gebruikers.';
 $_lang['add_user'] = 'Nieuwe Gebruiker';
@@ -16,23 +14,23 @@ $_lang['documentation'] = 'Documentatie';
 $_lang['file_bug'] = 'Rapporteer een fout';
 $_lang['forums'] = 'Forums';
 $_lang['help'] = 'Help';
-$_lang['modx_news'] = 'MODx Nieuws';
+$_lang['modx_news'] = 'MODX Nieuws';
 $_lang['onlineusers_action'] = 'Actie';
 $_lang['onlineusers_actionid'] = 'Actie-ID';
 $_lang['onlineusers_ipaddress'] = 'Gebruiker\'s IP adres';
-$_lang['onlineusers_lasthit'] = 'Laatste Hit';
-$_lang['onlineusers_message'] = 'In deze lijst staan alle actieve gebruikers uit de laatste 20 minuten (het is nu [[+curtime]])';
+$_lang['onlineusers_lasthit'] = 'Laatste hit';
+$_lang['onlineusers_message'] = 'Alle gebruikers die in de afgelopen 20 minuten actief geweest zijn in de manager (het is nu [[+curtime]])';
 $_lang['onlineusers_title'] = 'Online gebruikers';
 $_lang['onlineusers_user'] = 'Gebruiker';
 $_lang['onlineusers_userid'] = 'Gebruiker\'s ID';
-$_lang['quicklinks'] = 'Quicklinks';
+$_lang['quicklinks'] = 'Snelkoppelingen';
 $_lang['security_notices'] = 'Beveiligings opmerkingen';
 $_lang['view_tree'] = 'Bekijk Tree';
 $_lang['welcome_back'] = 'Welkom terug, [[+name]].';
 $_lang['welcome_messages'] = 'Er zijn <strong>%d</strong> berichten in je inbox, waarvan <strong>%s</strong> ongelezen.';
-$_lang['welcome_title'] = 'Welkom bij de MODx Content Manager';
+$_lang['welcome_title'] = 'Welkom bij de MODX Content Manager';
 $_lang['yourinfo_message'] = 'Deze sectie laat informatie over jou zien:';
 $_lang['yourinfo_previous_login'] = 'Je laatste login:';
-$_lang['yourinfo_title'] = 'jouw info';
+$_lang['yourinfo_title'] = 'Jouw info';
 $_lang['yourinfo_total_logins'] = 'Totaal aantal logins:';
 $_lang['yourinfo_username'] = 'Je bent ingelogd als:';

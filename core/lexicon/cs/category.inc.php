@@ -1,17 +1,15 @@
 <?php
 /**
- * Category Czech lexicon topic
+ * Category English lexicon topic
  *
- * @language cs
+ * @language en
  * @package modx
  * @subpackage lexicon
- *
- * @author modxcms.cz
- * @updated 2010-07-17
  */
 $_lang['categories'] = 'Kategorie';
 $_lang['category_confirm_delete'] = 'Opravdu chcete odstranit tuto kategorii? Všechny elementy v této kategorii budou označeny jako "bez kategorie".';
 $_lang['category_create'] = 'Vytvořit kategorii';
+$_lang['category_err_ae'] = 'Kategorie s tímto názvem již existuje. Zadejte jiný název.';
 $_lang['category_err_create'] = 'Nastala chyba při vytváření kategorie.';
 $_lang['category_err_not_found'] = 'Kategorie nenalezena!';
 $_lang['category_err_nf'] = 'Kategorie nenalezena.';

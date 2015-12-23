@@ -1,10 +1,41 @@
 <?php
 /**
- * The core MODx user class.
+ * @package modx
+ */
+/**
+ * The core MODX user class.
  *
+ * @property int $id The ID of the User
+ * @property string $username The username for this User
+ * @property string $password The encrypted password for this User
+ * @property string $cachepwd A cached, encrypted password used when resetting the User's password or for confirmation
+ * @property string $class_key The class key of the user. Used for extending the modUser class.
+ * @property boolean $active Whether or not this user is active, and thereby able to log in
+ * @property string $remote_key Used for storing a remote reference key for authentication for a User
+ * @property json $remote_data Used for storing remote data for authentication for a User
+ * @property string $hash_class The hashing class used to create this User's password
+ * @property string $salt A salt that might have been used to create this User's password
+ *
+ * @property modUserProfile $Profile
+ * @property modUserGroup $PrimaryGroup
+ * @property array $CreatedResources
+ * @property array $EditedResources
+ * @property array $DeletedResources
+ * @property array $PublishedResources
+ * @property array $SentMessages
+ * @property array $ReceivedMessages
+ * @property array $UserSettings
+ * @property array $UserGroupMembers
+ *
+ * @see modUserGroupMember
+ * @see modUserGroupRole
+ * @see modUserMessage
+ * @see modUserProfile
  * @package modx
  */
 class modUser extends modPrincipal {
+    /** @var modX|xPDO $xpdo */
+    public $xpdo;
     /**
      * A collection of contexts which the current principal is authenticated in.
      * @var array
@@ -13,13 +44,44 @@ class modUser extends modPrincipal {
     public $sessionContexts= array ();
 
     /**
+     * The modUser password field is hashed automatically, and prevent sudo from being set via mass-assignment
+     *
+     * {@inheritdoc}
+     */
+    public function set($k, $v= null, $vType= '') {
+        if (!$this->getOption(xPDO::OPT_SETUP)) {
+            if ($k == 'sudo') return false;
+        }
+        if (in_array($k, array('password', 'cachepwd')) && $this->xpdo->getService('hashing', 'hashing.modHashing')) {
+            if (!$this->get('salt')) {
+                $this->set('salt', md5(uniqid(rand(),true)));
+            }
+            $vOptions = array('salt' => $this->get('salt'));
+            $v = $this->xpdo->hashing->getHash('', $this->get('hash_class'))->hash($v, $vOptions);
+        }
+        return parent::set($k, $v, $vType);
+    }
+
+    /**
+     * Set the sudo field explicitly
+     *
+     * @param boolean $sudo
+     * @return bool
+     */
+    public function setSudo($sudo) {
+        $this->_fields['sudo'] = (boolean)$sudo;
+        $this->setDirty('sudo');
+        return true;
+    }
+
+    /**
      * Overrides xPDOObject::save to fire modX-specific events
-     * 
+     *
      * {@inheritDoc}
      */
     public function save($cacheFlag = false) {
         $isNew = $this->isNew();
-        
+
         if ($this->xpdo instanceof modX) {
             $this->xpdo->invokeEvent('OnUserBeforeSave',array(
                 'mode' => $isNew ? modSystemEvent::MODE_NEW : modSystemEvent::MODE_UPD,
@@ -29,7 +91,7 @@ class modUser extends modPrincipal {
         }
 
         $saved = parent :: save($cacheFlag);
-        
+
         if ($saved && $this->xpdo instanceof modX) {
             $this->xpdo->invokeEvent('OnUserSave',array(
                 'mode' => $isNew ? modSystemEvent::MODE_NEW : modSystemEvent::MODE_UPD,
@@ -69,181 +131,48 @@ class modUser extends modPrincipal {
      * Loads the principal attributes that define a modUser security profile.
      *
      * {@inheritdoc}
-     *
-     * @todo Remove the legacy docgroup support.
      */
     public function loadAttributes($target, $context = '', $reload = false) {
         $context = !empty($context) ? $context : $this->xpdo->context->get('key');
+        $id = $this->get('id') ? (string) $this->get('id') : '0';
+        if ($this->get('id') && !$reload) {
+            $staleContexts = $this->get('session_stale');
+            $staleContexts = !empty($staleContexts) ? $staleContexts : array();
+            $stale = array_search($context, $staleContexts);
+            if ($stale !== false) {
+                $reload = true;
+                $staleContexts = array_diff($staleContexts, array($context));
+                $this->set('session_stale', $staleContexts);
+                $this->save();
+            }
+        }
         if ($this->_attributes === null || $reload) {
             $this->_attributes = array();
-            if (isset($_SESSION["modx.user.{$this->id}.attributes"])) {
+            if (isset($_SESSION["modx.user.{$id}.attributes"])) {
                 if ($reload) {
-                    unset($_SESSION["modx.user.{$this->id}.attributes"]);
+                    unset($_SESSION["modx.user.{$id}.attributes"]);
                 } else {
-                    $this->_attributes = $_SESSION["modx.user.{$this->id}.attributes"];
+                    $this->_attributes = $_SESSION["modx.user.{$id}.attributes"];
                 }
             }
         }
-        if (!isset($this->_attributes[$context])) $this->_attributes[$context] = array();
-        if (!isset($this->_attributes[$context][$target])) {
-            $accessTable = $this->xpdo->getTableName($target);
-            $policyTable = $this->xpdo->getTableName('modAccessPolicy');
-            $memberTable = $this->xpdo->getTableName('modUserGroupMember');
-            $memberRoleTable = $this->xpdo->getTableName('modUserGroupRole');
-            if ($this->get('id') > 0) {
-                switch ($target) {
-                    case 'modAccessResourceGroup' :
-                        $legacyDocGroups = array();
-                        $sql = "SELECT acl.target, acl.principal, mr.authority, acl.policy, p.data FROM {$accessTable} acl " .
-                                "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
-                                "JOIN {$memberTable} mug ON acl.principal_class = 'modUserGroup' " .
-                                "AND (acl.context_key = :context OR acl.context_key IS NULL OR acl.context_key = '') " .
-                                "AND mug.member = :principal " .
-                                "AND mug.user_group = acl.principal " .
-                                "JOIN {$memberRoleTable} mr ON mr.id = mug.role " .
-                                "AND mr.authority <= acl.authority " .
-                                "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
-                        $bindings = array(
-                            ':principal' => $this->get('id'),
-                            ':context' => $context
-                        );
-                        $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
-                        if ($query->stmt && $query->stmt->execute()) {
-                            while ($row = $query->stmt->fetch(PDO::FETCH_ASSOC)) {
-                                $this->_attributes[$context][$target][$row['target']][] = array(
-                                    'principal' => $row['principal'],
-                                    'authority' => $row['authority'],
-                                    'policy' => $row['data'] ? $this->xpdo->fromJSON($row['data'], true) : array(),
-                                );
-                                $legacyDocGroups[$row['target']]= $row['target'];
-                            }
-                        }
-                        $_SESSION[$context . 'Docgroups']= array_values($legacyDocGroups);
-                        break;
-                    case 'modAccessContext' :
-                        $sql = "SELECT acl.target, acl.principal, mr.authority, acl.policy, p.data FROM {$accessTable} acl " .
-                                "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
-                                "JOIN {$memberTable} mug ON acl.principal_class = 'modUserGroup' " .
-                                "AND mug.member = :principal " .
-                                "AND mug.user_group = acl.principal " .
-                                "JOIN {$memberRoleTable} mr ON mr.id = mug.role " .
-                                "AND mr.authority <= acl.authority " .
-                                "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
-                        $bindings = array(
-                            ':principal' => $this->get('id')
-                        );
-                        $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
-                        if ($query->stmt && $query->stmt->execute()) {
-                            while ($row = $query->stmt->fetch(PDO::FETCH_ASSOC)) {
-                                $this->_attributes[$context][$target][$row['target']][] = array(
-                                    'principal' => $row['principal'],
-                                    'authority' => $row['authority'],
-                                    'policy' => $row['data'] ? $this->xpdo->fromJSON($row['data'], true) : array(),
-                                );
-                            }
-                        }
-                        break;
-                    case 'modAccessCategory' :
-                        $sql = "SELECT acl.target, acl.principal, mr.authority, acl.policy, p.data FROM {$accessTable} acl " .
-                                "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
-                                "JOIN {$memberTable} mug ON acl.principal_class = 'modUserGroup' " .
-                                "AND (acl.context_key = :context OR acl.context_key IS NULL OR acl.context_key = '') " .
-                                "AND mug.member = :principal " .
-                                "AND mug.user_group = acl.principal " .
-                                "JOIN {$memberRoleTable} mr ON mr.id = mug.role " .
-                                "AND mr.authority <= acl.authority " .
-                                "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
-                        $bindings = array(
-                            ':principal' => $this->get('id'),
-                            ':context' => $context
-                        );
-                        $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
-                        if ($query->stmt && $query->stmt->execute()) {
-                            while ($row = $query->stmt->fetch(PDO::FETCH_ASSOC)) {
-                                $this->_attributes[$context][$target][$row['target']][] = array(
-                                    'principal' => $row['principal'],
-                                    'authority' => $row['authority'],
-                                    'policy' => $row['data'] ? $this->xpdo->fromJSON($row['data'], true) : array(),
-                                );
-                            }
-                        }
-                        break;
-                    default :
-                        break;
-                }
-            } else {
-                switch ($target) {
-                    case 'modAccessResourceGroup' :
-                        $legacyDocGroups = array();
-                        $sql = "SELECT acl.target, acl.principal, 0 AS authority, acl.policy, p.data FROM {$accessTable} acl " .
-                                "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
-                                "WHERE acl.principal_class = 'modUserGroup' " .
-                                "AND acl.principal = 0 " .
-                                "AND (acl.context_key = :context OR acl.context_key IS NULL OR acl.context_key = '') " .
-                                "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
-                        $bindings = array(
-                            ':context' => $context
-                        );
-                        $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
-                        if ($query->stmt && $query->stmt->execute()) {
-                            while ($row = $query->stmt->fetch(PDO::FETCH_ASSOC)) {
-                                $this->_attributes[$context][$target][$row['target']][] = array(
-                                    'principal' => 0,
-                                    'authority' => $row['authority'],
-                                    'policy' => $row['data'] ? $this->xpdo->fromJSON($row['data'], true) : array(),
-                                );
-                                $legacyDocGroups[$row['target']]= $row['target'];
-                            }
-                        }
-                        $_SESSION[$context . 'Docgroups']= array_values($legacyDocGroups);
-                        break;
-                    case 'modAccessContext' :
-                        $sql = "SELECT acl.target, acl.principal, 0 AS authority, acl.policy, p.data FROM {$accessTable} acl " .
-                                "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
-                                "WHERE acl.principal_class = 'modUserGroup' " .
-                                "AND acl.principal = 0 " .
-                                "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
-                        $query = new xPDOCriteria($this->xpdo, $sql);
-                        if ($query->stmt && $query->stmt->execute()) {
-                            while ($row = $query->stmt->fetch(PDO::FETCH_ASSOC)) {
-                                $this->_attributes[$context][$target][$row['target']][] = array(
-                                    'principal' => 0,
-                                    'authority' => $row['authority'],
-                                    'policy' => $row['data'] ? $this->xpdo->fromJSON($row['data'], true) : array(),
-                                );
-                            }
-                        }
-                        break;
-                    case 'modAccessCategory' :
-                        $sql = "SELECT acl.target, acl.principal, 0 AS authority, acl.policy, p.data FROM {$accessTable} acl " .
-                                "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
-                                "WHERE acl.principal_class = 'modUserGroup' " .
-                                "AND acl.principal = 0 " .
-                                "AND (acl.context_key = :context OR acl.context_key IS NULL OR acl.context_key = '') " .
-                                "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
-                        $bindings = array(
-                            ':context' => $context
-                        );
-                        $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
-                        if ($query->stmt && $query->stmt->execute()) {
-                            while ($row = $query->stmt->fetch(PDO::FETCH_ASSOC)) {
-                                $this->_attributes[$context][$target][$row['target']][] = array(
-                                    'principal' => 0,
-                                    'authority' => $row['authority'],
-                                    'policy' => $row['data'] ? $this->xpdo->fromJSON($row['data'], true) : array(),
-                                );
-                            }
-                        }
-                        break;
-                    default :
-                        break;
-                }
-            }
-            if (!isset($this->_attributes[$context][$target])) {
-                $this->_attributes[$context][$target] = array();
-            }
-            $_SESSION["modx.user.{$this->id}.attributes"] = $this->_attributes;
+        if (!isset($this->_attributes[$context])) {
+            $this->_attributes[$context] = array();
         }
+        $target = (array) $target;
+        foreach ($target as $t) {
+            if (!isset($this->_attributes[$context][$t])) {
+                $this->_attributes[$context][$t] = $this->xpdo->call(
+                    $t,
+                    'loadAttributes',
+                    array(&$this->xpdo, $context, $this->get('id'))
+                );
+                if (!isset($this->_attributes[$context][$t]) || !is_array($this->_attributes[$context][$t])) {
+                    $this->_attributes[$context][$t] = array();
+                }
+            }
+        }
+        $_SESSION["modx.user.{$id}.attributes"] = $this->_attributes;
     }
 
     /**
@@ -295,19 +224,73 @@ class modUser extends modPrincipal {
     }
 
     /**
+     * Determines if the provided password matches the hashed password stored for the user.
+     *
+     * @param string $password The password to determine if it matches.
+     * @param array $options Optional settings for the hashing process.
+     * @return boolean True if the provided password matches the stored password for the user.
+     */
+    public function passwordMatches($password, array $options = array()) {
+        $match = false;
+        if ($this->xpdo->getService('hashing', 'hashing.modHashing')) {
+            $options = array_merge(array('salt' => $this->get('salt')), $options);
+            $hashedPassword = $this->xpdo->hashing->getHash('', $this->get('hash_class'))->hash($password, $options);
+            $match = ($this->get('password') === $hashedPassword);
+        }
+        return $match;
+    }
+
+    /**
+     * Activate a reset user password if the proper activation key is provided.
+     *
+     * {@internal This does not mark the user active, but rather moves the cachepwd to the
+     * password field if the activation key matches.}
+     *
+     * @param string $key The activation key provided to the user and stored in the registry for matching.
+     * @return boolean|integer True if the activation was successful, false if unsuccessful,
+     * and -1 if there is no activation to perform.
+     */
+    public function activatePassword($key) {
+        $activated = -1;
+        if ($this->get('cachepwd')) {
+            if ($this->xpdo->getService('registry', 'registry.modRegistry') && $this->xpdo->registry->getRegister('user', 'registry.modDbRegister')) {
+                if ($this->xpdo->registry->user->connect()) {
+                    $activated = false;
+                    $this->xpdo->registry->user->subscribe('/pwd/reset/' . md5($this->get('username')));
+                    $msgs = $this->xpdo->registry->user->read(array('poll_limit' => 1));
+                    if (!empty($msgs)) {
+                        if ($key === reset($msgs)) {
+                            $this->_setRaw('password', $this->get('cachepwd'));
+                            $this->_setRaw('cachepwd', '');
+                            $activated = $this->save();
+                        }
+                    }
+                }
+            }
+            if ($activated === false) {
+                $this->_setRaw('cachepwd', '');
+                $this->save();
+            }
+        }
+        return $activated;
+    }
+
+    /**
      * Change the user password.
      *
      * @access public
      * @param string $newPassword Password to set.
      * @param string $oldPassword Current password for validation.
+     * @param boolean $validateOldPassword Current password validation required flag.
      * @return boolean Indicates if password was successfully changed.
      * @todo Add support for configurable password encoding.
      */
-    public function changePassword($newPassword, $oldPassword) {
+    public function changePassword($newPassword, $oldPassword, $validateOldPassword = true) {
         $changed= false;
-        if ($this->get('password') === md5($oldPassword)) {
+        $changePassword = $validateOldPassword ? $this->passwordMatches($oldPassword) : true;
+        if ($changePassword) {
             if (!empty ($newPassword)) {
-                $this->set('password', md5($newPassword));
+                $this->set('password', $newPassword);
                 $changed= $this->save();
                 if ($changed) {
                     $this->xpdo->invokeEvent('OnUserChangePassword', array (
@@ -358,47 +341,49 @@ class modUser extends modPrincipal {
      * @param string $context The context to add to the user session.
      */
     public function addSessionContext($context) {
-        $this->getSessionContexts();
-        session_regenerate_id(true);
+        if (!empty($context)) {
+            $this->getSessionContexts();
+            session_regenerate_id(true);
 
-        $this->getOne('Profile');
-        if ($this->Profile && $this->Profile instanceof modUserProfile) {
-            $ua= & $this->Profile;
-            if ($context == 'web') {
-                $_SESSION['webShortname']= $this->get('username');
-                $_SESSION['webFullname']= $ua->get('fullname');
-                $_SESSION['webEmail']= $ua->get('email');
-                $_SESSION['webValidated']= 1;
-                $_SESSION['webInternalKey']= $this->get('id');
-                $_SESSION['webValid']= base64_encode($this->get('password'));
-                $_SESSION['webUser']= base64_encode($this->get('username'));
-                $_SESSION['webFailedlogins']= $ua->get('failedlogincount');
-                $_SESSION['webLastlogin']= $ua->get('lastlogin');
-                $_SESSION['webnrlogins']= $ua->get('logincount');
-                $_SESSION['webUserGroupNames']= '';
+            $this->getOne('Profile');
+            if ($this->Profile && $this->Profile instanceof modUserProfile) {
+                $ua= & $this->Profile;
+                if ($ua && !isset ($this->sessionContexts[$context]) || $this->sessionContexts[$context] != $this->get('id')) {
+                    $ua->set('failedlogincount', 0);
+                    $ua->set('logincount', $ua->logincount + 1);
+                    $ua->set('lastlogin', $ua->thislogin);
+                    $ua->set('thislogin', time());
+                    $ua->set('sessionid', session_id());
+                    $ua->save();
+                }
             }
-            elseif ($context == 'mgr') {
-                $_SESSION['usertype']= 'manager';
-                $_SESSION['mgrShortname']= $this->get('username');
-                $_SESSION['mgrFullname']= $ua->get('fullname');
-                $_SESSION['mgrEmail']= $ua->get('email');
-                $_SESSION['mgrValidated']= 1;
-                $_SESSION['mgrInternalKey']= $this->get('id');
-                $_SESSION['mgrFailedlogins']= $ua->get('failedlogincount');
-                $_SESSION['mgrLastlogin']= $ua->get('lastlogin');
-                $_SESSION['mgrLogincount']= $ua->get('logincount');
+            $this->sessionContexts[$context]= $this->get('id');
+            $_SESSION['modx.user.contextTokens']= $this->sessionContexts;
+            if (!isset($_SESSION["modx.{$context}.user.token"])) {
+                $_SESSION["modx.{$context}.user.token"]= $this->generateToken($context);
             }
-            if ($ua && !isset ($this->sessionContexts[$context]) || $this->sessionContexts[$context] != $this->get('id')) {
-                $ua->set('failedlogincount', 0);
-                $ua->set('logincount', $ua->logincount + 1);
-                $ua->set('lastlogin', $ua->thislogin);
-                $ua->set('thislogin', time());
-                $ua->set('sessionid', session_id());
-                $ua->save();
-            }
+        } else {
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, "Attempt to login to a context with an empty key");
         }
-        $this->sessionContexts[$context]= $this->get('id');
-        $_SESSION['modx.user.contextTokens']= $this->sessionContexts;
+    }
+
+    /**
+     * Generate a specific authentication token for this user for accessing the MODX manager
+     * @param string $salt Ignored
+     * @return string
+     */
+    public function generateToken($salt) {
+        return uniqid($this->xpdo->site_id . '_' . $this->get('id'), true);
+    }
+
+    /**
+     * Get the user token for the user
+     * @param string $ctx
+     * @return string
+     */
+    public function getUserToken($ctx = '') {
+        if (empty($ctx)) $ctx = $this->xpdo->context->get('key');
+        return isset($_SESSION['modx.'.$ctx.'.user.token']) ? $_SESSION['modx.'.$ctx.'.user.token'] : '';
     }
 
     /**
@@ -436,40 +421,9 @@ class modUser extends modPrincipal {
      */
     public function removeSessionContextVars($context) {
         if (is_string($context) && !empty ($context)) {
-            switch ($context) {
-                case 'web' :
-                    unset ($_SESSION['webShortname']);
-                    unset ($_SESSION['webFullname']);
-                    unset ($_SESSION['webEmail']);
-                    unset ($_SESSION['webValidated']);
-                    unset ($_SESSION['webInternalKey']);
-                    unset ($_SESSION['webValid']);
-                    unset ($_SESSION['webUser']);
-                    unset ($_SESSION['webFailedlogins']);
-                    unset ($_SESSION['webLastlogin']);
-                    unset ($_SESSION['webnrlogins']);
-                    unset ($_SESSION['webUsrConfigSet']);
-                    unset ($_SESSION['webUserGroupNames']);
-                    unset ($_SESSION['webDocgroups']);
-                    break;
-
-                case 'mgr' :
-                    unset ($_SESSION['usertype']);
-                    unset ($_SESSION['mgrShortname']);
-                    unset ($_SESSION['mgrFullname']);
-                    unset ($_SESSION['mgrEmail']);
-                    unset ($_SESSION['mgrValidated']);
-                    unset ($_SESSION['mgrInternalKey']);
-                    unset ($_SESSION['mgrFailedlogins']);
-                    unset ($_SESSION['mgrLastlogin']);
-                    unset ($_SESSION['mgrLogincount']);
-                    unset ($_SESSION['mgrRole']);
-                    unset ($_SESSION['mgrDocgroups']);
-                    break;
-
-                default :
-                    break;
-            }
+            unset($_SESSION["modx.{$context}.user.token"]);
+            unset($_SESSION["modx.{$context}.user.config"]);
+            unset($_SESSION["modx.{$context}.session.cookie.lifetime"]);
         }
     }
 
@@ -531,8 +485,9 @@ class modUser extends modPrincipal {
      * @return array A key -> value array of settings.
      */
     public function getSettings() {
-        $settings = array();
-        $uss = $this->getMany('modUserSetting');
+        $settings = $this->getUserGroupSettings();
+        $uss = $this->getMany('UserSettings');
+        /** @var modUserSetting $us */
         foreach ($uss as $us) {
             $settings[$us->get('key')] = $us->get('value');
         }
@@ -541,29 +496,52 @@ class modUser extends modPrincipal {
     }
 
     /**
+     * Get all group settings for the user in array format.
+     *
+     * Preference is set by group rank + member rank, with primary_group having
+     * highest priority.
+     *
+     * @return array An associative array of group settings.
+     */
+    public function getUserGroupSettings() {
+        $settings = array();
+        $primary = array();
+        $query = $this->xpdo->newQuery('modUserGroupSetting');
+        $query->innerJoin('modUserGroup', 'UserGroup', array('UserGroup.id = modUserGroupSetting.group'));
+        $query->innerJoin('modUserGroupMember', 'Member', array('Member.member' => $this->get('id'), 'UserGroup.id = Member.user_group'));
+        $query->sortby('UserGroup.rank', 'DESC');
+        $query->sortby('Member.rank', 'DESC');
+        $ugss = $this->xpdo->getCollection('modUserGroupSetting', $query);
+        /** @var modUserGroupSetting $ugs */
+        foreach ($ugss as $ugs) {
+            if ($ugs->get('group') === $this->get('primary_group')) {
+                $primary[$ugs->get('key')] = $ugs->get('value');
+            } else {
+                $settings[$ugs->get('key')] = $ugs->get('value');
+            }
+        }
+        return array_merge($settings, $primary);
+    }
+
+    /**
      * Gets all Resource Groups this user is assigned to. This may not work in
      * the new model.
      *
-     * @deprecated
-     * @todo refactor this to actually work.
      * @access public
+     * @param string $ctx The context in which to peruse for Resource Groups
      * @return array An array of Resource Group names.
      */
-    public function getResourceGroups() {
+    public function getResourceGroups($ctx = '') {
+        if (empty($ctx) && is_object($this->xpdo->context)) $ctx = $this->xpdo->context->get('key');
         $resourceGroups= array ();
-        if (isset($_SESSION["modx.user.{$this->id}.resourceGroups"])) {
-            $resourceGroups= $_SESSION["modx.user.{$this->id}.resourceGroups"];
+        $id = $this->get('id') ? (string) $this->get('id') : '0';
+        if (isset($_SESSION["modx.user.{$id}.resourceGroups"][$ctx])) {
+            $resourceGroups= $_SESSION["modx.user.{$id}.resourceGroups"][$ctx];
         } else {
-            if ($memberships= $this->getMany('UserGroupMembers')) {
-                foreach ($memberships as $membership) {
-                    if ($documentGroupAccess= $membership->getMany('UserGroupResourceGroups')) {
-                        foreach ($documentGroupAccess as $dga) {
-                            $resourceGroups[]= $dga->get('documentgroup');
-                        }
-                    }
-                }
+            $this->loadAttributes('modAccessResourceGroup',$ctx,true);
+            if (isset($_SESSION["modx.user.{$id}.resourceGroups"][$ctx])) {
+                $resourceGroups= $_SESSION["modx.user.{$id}.resourceGroups"][$ctx];
             }
-            $_SESSION["modx.user.{$this->id}.resourceGroups"]= $resourceGroups;
         }
         return $resourceGroups;
     }
@@ -576,16 +554,40 @@ class modUser extends modPrincipal {
      */
     public function getUserGroups() {
         $groups= array();
-        if (isset($_SESSION["modx.user.{$this->id}.userGroups"])) {
-            $groups= $_SESSION["modx.user.{$this->id}.userGroups"];
+        $id = $this->get('id') ? (string) $this->get('id') : '0';
+        if (isset($_SESSION["modx.user.{$id}.userGroups"]) && $this->xpdo->user->get('id') == $this->get('id')) {
+            $groups= $_SESSION["modx.user.{$id}.userGroups"];
         } else {
-            $memberGroups= $this->xpdo->getCollectionGraph('modUserGroup', '{"UserGroupMembers":{}}', array('`UserGroupMembers`.member' => $this->get('id')));
+            $memberGroups= $this->xpdo->getCollectionGraph('modUserGroup', '{"UserGroupMembers":{}}', array('UserGroupMembers.member' => $this->get('id')));
             if ($memberGroups) {
+                /** @var modUserGroup $group */
                 foreach ($memberGroups as $group) $groups[]= $group->get('id');
             }
-            $_SESSION["modx.user.{$this->id}.userGroups"]= $groups;
+            $_SESSION["modx.user.{$id}.userGroups"]= $groups;
         }
         return $groups;
+    }
+
+    /**
+     * Return the Primary Group of this User
+     *
+     * @return modUserGroup|null
+     */
+    public function getPrimaryGroup() {
+        if (!$this->isAuthenticated($this->xpdo->context->get('key'))) {
+            return null;
+        }
+        $userGroup = $this->getOne('PrimaryGroup');
+        if (!$userGroup) {
+            $c = $this->xpdo->newQuery('modUserGroup');
+            $c->innerJoin('modUserGroupMember','UserGroupMembers');
+            $c->where(array(
+                'UserGroupMembers.member' => $this->get('id'),
+            ));
+            $c->sortby('UserGroupMembers.rank','ASC');
+            $userGroup = $this->xpdo->getObject('modUserGroup',$c);
+        }
+        return $userGroup;
     }
 
     /**
@@ -596,14 +598,16 @@ class modUser extends modPrincipal {
      */
     public function getUserGroupNames() {
         $groupNames= array();
-        if (isset($_SESSION["modx.user.{$this->id}.userGroupNames"])) {
-            $groupNames= $_SESSION["modx.user.{$this->id}.userGroupNames"];
+        $id = $this->get('id') ? (string) $this->get('id') : '0';
+        if (isset($_SESSION["modx.user.{$id}.userGroupNames"]) && $this->xpdo->user->get('id') == $this->get('id')) {
+            $groupNames= $_SESSION["modx.user.{$id}.userGroupNames"];
         } else {
-            $memberGroups= $this->xpdo->getCollectionGraph('modUserGroup', '{"UserGroupMembers":{}}', array('`UserGroupMembers`.member' => $this->get('id')));
+            $memberGroups= $this->xpdo->getCollectionGraph('modUserGroup', '{"UserGroupMembers":{}}', array('UserGroupMembers.member' => $this->get('id')));
             if ($memberGroups) {
+                /** @var modUserGroup $group */
                 foreach ($memberGroups as $group) $groupNames[]= $group->get('name');
             }
-            $_SESSION["modx.user.{$this->id}.userGroupNames"]= $groupNames;
+            $_SESSION["modx.user.{$id}.userGroupNames"]= $groupNames;
         }
         return $groupNames;
     }
@@ -613,7 +617,7 @@ class modUser extends modPrincipal {
      * either a string name of the group, or an array of names.
      *
      * @access public
-     * @param string/array $groups Either a string of a group name or an array
+     * @param string|array $groups Either a string of a group name or an array
      * of names.
      * @param boolean $matchAll If true, requires the user to be a member of all
      * the groups specified. If false, the user can be a member of only one to
@@ -646,39 +650,58 @@ class modUser extends modPrincipal {
      * @access public
      * @param mixed $groupId Either the name or ID of the User Group to join.
      * @param mixed $roleId Optional. Either the name or ID of the Role to
+     * @param integer $rank Optional.
      * assign to for the group.
      * @return boolean True if successful.
      */
-    public function joinGroup($groupId,$roleId = null) {
+    public function joinGroup($groupId,$roleId = null,$rank = null) {
         $joined = false;
 
         $groupPk = is_string($groupId) ? array('name' => $groupId) : $groupId;
-        $usergroup = $this->xpdo->getObject('modUserGroup',$groupPk);
-        if ($usergroup == null) {
+        /** @var modUserGroup $userGroup */
+        $userGroup = $this->xpdo->getObject('modUserGroup',$groupPk);
+        if (empty($userGroup)) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'User Group not found with key: '.$groupId);
             return $joined;
         }
 
+        /** @var modUserGroupRole $role */
         if (!empty($roleId)) {
             $rolePk = is_string($roleId) ? array('name' => $roleId) : $roleId;
             $role = $this->xpdo->getObject('modUserGroupRole',$rolePk);
-            if ($role == null) {
+            if (empty($role)) {
                 $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'Role not found with key: '.$role);
                 return $joined;
             }
         }
 
-        $member = $this->xpdo->newObject('modUserGroupMember');
-        $member->set('member',$this->get('id'));
-        $member->set('user_group',$usergroup->get('id'));
-        if (!empty($role)) {
-            $member->set('role',$role->get('id'));
+        /** @var modUserGroupMember $member */
+        $member = $this->xpdo->getObject('modUserGroupMember',array(
+            'member' => $this->get('id'),
+            'user_group' => $userGroup->get('id'),
+        ));
+        if (empty($member)) {
+            if ($rank == null) {
+                $rank = count($this->getMany('UserGroupMembers'));
+            }
+            $member = $this->xpdo->newObject('modUserGroupMember');
+            $member->set('member',$this->get('id'));
+            $member->set('user_group',$userGroup->get('id'));
+            $member->set('rank', $rank);
+            if (!empty($role)) {
+                $member->set('role',$role->get('id'));
+            }
+            $joined = $member->save();
+            if (!$joined) {
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'An unknown error occurred preventing adding the User to the User Group.');
+            } else {
+                 unset($_SESSION["modx.user.{$this->get('id')}.userGroupNames"],
+                     $_SESSION["modx.user.{$this->get('id')}.userGroups"]);
+            }
+        } else {
+            $joined = true;
         }
-        $saved = $member->save();
-        if (!$saved) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'An unknown error occurred preventing adding the User to the User Group.');
-        }
-        return $saved;
+        return $joined;
     }
 
     /**
@@ -701,13 +724,19 @@ class modUser extends modPrincipal {
             'UserGroup.'.$fk => $groupId,
         ));
 
+        /** @var modUserGroupMember $member */
         $member = $this->xpdo->getObject('modUserGroupMember',$c);
-        if ($member == false) {
+        if (empty($member)) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'User could not leave group with key "'.$groupId.'" because the User was not a part of that group.');
-            return $left;
+        } else {
+            $left = $member->remove();
+            if (!$left) {
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR,'An unknown error occurred preventing removing the User from the User Group.');
+            } else {
+                unset($_SESSION["modx.user.{$this->get('id')}.userGroupNames"],
+                    $_SESSION["modx.user.{$this->get('id')}.userGroups"]);
+            }
         }
-
-        $left = $member->remove();
         return $left;
     }
 
@@ -744,15 +773,20 @@ class modUser extends modPrincipal {
      * Returns a randomly generated password
      *
      * @param integer $length The length of the password
+     * @param array $options
      * @return string The newly generated password
      */
-    public function generatePassword($length = 10) {
-        $allowable_characters = 'abcdefghjkmnpqrstuvxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        $ps_len = strlen($allowable_characters);
-        srand((double) microtime() * 1000000);
+    public function generatePassword($length = 10,array $options = array()) {
+        $options = array_merge(array(
+            'allowable_characters' => 'abcdefghjkmnpqrstuvxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789',
+            'srand_seed_multiplier' => 1000000,
+        ),$options);
+
+        $ps_len = strlen($options['allowable_characters']);
+        srand((double) microtime() * $options['srand_seed_multiplier']);
         $pass = '';
         for ($i = 0; $i < $length; $i++) {
-            $pass .= $allowable_characters[mt_rand(0, $ps_len -1)];
+            $pass .= $options['allowable_characters'][mt_rand(0, $ps_len -1)];
         }
         return $pass;
     }
@@ -771,7 +805,7 @@ class modUser extends modPrincipal {
 
         $this->xpdo->getService('mail', 'mail.modPHPMailer');
         if (!$this->xpdo->mail) return false;
-        
+
         $this->xpdo->mail->set(modMail::MAIL_BODY, $message);
         $this->xpdo->mail->set(modMail::MAIL_FROM, $this->xpdo->getOption('from',$options,$this->xpdo->getOption('emailsender')));
         $this->xpdo->mail->set(modMail::MAIL_FROM_NAME, $this->xpdo->getOption('fromName',$options,$this->xpdo->getOption('site_name')));
@@ -780,10 +814,93 @@ class modUser extends modPrincipal {
         $this->xpdo->mail->address('to',$profile->get('email'),$profile->get('fullname'));
         $this->xpdo->mail->address('reply-to',$this->xpdo->getOption('sender',$options,$this->xpdo->getOption('emailsender')));
         $this->xpdo->mail->setHTML($this->xpdo->getOption('html',$options,true));
-        if ($this->xpdo->mail->send() == false) {
-            return false;
-        }
+        $sent = $this->xpdo->mail->send();
         $this->xpdo->mail->reset();
-        return true;
+        return $sent;
+    }
+
+    /**
+     * Get the dashboard for this user
+     *
+     * @return modDashboard
+     */
+    public function getDashboard() {
+        $this->xpdo->loadClass('modDashboard');
+
+        /** @var modUserGroup $userGroup */
+        $userGroup = $this->getPrimaryGroup();
+        if ($userGroup) {
+            /** @var modDashboard $dashboard */
+            $dashboard = $userGroup->getOne('Dashboard');
+            if (empty($dashboard)) {
+                $dashboard = modDashboard::getDefaultDashboard($this->xpdo);
+            }
+        } else {
+            $dashboard = modDashboard::getDefaultDashboard($this->xpdo);
+        }
+        return $dashboard;
+    }
+
+    /**
+     * Wrapper method to retrieve this user image
+     *
+     * @param int    $width The desired photo width
+     * @param int    $height The desired photo height (if applicable)
+     * @param string $default An optional default photo URL
+     *
+     * @return string The photo URL
+     */
+    public function getPhoto($width = 128, $height = 128, $default = '') {
+        $img = $default;
+
+        if ($this->Profile->photo) {
+            $img = $this->getProfilePhoto($width, $height);
+        } elseif ($this->xpdo->getOption('enable_gravatar')) {
+            $img = $this->getGravatar($width);
+        }
+
+        return $img;
+    }
+
+    /**
+     * Retrieve the profile photo, if any
+     *
+     * @param int $width The desired photo width
+     * @param int $height The desired photo height
+     *
+     * @return string The photo URL
+     */
+    public function getProfilePhoto($width = 128, $height = 128) {
+        if (empty($this->Profile->photo)) {
+            return '';
+        }
+        $this->xpdo->loadClass('sources.modMediaSource');
+        /** @var modMediaSource $source */
+        $source = modMediaSource::getDefaultSource($this->xpdo, $this->xpdo->getOption('photo_profile_source'));
+        $source->initialize();
+
+        $path = $source->getBasePath($this->Profile->photo) . $this->Profile->photo;
+
+        return $this->xpdo->getOption('connectors_url', MODX_CONNECTORS_URL)
+            . "system/phpthumb.php?zc=1&h={$height}&w={$width}&src={$path}";
+    }
+
+    /**
+     * Compute the Gravatar photo URL
+     *
+     * @param int    $size The desired image size
+     * @param string $default The default Gravatar photo
+     *
+     * @return string The Gravatar photo URL
+     */
+    public function getGravatar($size = 128, $default = 'mm') {
+        $gravemail = md5(
+            strtolower(
+                trim($this->Profile->email)
+            )
+        );
+
+        return 'https://www.gravatar.com/avatar/'
+            . $gravemail . "?s={$size}&d={$default}";
     }
 }

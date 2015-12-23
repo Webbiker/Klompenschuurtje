@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006, 2007, 2008, 2009 by Jason Coward <xpdo@opengeek.com>
+ * Copyright 2010-2015 by MODX, LLC.
  *
  * This file is part of xPDO.
  *
@@ -91,9 +91,10 @@ class xPDOMemCache extends xPDOCache {
     }
 
     public function delete($key, $options= array()) {
-        $deleted = false;
         if (!isset($options['multiple_object_delete']) || empty($options['multiple_object_delete'])) {
             $deleted= $this->memcache->delete($this->getCacheKey($key));
+        } else {
+            $deleted= $this->flush($options);
         }
         return $deleted;
     }

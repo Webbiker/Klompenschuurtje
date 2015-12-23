@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2006-2010 by  Jason Coward <xpdo@opengeek.com>
+ * Copyright 2010-2015 by MODX, LLC.
  *
  * This file is part of xPDO.
  *
@@ -312,6 +312,9 @@ class xPDOForeignKeyConstraint extends xPDOValidationRule {
         }
 
         $criteria= array ($fkdef['foreign'] => $obj->get($fkdef['local']));
+        if (isset($fkdef['criteria']['foreign'])) {
+            $criteria= array($fkdef['criteria']['foreign'], $criteria);
+        }
         if ($object= $xpdo->getObject($fkdef['class'], $criteria)) {
            $result= ($object !== null);
         }

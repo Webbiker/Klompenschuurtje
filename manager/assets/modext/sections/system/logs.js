@@ -1,6 +1,3 @@
-Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-page-manager-log' });
-});
 /**
  * Loads the manager log page
  * 
@@ -15,7 +12,6 @@ MODx.page.ManagerLog = function(config) {
         formpanel: 'modx-panel-manager-log'
         ,components: [{
             xtype: 'modx-panel-manager-log'
-            ,renderTo: 'modx-panel-manager-log-div'
         }]
     });
     MODx.page.ManagerLog.superclass.constructor.call(this,config);

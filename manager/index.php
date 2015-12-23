@@ -1,8 +1,8 @@
 <?php
 /*
- * MODx Revolution
+ * MODX Revolution
  *
- * Copyright 2006-2010 by the MODx Team.
+ * Copyright 2006-2015 by MODX, LLC.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -29,19 +29,22 @@
 @include dirname(__FILE__) . '/config.core.php';
 if (!defined('MODX_CORE_PATH')) define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/core/');
 
+/* define this as true in another entry file, then include this file to simply access the API
+ * without executing the MODX request handler */
+if (!defined('MODX_API_MODE')) {
+    define('MODX_API_MODE', false);
+}
+
 /* check for correct version of php */
 $php_ver_comp = version_compare(phpversion(),'5.1.0');
 if ($php_ver_comp < 0) {
-    die('Wrong php version! You\'re using PHP version "'.phpversion().'", and MODx Revolution only works on 5.1.0 or higher.');
+    die('Wrong php version! You\'re using PHP version "'.phpversion().'", and MODX Revolution only works on 5.1.0 or higher.');
 }
 
 /* set the document_root */
 if(!isset($_SERVER['DOCUMENT_ROOT']) || empty($_SERVER['DOCUMENT_ROOT'])) {
-    $_SERVER['DOCUMENT_ROOT'] = str_replace($_SERVER['PATH_INFO'], '', ereg_replace("[\][\]",'/', $_SERVER['PATH_TRANSLATED'])) . '/';
+    $_SERVER['DOCUMENT_ROOT'] = str_replace($_SERVER['PATH_INFO'], '', str_replace('\\\\', '/', $_SERVER['PATH_TRANSLATED'])) . '/';
 }
-
-/* we use this to make sure files are accessed through the manager instead of separately. */
-define('IN_MANAGER_MODE',true);
 
 /* include the modX class */
 if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
@@ -49,20 +52,15 @@ if (!(include_once MODX_CORE_PATH . 'model/modx/modx.class.php')) {
     die('Site temporarily unavailable!');
 }
 
-/* create the modX object */
-if (empty($options) || !is_array($options)) $options = array();
-$modx= new modX('', $options);
+/* @var modX $modx create the modX object */
+$modx= new modX('', array(xPDO::OPT_CONN_INIT => array(xPDO::OPT_CONN_MUTABLE => true)));
 if (!is_object($modx) || !($modx instanceof modX)) {
-    $errorMessage = '<a href="../setup/">MODx not installed. Install now?</a>';
+    $errorMessage = '<a href="../setup/">MODX not installed. Install now?</a>';
     include MODX_CORE_PATH . 'error/unavailable.include.php';
     header('HTTP/1.1 503 Service Unavailable');
     echo "<html><title>Error 503: Site temporarily unavailable</title><body><h1>Error 503</h1><p>{$errorMessage}</p></body></html>";
     exit();
 }
-
-$modx->setDebug(E_ALL & ~E_NOTICE);
-$modx->setLogLevel(modX::LOG_LEVEL_ERROR);
-$modx->setLogTarget('FILE');
 
 $modx->initialize('mgr');
 
@@ -71,9 +69,11 @@ $modx->getParser();
 
 if (isset($modx) && is_object($modx) && $modx instanceof modX) {
     if (!$modx->getRequest()) {
-        $modx->log(modX::LOG_LEVEL_FATAL,"Could not load the MODx manager request object.");
+        $modx->log(modX::LOG_LEVEL_FATAL,"Could not load the MODX manager request object.");
     }
-    $modx->request->handleRequest();
+    if (!MODX_API_MODE) {
+        $modx->request->handleRequest();
+    }
 }
 @session_write_close();
 exit();

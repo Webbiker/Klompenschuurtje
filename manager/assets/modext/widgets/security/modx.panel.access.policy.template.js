@@ -10,12 +10,13 @@ MODx.panel.AccessPolicyTemplate = function(config) {
     config = config || {};
     var r = config.record || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'security/access/policy/template.php'
+        url: MODx.config.connector_url
         ,baseParams: {
-            action: 'update'
+            action: 'security/access/policy/template/update'
             ,id: MODx.request.id
         }
         ,id: 'modx-panel-access-policy-template'
+		,cls: 'container form-with-labels'
         ,class_key: 'modAccessPolicyTemplate'
         ,plugin: ''
         ,bodyStyle: ''
@@ -28,9 +29,9 @@ MODx.panel.AccessPolicyTemplate = function(config) {
         },{
             xtype: 'modx-tabs'
             ,defaults: {
-                bodyStyle: 'padding: 15px'
-                ,autoHeight: true
+                autoHeight: true
                 ,border: true
+				,bodyCssClass: 'tab-panel-wrapper'
             }
             ,forceLayout: true
             ,deferredRender: false
@@ -39,41 +40,73 @@ MODx.panel.AccessPolicyTemplate = function(config) {
                 ,layout: 'form'
                 ,items: [{
                     html: '<p>'+_('policy_template.desc')+'</p>'
+					,bodyCssClass: 'panel-desc'
                     ,border: false
                 },{
-                    xtype: 'hidden'
-                    ,name: 'id'
+					xtype: 'panel'
+					,border: false
+					,cls:'main-wrapper'
+					,layout: 'form'
+					,defaults:{ anchor: '100%' }
+					,labelAlign: 'top'
+					,labelSeparator: ''
+					,items: [{
+						xtype: 'hidden'
+						,name: 'id'
+					},{
+						xtype: 'textfield'
+						,fieldLabel: _('name')
+						,description: MODx.expandHelp ? '' : _('policy_template_desc_name')
+						,name: 'name'
+						,id: 'modx-policy-template-name'
+						,maxLength: 255
+						,enableKeyEvents: true
+						,allowBlank: false
+						,listeners: {
+							'keyup': {scope:this,fn:function(f,e) {
+								Ext.getCmp('modx-policy-template-header').getEl().update('<h2>'+_('policy')+': '+f.getValue()+'</h2>');
+							}}
+						}
+					},{
+                        xtype: MODx.expandHelp ? 'label' : 'hidden'
+                        ,forId: 'modx-policy-template-name'
+                        ,html: _('policy_template_desc_name')
+                        ,cls: 'desc-under'
+
+                    },{
+						xtype: 'textarea'
+						,fieldLabel: _('description')
+						,description: MODx.expandHelp ? '' : _('policy_template_desc_description')
+						,name: 'description'
+						,id: 'modx-policy-template-description'
+						,grow: true
+					},{
+                        xtype: MODx.expandHelp ? 'label' : 'hidden'
+                        ,forId: 'modx-policy-template-description'
+                        ,html: _('policy_template_desc_description')
+                        ,cls: 'desc-under'
+
+                    },{
+						xtype: 'textfield'
+						,fieldLabel: _('lexicon')
+						,description: MODx.expandHelp ? '' : _('policy_template_desc_lexicon')
+						,name: 'lexicon'
+						,id: 'modx-policy-template-lexicon'
+						,allowBlank: true
+						,value: 'permissions'
+					},{
+                        xtype: MODx.expandHelp ? 'label' : 'hidden'
+                        ,forId: 'modx-policy-template-lexicon'
+                        ,html: _('policy_template_desc_lexicon')
+                        ,cls: 'desc-under'
+                    }]
                 },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('name')
-                    ,name: 'name'
-                    ,width: 300
-                    ,maxLength: 255
-                    ,enableKeyEvents: true
-                    ,allowBlank: false
-                    ,listeners: {
-                        'keyup': {scope:this,fn:function(f,e) {
-                            Ext.getCmp('modx-policy-template-header').getEl().update('<h2>'+_('policy')+': '+f.getValue()+'</h2>');
-                        }}
-                    }
-                },{
-                    xtype: 'textarea'
-                    ,fieldLabel: _('description')
-                    ,name: 'description'
-                    ,width: 300
-                    ,grow: true
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('lexicon')
-                    ,name: 'lexicon'
-                    ,width: 300
-                    ,allowBlank: true
-                    ,value: 'permissions'
-                },{
-                    html: '<hr /><p>'+_('permissions_desc')+'</p>'
+                    html: '<p>'+_('permissions_desc')+'</p>'
+					,bodyCssClass: 'panel-desc'
                     ,border: false
                 },{
                     xtype: 'modx-grid-template-permissions'
+					,cls:'main-wrapper'
                     ,policy: MODx.request.id
                     ,autoHeight: true
                     ,preventRender: true
@@ -101,7 +134,7 @@ Ext.extend(MODx.panel.AccessPolicyTemplate,MODx.FormPanel,{
         this.getForm().setValues(r);
 
         var g = Ext.getCmp('modx-grid-template-permissions');
-        if (g) { g.getStore().loadData(r.permissions); }
+        if (g && r.permissions) { g.getStore().loadData(r.permissions); }
 
         this.fireEvent('ready');
         MODx.fireEvent('ready');
@@ -146,6 +179,7 @@ MODx.grid.TemplatePermissions = function(config) {
         ,autoExpandColumn: 'name'
         ,tbar: [{
             text: _('permission_add_template')
+            ,cls: 'primary-button'
             ,scope: this
             ,handler: this.createAttribute
         }]
@@ -207,10 +241,10 @@ MODx.window.NewTemplatePermission = function(config) {
     this.ident = config.ident || 'polpc'+Ext.id();
     Ext.applyIf(config,{
         title: _('permission_add_template')
-        ,height: 150
-        ,width: 475
-        ,url: MODx.config.connectors_url+'security/access/policy/index.php'
-        ,action: 'addProperty'
+        // ,height: 150
+        // ,width: 475
+        ,url: MODx.config.connector_url
+        ,action: 'security/access/policy/addProperty'
         ,saveBtnText: _('add')
         ,fields: [{
             xtype: 'modx-combo-permission'
@@ -218,13 +252,13 @@ MODx.window.NewTemplatePermission = function(config) {
             ,name: 'name'
             ,hiddenName: 'name'
             ,id: 'modx-'+this.ident+'-name'
-            ,anchor: '90%'
+            ,anchor: '100%'
         },{
             xtype: 'textarea'
             ,fieldLabel: _('description')
             ,name: 'description'
             ,id: 'modx-'+this.ident+'-description'
-            ,anchor: '90%'
+            ,anchor: '100%'
             ,grow: true
         }]
         ,keys: []
@@ -273,9 +307,13 @@ MODx.combo.Permission = function(config) {
         ,forceSelection: false
         ,enableKeyEvents: true
         ,autoSelect: false
+        ,pageSize: 20
         ,tpl: new Ext.XTemplate('<tpl for="."><div class="x-combo-list-item"><span style="font-weight: bold">{name}</span>'
             ,'<p style="margin: 0; font-size: 11px; color: gray;">{description}</p></div></tpl>')
-        ,url: MODx.config.connectors_url+'security/access/permission.php'
+        ,url: MODx.config.connector_url
+        ,baseParams: {
+            action: 'security/access/permission/getlist'
+        }
     });
     MODx.combo.Permission.superclass.constructor.call(this,config);
 };

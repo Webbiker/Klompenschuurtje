@@ -1,7 +1,3 @@
-Ext.onReady(function() {
-	MODx.load({ xtype: 'modx-page-user-create' });
-});
-
 /**
  * Loads the create user page 
  * 
@@ -15,17 +11,27 @@ MODx.page.CreateUser = function(config) {
     Ext.applyIf(config,{
         formpanel: 'modx-panel-user'
         ,buttons: [{
-            process: 'create', text: _('save'), method: 'remote'
-            ,checkDirty: true
+            process: 'security/user/create'
+            ,reload: true
+            ,text: _('save')
+            ,id: 'modx-abtn-save'
+            ,cls: 'primary-button'
+            ,redirect: false
+            ,method: 'remote'
+            // ,checkDirty: true
             ,keys: [{
                 key: MODx.config.keymap_save || 's'
-                ,alt: true
                 ,ctrl: true
             }]
-        },'-',{
-            process: 'cancel', text: _('cancel'), params: {a:MODx.action['security/user']}
-        },'-',{
+        },{
+            text: _('cancel')
+            ,id: 'modx-abtn-cancel'
+            ,handler: function() {
+                MODx.loadPage('security/user')
+            }
+        },{
             text: _('help_ex')
+            ,id: 'modx-abtn-help'
             ,handler: MODx.loadHelpPane
         }]
         ,components: [{

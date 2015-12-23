@@ -1,13 +1,10 @@
 <?php
 /**
- * TV Input Types Czech lexicon topic
+ * TV Input Types English lexicon topic
  *
- * @language cs
+ * @language en
  * @package modx
  * @subpackage lexicon
- *
- * @author modxcms.cz
- * @updated 2010-09-11
  */
 $_lang['autotag'] = 'Auto-Tag';
 $_lang['text'] = 'Text';
@@ -17,6 +14,7 @@ $_lang['richtext'] = 'WYSIWYG';
 $_lang['dropdown'] = 'Rozbalovací seznam';
 $_lang['listbox'] = 'Seznam (jeden vybraný)';
 $_lang['listbox-multiple'] = 'Seznam (více vybraných)';
+$_lang['list-multiple-legacy'] = 'Seznam s více možnostmi';
 $_lang['option'] = 'Přepínače';
 $_lang['checkbox'] = 'Zaškrtávací políčko';
 $_lang['image'] = 'Obrázek';
@@ -25,4 +23,4 @@ $_lang['url'] = 'URL';
 $_lang['email'] = 'E-mail';
 $_lang['number'] = 'Číslo';
 $_lang['date'] = 'Datum';
-$_lang['tag'] = 'Tag';
+$_lang['tag'] = 'Štítek';

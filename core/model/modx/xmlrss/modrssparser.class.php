@@ -6,7 +6,7 @@
  * @subpackage xmlrss
  */
 /**
- * RSS Parser for MODx, implementing MagpieRSS
+ * RSS Parser for MODX, implementing MagpieRSS
  *
  * @package modx
  * @subpackage xmlrss
@@ -16,6 +16,7 @@ class modRSSParser {
      * Constructor for modRSSParser
      *
      * @param modX &$modx A reference to the modx object.
+     * @param array $config A configuration array of properties
      */
     function __construct(&$modx,array $config = array()) {
         $this->modx =& $modx;

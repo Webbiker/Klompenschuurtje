@@ -2,9 +2,12 @@
 /**
  * Loads the lexicon into a JS-compatible function _()
  *
+ * @var modX $modx
  * @package modx
  * @subpackage lexicon
  */
+define('MODX_CONNECTOR_INCLUDED', 1);
+
 ob_start();
 require_once dirname(__FILE__).'/index.php';
 ob_clean();

@@ -6,12 +6,14 @@ MODx.panel.ResourceData = function(config) {
         ,width: 300
     };
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'resource/index.php'
-        ,baseParams: {}
+        url: MODx.config.connector_url
+        ,baseParams: {
+            action: 'resource/data'
+        }
         ,id: 'modx-panel-resource-data'
         ,class_key: 'modResource'
+        ,cls: 'container form-with-labels'
         ,resource: ''
-        ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
             html: '<h2></h2>'
@@ -22,8 +24,8 @@ MODx.panel.ResourceData = function(config) {
             ,id: 'modx-rdata-tab-general'
             ,layout: 'form'
             ,autoHeight: true
+            ,bodyCssClass: 'main-wrapper'
             ,labelWidth: 150
-            ,bodyStyle: 'padding: 15px;'
             ,defaults: df
             ,items: [{
                 name: 'pagetitle'
@@ -117,7 +119,7 @@ MODx.panel.ResourceData = function(config) {
             ,defaults: df
             ,layout: 'form'
             ,autoHeight: true
-            ,bodyStyle: 'padding: 15px'
+            ,bodyCssClass: 'main-wrapper'
             ,defaultType: 'statictextfield'
             ,items: [{
                 name: 'createdon_adjusted'
@@ -140,7 +142,7 @@ MODx.panel.ResourceData = function(config) {
             }]
         },{
             title: _('cache_output')
-            ,bodyStyle: 'padding: 15px;'
+            ,bodyCssClass: 'main-wrapper'
             ,autoHeight: true
             ,id: 'modx-rdata-tab-source'
             ,items: [{
@@ -148,6 +150,7 @@ MODx.panel.ResourceData = function(config) {
                 ,id: 'modx-rdata-buffer'
                 ,xtype: 'textarea'
                 ,hideLabel: true
+                ,readOnly: true
                 ,width: '90%'
                 ,grow: true
             }]
@@ -160,6 +163,13 @@ MODx.panel.ResourceData = function(config) {
         }
     });
     MODx.panel.ResourceData.superclass.constructor.call(this,config);
+
+    // prevent backspace key from going to the previous page in browser history
+    Ext.EventManager.on(window, 'keydown', function(e, t) {
+        if (e.getKey() == e.BACKSPACE && t.readOnly) {
+            e.stopEvent();
+        }
+    });
 };
 Ext.extend(MODx.panel.ResourceData,MODx.FormPanel,{
     setup: function() {
@@ -168,9 +178,9 @@ Ext.extend(MODx.panel.ResourceData,MODx.FormPanel,{
         	return false;
         }
         MODx.Ajax.request({
-            url: MODx.config.connectors_url+'resource/index.php'
+            url: MODx.config.connector_url
             ,params: {
-                action: 'data'
+                action: 'resource/data'
                 ,id: this.config.resource
                 ,class_key: this.config.class_key
             }

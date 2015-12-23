@@ -7,11 +7,13 @@
 MODx.panel.FCSet = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'security/forms/set.php'
-        ,baseParams: {}
+        url: MODx.config.connector_url
+        ,baseParams: {
+            action: 'security/forms/set/update'
+        }
         ,id: 'modx-panel-fc-set'
         ,class_key: 'modFormCustomizationSet'
-        ,bodyStyle: ''
+        ,cls: 'container'
         ,items: [{
             html: '<h2>'+_('set_new')+'</h2>'
             ,border: false
@@ -19,126 +21,144 @@ MODx.panel.FCSet = function(config) {
             ,id: 'modx-fcs-header'
         },MODx.getPageStructure([{
             title: _('set_and_fields')
-            ,bodyStyle: 'padding: 15px;'
-            ,defaults: {border: false ,msgTarget: 'side'}
-            ,layout: 'form'
-            ,id: 'modx-fcs-form'
-            ,labelWidth: 150
+            ,xtype: 'panel'
+            ,border: false
+            ,defaults: { border: false }
             ,items: [{
                 html: '<p>'+_('set_msg')+'</p>'
                 ,id: 'modx-fcs-msg'
+                ,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
-                xtype: 'hidden'
-                ,name: 'id'
-                ,id: 'modx-fcs-id'
-                ,value: config.record.id || MODx.request.id
+                layout: 'form'
+                ,id: 'modx-fcs-form'
+                ,msgTarget: 'side'
+                ,cls: 'main-wrapper'
+                ,labelWidth: 150
+                ,items: [{
+                    xtype: 'hidden'
+                    ,name: 'id'
+                    ,id: 'modx-fcs-id'
+                    ,value: config.record.id || MODx.request.id
+                },{
+                    xtype: 'modx-combo-fc-action'
+                    ,fieldLabel: _('action')
+                    ,name: 'action_id'
+                    ,hiddenName: 'action_id'
+                    ,id: 'modx-fcs-action'
+                    ,anchor: '100%'
+                    ,allowBlank: false
+                    ,value: config.record.action
+                    ,listeners: {
+                        'select': {scope:this,fn:function(f,e) {
+                            Ext.getCmp('modx-fcs-header').getEl().update('<h2>'+_('set')+': '+f.getRawValue()+'</h2>');
+                        }}
+                    }
+                },{
+                    xtype: 'modx-combo-template'
+                    ,fieldLabel: _('template')
+                    ,description: _('set_template_desc')
+                    ,name: 'template'
+                    ,hiddenName: 'template'
+                    ,value: config.record.template || 0
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                    ,lazyInit: false
+                    ,lazyRender: false
+                    ,baseParams: {
+                        action: 'element/template/getList'
+                        ,combo: true
+                    }
+                    ,listeners: {
+                        'select': {fn:this.changeTemplate,scope:this}
+                    }
+                },{
+                    xtype: 'textarea'
+                    ,fieldLabel: _('description')
+                    ,name: 'description'
+                    ,id: 'modx-fcs-description'
+                    ,anchor: '100%'
+                    ,maxLength: 255
+                    ,grow: false
+                    ,value: config.record.description
+                },{
+                    xtype: 'hidden'
+                    ,fieldLabel: _('constraint_class')
+                    ,name: 'constraint_class'
+                    ,value: 'modResource'
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('constraint_field')
+                    ,description: _('set_constraint_field_desc')
+                    ,name: 'constraint_field'
+                    ,value: config.record.constraint_field
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('constraint')
+                    ,description: _('set_constraint_desc')
+                    ,name: 'constraint'
+                    ,value: config.record.constraint
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                },{
+                    xtype: 'xcheckbox'
+                    ,fieldLabel: _('active')
+                    ,name: 'active'
+                    ,inputValue: true
+                    ,value: config.record.active ? true : false
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                }]
             },{
-                xtype: 'modx-combo-fc-action'
-                ,fieldLabel: _('action')
-                ,name: 'action_id'
-                ,hiddenName: 'action_id'
-                ,id: 'modx-fcs-action'
-                ,anchor: '90%'
-                ,allowBlank: false
-                ,value: config.record.action
-                ,listeners: {
-                    'select': {scope:this,fn:function(f,e) {
-                        Ext.getCmp('modx-fcs-header').getEl().update('<h2>'+_('set')+': '+f.getRawValue()+'</h2>');
-                    }}
-                }
-            },{
-                xtype: 'modx-combo-template'
-                ,fieldLabel: _('template')
-                ,description: _('set_template_desc')
-                ,name: 'template'
-                ,hiddenName: 'template'
-                ,value: config.record.template || 0
-                ,anchor: '90%'
-                ,allowBlank: true
-                ,lazyInit: false
-                ,lazyRender: false
-                ,baseParams: {
-                    action: 'getList'
-                    ,combo: true
-                }
-                ,listeners: {
-                    'select': {fn:this.changeTemplate,scope:this}
-                }
-            },{
-                xtype: 'textarea'
-                ,fieldLabel: _('description')
-                ,name: 'description'
-                ,id: 'modx-fcs-description'
-                ,anchor: '90%'
-                ,maxLength: 255
-                ,grow: false
-                ,value: config.record.description
-            },{
-                xtype: 'hidden'
-                ,fieldLabel: _('constraint_class')
-                ,name: 'constraint_class'
-                ,value: 'modResource'
-                ,anchor: '90%'
-                ,allowBlank: true
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('constraint_field')
-                ,description: _('set_constraint_field_desc')
-                ,name: 'constraint_field'
-                ,value: config.record.constraint_field
-                ,anchor: '90%'
-                ,allowBlank: true
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('constraint')
-                ,description: _('set_constraint_desc')
-                ,name: 'constraint'
-                ,value: config.record.constraint
-                ,anchor: '90%'
-                ,allowBlank: true
-            },{
-                xtype: 'checkbox'
-                ,fieldLabel: _('active')
-                ,name: 'active'
-                ,inputValue: true
-                ,value: config.record.active ? true : false
-                ,anchor: '90%'
-                ,allowBlank: true
-            },{
-                html: '<hr /><p>'+_('set_fields_msg')+'</p>'
+                html: '<p>'+_('set_fields_msg')+'</p>'
+                ,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
-                xtype: 'modx-grid-fc-set-fields'
-                ,data: config.record.fields || []
-                ,preventRender: true
+                id: 'modx-fcs-fields-form'
+                ,msgTarget: 'side'
+                ,cls: 'main-wrapper'
+                ,layout: 'anchor'
+                ,items: [{
+                    xtype: 'modx-grid-fc-set-fields'
+                    ,data: config.record.fields || []
+                    ,preventRender: true
+                }]
             }]
         },{
-            title: _('tabs')
-            ,bodyStyle: { padding: '15px' }
+            title: _('regions')
+            ,border: false
+            ,layout: 'anchor'
             ,items: [{
                 html: '<p>'+_('set_tabs_msg')+'</p>'
+                ,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
                 xtype: 'modx-grid-fc-set-tabs'
+                ,cls: 'main-wrapper'
                 ,data: config.record.tabs || []
                 ,preventRender: true
             }]
         },{
             title: _('tvs')
-            ,bodyStyle: { padding: '15px' }
+            ,border: false
+            ,layout: 'anchor'
             ,items: [{
                 html: '<p>'+_('set_tvs_msg')+'</p>'
+                ,bodyCssClass: 'panel-desc'
                 ,border: false
             },{
                 xtype: 'modx-grid-fc-set-tvs'
+                ,cls: 'main-wrapper'
                 ,data: config.record.tvs || []
                 ,preventRender: true
             }]
         }],{
             id: 'modx-fc-set-tabs'
         })]
-        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}
@@ -152,9 +172,9 @@ Ext.extend(MODx.panel.FCSet,MODx.FormPanel,{
     ,setup: function() {
         if (!this.initialized) {this.getForm().setValues(this.config.record);}
         if (!Ext.isEmpty(this.config.record.controller)) {
-            Ext.getCmp('modx-fcs-header').getEl().update('<h2>'+_('set')+': '+this.config.record.controller+'</h2>');
+            Ext.getCmp('modx-fcs-header').update('<h2>'+_('set')+': '+this.config.record.controller+'</h2>');
         }
-        
+
         this.fireEvent('ready',this.config.record);
         this.clearDirty();
         this.initialized = true;
@@ -224,17 +244,23 @@ MODx.grid.FCSetFields = function(config) {
             ,dataIndex: 'name'
             ,width: 200
         },{
-            header: _('tab')
+            header: _('region')
             ,dataIndex: 'tab'
             ,width: 100
         },this.vcb,{
             header: _('label')
             ,dataIndex: 'label'
             ,editor: { xtype: 'textfield' }
+            ,renderer: function(v,md) {
+                return Ext.util.Format.htmlEncode(v);
+            }
         },{
             header: _('default_value')
             ,dataIndex: 'default_value'
             ,editor: { xtype: 'textfield' }
+            ,renderer: function(v,md) {
+                return Ext.util.Format.htmlEncode(v);
+            }
         }]
         ,viewConfig: {
             forceFit:true
@@ -289,6 +315,7 @@ MODx.grid.FCSetTabs = function(config) {
         }
         ,tbar: [{
             text: _('tab_create')
+            ,cls: 'primary-button'
             ,handler: this.createTab
             ,scope: this
         }]
@@ -341,8 +368,8 @@ MODx.window.AddTabToSet = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('tab_create')
-        ,height: 150
-        ,width: 375
+        // ,height: 150
+        // ,width: 375
         ,fields: [{
             xtype: 'hidden'
             ,name: 'container'
@@ -361,14 +388,14 @@ MODx.window.AddTabToSet = function(config) {
             ,fieldLabel: _('tab_id')
             ,id: 'modx-fcatab-id'
             ,allowBlank: false
-            ,anchor: '90%'
+            ,anchor: '100%'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('tab_title')
             ,name: 'value'
             ,id: 'modx-fcatab-name'
             ,allowBlank: false
-            ,anchor: '90%'
+            ,anchor: '100%'
         }]
     });
     MODx.window.AddTabToSet.superclass.constructor.call(this,config);
@@ -436,14 +463,14 @@ MODx.grid.FCSetTVs = function(config) {
             ,dataIndex: 'default_text'
             ,editable: false
         },{
-            header: _('tab')
+            header: _('region')
             ,dataIndex: 'tab'
             ,width: 100
             ,editor: { xtype: 'textfield' }
         },{
             header: _('tab_rank')
             ,dataIndex: 'rank'
-            ,width: 60
+            ,width: 70
             ,editor: { xtype: 'textfield' }
         }]
         ,viewConfig: {

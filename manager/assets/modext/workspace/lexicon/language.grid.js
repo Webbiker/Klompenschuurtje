@@ -11,7 +11,10 @@ MODx.grid.Language = function(config) {
     Ext.applyIf(config,{
         title: _('languages')
         ,id: 'modx-grid-language'
-        ,url: MODx.config.connectors_url+'system/language.php'
+        ,url: MODx.config.connector_url+'system/language.php'
+        ,baseParams: {
+            action: 'system/language/getlist'
+        }
         ,fields: ['id','name','menu']
         ,width: '97%'
         ,paging: true
@@ -80,14 +83,14 @@ MODx.window.CreateLanguage = function(config) {
     var r = config.record;
     Ext.applyIf(config,{
         title: _('language_create')
-        ,url: MODx.config.connectors_url+'system/language.php'
-        ,action: 'create'
+        ,url: MODx.config.connector_url
+        ,action: 'system/language/create'
         ,fields: [{
             xtype: 'textfield'
             ,fieldLabel: _('name')
             ,name: 'name'
             ,itemId: 'name'
-            ,anchor: '95%'
+            ,anchor: '100%'
             ,maxLength: 100
             ,allowBlank: false
         }]
@@ -102,14 +105,14 @@ MODx.window.DuplicateLanguage = function(config) {
     var r = config.record;
     Ext.applyIf(config,{
         title: _('language_duplicate')
-        ,url: MODx.config.connectors_url+'system/language.php'
-        ,action: 'duplicate'
+        ,url: MODx.config.connector_url
+        ,action: 'system/language/duplicate'
         ,fields: [{
             xtype: 'statictextfield'
             ,fieldLabel: _('duplicate')
             ,name: 'name'
             ,itemId: 'name'
-            ,anchor: '95%'
+            ,anchor: '100%'
             ,maxLength: 100
             ,allowBlank: false
             ,submitValue: true
@@ -119,10 +122,10 @@ MODx.window.DuplicateLanguage = function(config) {
             ,description: _('language_new_name_desc')
             ,name: 'new_name'
             ,itemId: 'new_name'
-            ,anchor: '95%'
+            ,anchor: '100%'
             ,allowBlank: false
         },{
-            xtype: 'checkbox'
+            xtype: 'xcheckbox'
             ,boxLabel: _('language_recursive')
             ,description: _('language_recursive_desc')
             ,name: 'recursive'

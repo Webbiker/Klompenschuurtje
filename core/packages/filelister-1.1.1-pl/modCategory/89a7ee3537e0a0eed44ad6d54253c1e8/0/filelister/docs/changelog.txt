@@ -1,0 +1,35 @@
+Changelog for FileLister.
+
+FileLister 1.1.1
+====================================
+- [#15] Add Content-Length header on download to allow browsers to set download timers
+- [#15] Add better support for large files
+- [#15] Add support for wmv type header
+- [#11] Fix issue with windows file paths and mappings
+- [#12] Fix issue where download never saved if geolocation is off
+
+FileLister 1.1.0
+====================================
+- Add sqlsrv support
+- [#3] Add cls, altCls, firstCls, and lastCls properties for adding CSS classes
+- [#4] Add getPage support
+- Add property useGeolocation to toggle use of geolocation services on downloads
+- [#7] Update geolocation to new service, added system setting filelister.ipinfodb_api_key
+
+FileLister 1.0.1
+====================================
+- Fixed bug with outputSeparator property that occurs on some environments
+
+FileLister 1.0.0
+====================================
+- Added file download counting
+- Fixed bug with filename sorting
+- i18n of snippet properties
+- Added homePathName property to filelister snippet for hiding the root path
+- Added ability to restrict file download to logged-in users, specific usergroup(s)
+- Added sorting algorithms to allow size, extension, date sorting
+- Sorts directories on top now
+- Added placeholders for number of directories and files, and total objects
+- Allow filelister placeholder prefix to be configurable
+- Added clickable path links placeholder via [[+filelister.path]]
+- Added secure browsing via salted hash
