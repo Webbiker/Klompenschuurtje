@@ -1,10 +1,12 @@
 //@import "compass/";
 @import "compass/reset";
+@import "jeet/index";
 // @import "compass/css3/images";
 
 /*-----------------------------------------------------------------------------------/
 / Dependencies
 /-----------------------------------------------------------------------------------*/
+@import "partials/mixins";
 @import "partials/functions";
 @import "partials/variables";
 

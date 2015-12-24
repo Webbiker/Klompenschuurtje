@@ -17,7 +17,40 @@
         <script src="/assets/bower_components/modernizr/modernizr.js"></script>
     </head>
 	<body>
-		<h1>Test</h1>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<ul>
+						<li><a href="javascript:;">Home</a></li>
+						<li><a href="javascript:;">Geschiedenis</a></li>
+						<li><a href="javascript:;">Klompen</a></li>
+						<li><a href="javascript:;">Workshops</a></li>
+						<li><a href="javascript:;">Demonstraties</a></li>
+						<li><a href="javascript:;">Vraag &amp; Antwoord</a></li>
+					</ul>
+				</nav>
+
+				<ul>
+					<li><a href="javascript:;"><img src="#" alt="Nederlands"></a></li>
+					<li><a href="javascript:;"><img src="#" alt="English"></a></li>
+				</ul>
+				
+			</header>
+
+			<section>		
+				<article>		
+					<h1>Test</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime itaque molestiae et unde quos deleniti, saepe quasi. Unde sed doloribus quod assumenda animi dolorem necessitatibus velit odit maxime reiciendis repudiandae expedita quibusdam minus ad, rerum, nulla autem nihil repellat! Accusamus nam numquam iure alias maiores consectetur quo, illo quas inventore cumque officiis. Modi dolor rem ea placeat optio maxime aspernatur dolorem pariatur fuga voluptates suscipit aliquid repudiandae alias sunt itaque reiciendis voluptas harum, voluptatum totam deserunt necessitatibus eius. Mollitia culpa amet facilis, tenetur commodi aliquam vero animi sed et incidunt, explicabo itaque sequi adipisci aut dolor eius non ab nemo.</p>
+				</article>
+				<aside>
+					<p>Sidebar</p>
+				</aside>
+			</section>
+
+			<footer>
+				Footer			
+			</footer>
+		</div>
 	</body>
     <script src="/assets/js/app-min.js"></script>
 

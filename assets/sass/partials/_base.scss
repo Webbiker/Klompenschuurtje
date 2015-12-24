@@ -1,0 +1,42 @@
+@include edit();
+
+.wrapper { 
+	display:block; 
+	min-height:100%; 
+	_height:100%; 
+	width:100%; 
+	position: absolute; 
+	top: 0px; 
+	z-index: 0; 
+	margin:0px auto;
+}
+
+section {
+	margin-bottom: 120px; 
+	@include center($max-width);
+
+	article {
+		@include column(2/3);
+		@include shift(1/3);
+	}
+
+	aside {
+		@include column(1/3);
+		@include shift(-2/3);
+	}
+}
+
+@media #{$small-only}{
+	section {
+		margin: 0 10px 120px 10px;
+		article {
+			@include column(1);
+			@include unshift();
+		}
+
+		aside {
+			@include column(1);
+			@include unshift();
+		}
+	}
+}
