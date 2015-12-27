@@ -1,6 +1,80 @@
 header {
 	min-height: 500px;
-	background: rgba(red, 0.2);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-image: url(/assets/img/header-bground.jpg);
+
+
+	nav {
+		height: 36px;
+		border-bottom: 1px solid $grey;
+		ul {
+			@include center($max-width);
+			li {
+				display: inline-block;
+				position: relative;
+				&:after {
+					content: "";
+					background-image: url(/assets/img/ruitje.png);
+					background-size: 10px 17px;
+					background-repeat: no-repeat;
+					width: 10px;
+					height: 17px;
+					display: block;
+					position: absolute;
+					right: -10px;
+					top: 11px;
+				}
+				&:last-of-type:after {
+					display: none;
+				}
+				a {
+				    font-family: 'BloklettersViltstift', _sans;
+				    color: $black;
+				    display: block;
+					@include font-size(14px);
+					padding: 15px 16px 23px 16px;
+
+					&.active {
+						background-image: url(/assets/img/nav-active.png);
+						background-size: 195px 22px;
+						background-repeat:no-repeat;
+						background-position: center bottom;
+					}
+				}
+			}
+			.lang {
+				float: right;
+				li {
+					display: block;
+					float: left;
+					&:after {
+						display: none;
+					}
+					a {					
+						padding: 9px 4px 4px 4px;
+						&.active {
+							background: none;						
+							fill: $green;
+						}
+						.icon {
+							width: 20px;
+							height: 20px;
+						}
+						.mls {
+							position: fixed;
+							left:-9999px;
+							top:0;
+						}
+					}
+				}
+				img {
+					width: 20px;
+					height: 20px;
+				}
+			}
+		}
+	}
 }
 
 @media #{$small-only}{

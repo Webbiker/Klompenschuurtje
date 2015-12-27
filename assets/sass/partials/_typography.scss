@@ -39,31 +39,37 @@ a {
 
 h1, h2, h3, h4 {
     font-family: 'BloklettersViltstift', _sans;
+    margin-bottom: 12px;
 }
 
-// h2, h3, h4, p, ul {
-//     margin-left: 20%;
-//     margin-right: 20%;
-// }
+h1 {
+    @include font-size(24);
+    @include line-height(35);
+}
+
 h2 {
-    font-size: rem-calc(24);
-    line-height: rem-calc(36);
+    @include font-size(14);
+    @include line-height(18);
+    color: $green;
 }
 
 h3 {
-    font-size: rem-calc(18);
-    line-height: rem-calc(30);
+    @include font-size(14);
+    @include line-height(18);
 }
 
 h4 {
-    font-size: rem-calc(14);
-    line-height: rem-calc(24);
+    @include font-size(12);
+    @include line-height(18);
 }
 
 p {
-    font-size: rem-calc(16);
-    line-height: rem-calc(24);
-    margin-bottom: 24px;
+    @include font-size(12);
+    @include line-height(18);
+    margin-bottom: 12px;
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 
 strong,

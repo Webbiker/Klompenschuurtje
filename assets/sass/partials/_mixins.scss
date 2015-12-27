@@ -5,3 +5,13 @@
 		clear: both;
 	}
 }
+
+@mixin font-size($pxWidth){
+  font-size:$pxWidth;
+  font-size:rem-calc($pxWidth);
+}
+
+@mixin line-height($pxWidth){
+  line-height:$pxWidth;
+  line-height:rem-calc($pxWidth);
+}

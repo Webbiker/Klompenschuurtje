@@ -10,8 +10,7 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
         <link rel="stylesheet" href="/assets/css/screen.css">
         <script src="/assets/bower_components/modernizr/modernizr.js"></script>
@@ -22,19 +21,27 @@
 				<nav>
 					<ul>
 						<li><a href="javascript:;">Home</a></li>
-						<li><a href="javascript:;">Geschiedenis</a></li>
+						<li><a href="javascript:;" class="active">Geschiedenis</a></li>
 						<li><a href="javascript:;">Klompen</a></li>
 						<li><a href="javascript:;">Workshops</a></li>
 						<li><a href="javascript:;">Demonstraties</a></li>
 						<li><a href="javascript:;">Vraag &amp; Antwoord</a></li>
+						<ul class="lang">
+							<li><a href="javascript:;" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="javascript:;">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="javascript:;">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
 					</ul>
 				</nav>
-
-				<ul>
-					<li><a href="javascript:;"><img src="#" alt="Nederlands"></a></li>
-					<li><a href="javascript:;"><img src="#" alt="English"></a></li>
-				</ul>
-				
 			</header>
 
 			<section>		

@@ -2,18 +2,18 @@
 
 $(document).ready(function(){
 	//jQuery Cycle Carrousel on the homepage
-	$('.slides').cycle({
-		fx: 'fade',
-		pause: 1,
-		timeout: 6000
-	});
+	// $('.slides').cycle({
+	// 	fx: 'fade',
+	// 	pause: 1,
+	// 	timeout: 6000
+	// });
 
-	//jQuery Cycle Carrousel on detailpage
-	$('.detailfotos UL').cycle({
-		fx: 'fade',
-		timeout: 0,
-		next: "#next"
-	});
+	// //jQuery Cycle Carrousel on detailpage
+	// $('.detailfotos UL').cycle({
+	// 	fx: 'fade',
+	// 	timeout: 0,
+	// 	next: "#next"
+	// });
 
 	//Styling of the images on the sidebar of a content template
 	$('.OneColumnLayout .sidebar IMG').each(function(){
@@ -25,10 +25,10 @@ $(document).ready(function(){
 	});
 
 
-	//remove bullit after last menu item
-	$('UL.navigation LI.last').next().remove();
+	// //remove bullit after last menu item
+	// $('UL.navigation LI.last').next().remove();
 
-	//add a class to all odd LI's in the Overview UL
-	$('UL.overview LI:even').addClass('margin');
+	// //add a class to all odd LI's in the Overview UL
+	// $('UL.overview LI:even').addClass('margin');
 
 });
