@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
         <title>Welkom bij het Klompenschuurtje</title>
 		<!-- <title>[[*longtitle]] - [[++site_name]]</title> -->
 
@@ -19,29 +20,41 @@
 		<div class="wrapper">
 			<header>
 				<nav>
-					<ul>
-						<li><a href="javascript:;">Home</a></li>
-						<li><a href="javascript:;" class="active">Geschiedenis</a></li>
-						<li><a href="javascript:;">Klompen</a></li>
-						<li><a href="javascript:;">Workshops</a></li>
-						<li><a href="javascript:;">Demonstraties</a></li>
-						<li><a href="javascript:;">Vraag &amp; Antwoord</a></li>
+					<div class="center">					
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<ul class="offcanvas main-menu">
+							<li><a href="javascript:;">Home</a></li>
+							<li><a href="javascript:;" class="active">Geschiedenis</a></li>
+							<li><a href="javascript:;">Klompen</a></li>
+							<li><a href="javascript:;">Workshops</a></li>
+							<li><a href="javascript:;">Demonstraties</a></li>
+							<li><a href="javascript:;">Vraag &amp; Antwoord</a></li>
+						</ul>
+
 						<ul class="lang">
-							<li><a href="javascript:;" class="active">
+							<li><a href="/nl/" class="active">
 								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
 								<span class="mls">Nederlands</span>
 							</a></li>
-							<li><a href="javascript:;">
+							<li><a href="/en/">
 								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
 								<span class="mls">English</span>
 							</a></li>
-							<li><a href="javascript:;">
+							<li><a href="/de/">
 								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
 								<span class="mls">Deutsch</span>
 							</a></li>
 						</ul>
-					</ul>
+					</div>
+
+<!-- 					<ul class="offcanvas main-menu">
+						Main-menu
+					</ul> -->
 				</nav>
+
 			</header>
 
 			<section>		

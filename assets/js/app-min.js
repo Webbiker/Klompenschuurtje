@@ -9383,6 +9383,23 @@ $(document).ready(function(){
 		}
 	});
 
+	$(document).on('click', '#offcanvas-menu', function(){
+		if( $('.main-menu').hasClass('show') ){
+			$('.main-menu').removeClass('show');
+		} else {
+			$('.main-menu').addClass('show');
+		}
+	});
+
+	$(document).on('click', '.lang .active', function(e){
+		e.preventDefault();
+
+		if( $('.lang').hasClass('show') ){
+			$('.lang').removeClass('show');
+		} else {
+			$('.lang').addClass('show');
+		}
+	});
 
 	// //remove bullit after last menu item
 	// $('UL.navigation LI.last').next().remove();
