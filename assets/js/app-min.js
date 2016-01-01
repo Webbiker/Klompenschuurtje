@@ -9360,19 +9360,6 @@ return jQuery;
 // JavaScript Document
 
 $(document).ready(function(){
-	//jQuery Cycle Carrousel on the homepage
-	// $('.slides').cycle({
-	// 	fx: 'fade',
-	// 	pause: 1,
-	// 	timeout: 6000
-	// });
-
-	// //jQuery Cycle Carrousel on detailpage
-	// $('.detailfotos UL').cycle({
-	// 	fx: 'fade',
-	// 	timeout: 0,
-	// 	next: "#next"
-	// });
 
 	//Styling of the images on the sidebar of a content template
 	$('.OneColumnLayout .sidebar IMG').each(function(){
@@ -9383,29 +9370,38 @@ $(document).ready(function(){
 		}
 	});
 
+	//on mobile click the offcanvas main navigation trigger
 	$(document).on('click', '#offcanvas-menu', function(){
+		if( $('.lang-menu').hasClass('show') ){
+			$('.lang-menu').removeClass('show');
+			setTimeout(function(){
+				$('.main-menu').addClass('show');
+			}, 500);
+		} else {
+			if( $('.main-menu').hasClass('show') ){
+				$('.main-menu').removeClass('show');
+			} else {
+				$('.main-menu').addClass('show');
+			}
+		}
+
+	});
+
+	//on mobile click the offcanvas language trigger
+	$(document).on('click', '#offcanvas-lang', function(){
 		if( $('.main-menu').hasClass('show') ){
 			$('.main-menu').removeClass('show');
-		} else {
-			$('.main-menu').addClass('show');
+			setTimeout(function(){
+				$('.lang-menu').addClass('show');
+			}, 500);
+		} else {		
+			if( $('.lang-menu').hasClass('show') ){
+				$('.lang-menu').removeClass('show');
+			} else {
+				$('.lang-menu').addClass('show');
+			}
 		}
 	});
-
-	$(document).on('click', '.lang .active', function(e){
-		e.preventDefault();
-
-		if( $('.lang').hasClass('show') ){
-			$('.lang').removeClass('show');
-		} else {
-			$('.lang').addClass('show');
-		}
-	});
-
-	// //remove bullit after last menu item
-	// $('UL.navigation LI.last').next().remove();
-
-	// //add a class to all odd LI's in the Overview UL
-	// $('UL.overview LI:even').addClass('margin');
 
 });
 

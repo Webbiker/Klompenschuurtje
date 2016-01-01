@@ -1,6 +1,12 @@
 // @include edit();
+
 * {
 	outline: none;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
 }
 
 .wrapper { 
@@ -16,7 +22,6 @@
 }
 
 section {
-
 	margin: 60px 0 160px 0; 
 	@include center($max-width);
 	background-image: url(/assets/img/smudges.png);

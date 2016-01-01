@@ -1,6 +1,5 @@
 header {
 	position: relative;
-	min-height: 500px;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: bottom center;
@@ -67,7 +66,7 @@ header {
 				}
 			}
 
-			&.lang {
+			&.lang-menu {
 				position: absolute;
 				right: 10px;
 				top: 0;
@@ -98,7 +97,8 @@ header {
 			top:0;
 		}
 
-		#offcanvas-menu {
+		#offcanvas-menu,
+		#offcanvas-lang {
 			display: none;
 			.icon {				
 				margin-top: 9px;
@@ -120,61 +120,62 @@ header {
 @media #{$menu-only}{
 	header {
 		nav {
-			.main-menu {
-			}
-			.lang {
-				li {
-					a {
-						&.active {
-							background: none;						
-							fill: $black !important;
-						}
-						&:not(.active){
-							display: none;
-						}
-					}
-				}
-			}
-
 			#offcanvas-menu {
 				display: block;
 				float: left;
 				padding-left: 10px;
 			}
-		}
-
-		.offcanvas {
-			max-height: 0;
-			overflow: hidden;
-			margin: 37px 0 0 0;
-			background: rgba(white, 0.9);
-			@include transition(max-height cubic-bezier(0.4, 0.24, 0.15, 1.00) 0.6s);
-			position: relative;
-			z-index: 1000;
-
-			&.show {
-				max-height: 300px;
-				@include transition(max-height cubic-bezier(0.4, 0.24, 0.15, 1.00) 0.6s);
-				@include box-shadow(0 4px 20px rgba($black, 0.3));
-			}
-
-			li {
-				&:first-child {				
-					padding-top:14px;
-				}
-
+			#offcanvas-lang {
 				display: block;
-				text-align: center;
-				a {
-					padding: 10px 16px 18px 16px;
+				float: right;
+				padding-right: 10px;
+			}
+
+			ul.offcanvas {
+				max-height: 0;
+				top:4px;
+				left:0;
+				right:0;
+				overflow: hidden;
+				background: rgba(white, 0.9);
+				@include transition(max-height cubic-bezier(0.4, 0.24, 0.15, 1.00) 0.6s);
+				position: relative;
+				z-index: 1000;
+				width: 100%;
+				@include box-shadow(0 4px 20px rgba($black, 0.3));
+
+				&.show {
+					max-height: 300px;
+					@include transition(max-height cubic-bezier(0.4, 0.24, 0.15, 1.00) 0.6s);
+				}
+
+				li {
+					float: none;
+					&:first-child {		
+						padding-top:14px;
+					}
+					.icon {
+						display: none;
+					}
+					.mls {
+						position: static;
+					}
+
+					display: block;
+					text-align: center;
+					a {
+						padding: 10px 16px 18px 16px;
+						&.active {
+							background-image: url(/assets/img/nav-active.png);
+							background-size: 195px 22px;
+							background-repeat:no-repeat;
+							background-position: center bottom;
+							color: $green;
+						}
+					}
 				}
 			}
 		}
-	}
-}
 
-@media #{$small-only}{
-	header {	
-		min-height: 240px;
 	}
 }

@@ -20,10 +20,14 @@
 		<div class="wrapper">
 			<header>
 				<nav>
-					<div class="center">					
+					<div class="center">
 						<a href="javascript:;" id="offcanvas-menu">
 							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
 							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
 						</a>
 						<ul class="offcanvas main-menu">
 							<li><a href="javascript:;">Home</a></li>
@@ -34,7 +38,7 @@
 							<li><a href="javascript:;">Vraag &amp; Antwoord</a></li>
 						</ul>
 
-						<ul class="lang">
+						<ul class="offcanvas lang-menu">
 							<li><a href="/nl/" class="active">
 								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
 								<span class="mls">Nederlands</span>
@@ -50,11 +54,19 @@
 						</ul>
 					</div>
 
-<!-- 					<ul class="offcanvas main-menu">
-						Main-menu
-					</ul> -->
 				</nav>
 
+				<div class="carousel">
+					<div class="slick">
+						<img class="logo" src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje">
+						<div class="slides">						
+							Slick
+						</div>
+					</div>
+					<div class="nicole">					
+						<img src="/assets/img/nicole.png" alt="Nicole van Aarle" />
+					</div>
+				</div>
 			</header>
 
 			<section>		
