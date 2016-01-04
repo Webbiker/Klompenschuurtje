@@ -1,16 +1,52 @@
 .carousel {
 	@include center($max-width);
+	position: relative;
+	&:before {
+		content: "";
+		height: 116px;
+		width: 228px;
+		background-image: url(/assets/img/klompen.png);
+		background-repeat: no-repeat;
+		background-size: 100%;
+		position: absolute;
+		z-index: 10;
+		left: -50px;
+		bottom: -30px;
+	}
+
 	.slick{
 		@include column(60/100);
 		.logo {
 			height: 135px;
 			margin: 12px 0 -40px 0;
+			position: relative;
+			z-index: 10;
 		}
 		.slides {
 			height: 410px;
 			background: $white;
+			margin-left: 10px;
 			@include box-shadow( inset 0 0 0 3px $black,
     							 inset 0 0 0 6px $green);
+			// overflow: hidden;
+			.slide {
+				margin: 6px;
+				height: 380px;
+				background-size: cover;	
+				background-position: center;
+			    color: $white;
+				font-family: 'BloklettersViltstift', Arial, sans-serif;
+			    @include text-shadow(4px 4px 2px $black);
+				h1 {
+					@include font-size(24px);
+				    margin:20px 20px 0 20px;
+					line-height: 1.2;
+				}
+				p {
+					@include font-size(14px);
+				    margin:0 20px 0 20px;
+				}
+			}
 		}
 	}
 	.nicole {
@@ -32,6 +68,17 @@
 		.slick {
 			.slides {
 				height: 360px;
+				.slide {
+					height: 320px;
+					h1 {
+						@include font-size(18px);
+					    margin:20px 20px 0 20px;
+					}
+					p {
+						@include font-size(12px);
+					    margin:0 20px 0 20px;
+					}
+				}
 			}
 		}
 		.nicole {
@@ -48,11 +95,22 @@
 				margin: 12px 0 -30px 0;
 			}
 			.slides {
-				height: 220px;
+				height: 260px;
+				.slide {
+					height: 260px;
+					h1 {
+						@include font-size(18px);
+					    margin:20px 20px 0 20px;
+					}
+					p {
+						@include font-size(12px);
+					    margin:0 20px 0 20px;
+					}
+				}
 			}
 		}
 		.nicole {
-			height: 220px;
+			height: 260px;
 		}
 	}
 }
@@ -68,15 +126,28 @@
 			}
 
 			.slides {
+				margin-left: -6px;
+				margin-right: -6px;
 				text-indent: left;
+				.slide {
+					height: 230px;
+					text-align: left;
+					h1 {
+						@include font-size(18px);
+					    margin:10px 30% 0 10px;
+					}
+					p {
+						@include font-size(12px);
+					    margin:0 30% 0 10px;
+					}
+				}
 			}
-			// .logo {
-			// 	margin-left:auto;
-			// 	margin-right:auto;
-			// }
 		}
 		.nicole {
-			display: none;
+			position: absolute;
+			right: -40px;
+			bottom: 30px;
+			height: 260px;
 		}
 	}
 }

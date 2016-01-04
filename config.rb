@@ -2,6 +2,7 @@ require 'compass/import-once/activate'
 # Require any additional compass plugins here.
 
 add_import_path "assets/bower_components/foundation/scss" # *magic*
+add_import_path "assets/bower_components/slick-carousel/slick/" # *magic*
 
 # Set this to the root of your project when deployed:
 http_path = "/"

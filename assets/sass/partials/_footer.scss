@@ -8,4 +8,16 @@ footer {
 	background-image: url(/assets/img/footer-bground.png);
 	background-repeat: repeat-x;
 	background-position: top center;
+	.footerContent {
+		@include center($max-width);
+		color: $white;
+		padding-top: 70px;
+		.info {
+			@include column(8/10);
+		}
+		.webbiker {
+			text-align: right !important;
+			@include column(2/10);
+		}
+	}
 }

@@ -59,9 +59,18 @@
 				<div class="carousel">
 					<div class="slick">
 						<img class="logo" src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje">
-						<div class="slides">						
-							Slick
-						</div>
+						<section class="slides">
+							<div class="slide" style="background-image:url(/media/carrousel/wimlex-maxima-klompen.jpg);">
+								<h1>Grote houten klomp te huur (te koop)</h1>
+								<p>Leuk voor decoratie of als publiekstrekker, vanaf 85 cm.</p>
+							</div>					
+							<div class="slide" style="background-image:url(/media/carrousel/niicen.jpg);">
+							</div>					
+							<div class="slide" style="background-image:url(/media/carrousel/bloem-en-tuin.jpg);">
+								<h1>Vogelvoerklompen:</h1>
+								<p>Pinda- of&nbsp;vogelzaadklomp,&nbsp;makkelijk te vullen. <br>Verkrijgbaar in groen, rood en roze.</p>
+							</div>
+						</section>
 					</div>
 					<div class="nicole">					
 						<img src="/assets/img/nicole.png" alt="Nicole van Aarle" />
@@ -69,7 +78,7 @@
 				</div>
 			</header>
 
-			<section>		
+			<main>		
 				<article>		
 					<h1>Test</h1>
 					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime itaque molestiae et unde quos deleniti, saepe quasi. Unde sed doloribus quod assumenda animi dolorem necessitatibus velit odit maxime reiciendis repudiandae expedita quibusdam minus ad, rerum, nulla autem nihil repellat! Accusamus nam numquam iure alias maiores consectetur quo, illo quas inventore cumque officiis. Modi dolor rem ea placeat optio maxime aspernatur dolorem pariatur fuga voluptates suscipit aliquid repudiandae alias sunt itaque reiciendis voluptas harum, voluptatum totam deserunt necessitatibus eius. Mollitia culpa amet facilis, tenetur commodi aliquam vero animi sed et incidunt, explicabo itaque sequi adipisci aut dolor eius non ab nemo.</p>
@@ -77,10 +86,18 @@
 				<aside>
 					<p>Sidebar</p>
 				</aside>
-			</section>
+			</main>
 
 			<footer>
-				Footer			
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
+				</div>
 			</footer>
 		</div>
 	</body>

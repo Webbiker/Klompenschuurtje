@@ -2,6 +2,16 @@
 
 $(document).ready(function(){
 
+	$(".slides").slick({
+		autoplay: true,
+		infinite: true,
+		arrows: false,
+		dots: false,
+		fade: true,
+		autoplaySpeed: 6000,
+		speed: 1000
+	});
+
 	//Styling of the images on the sidebar of a content template
 	$('.OneColumnLayout .sidebar IMG').each(function(){
 		var alt = $(this).attr('alt');

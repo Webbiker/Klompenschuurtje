@@ -4,6 +4,7 @@ header {
 	background-size: cover;
 	background-position: bottom center;
 	background-image: url(/assets/img/header-bground.jpg);
+
 	&:after {
 		position: absolute;
 		left:0;
@@ -119,6 +120,10 @@ header {
 
 @media #{$menu-only}{
 	header {
+		&:before {
+			height: 97px;
+		    width: 168px;
+		}
 		nav {
 			#offcanvas-menu {
 				display: block;
@@ -177,5 +182,14 @@ header {
 			}
 		}
 
+	}
+}
+
+@media #{$small-only}{
+	header {
+		&:before {
+			height: 80px;
+		    width: 122px;
+		}
 	}
 }
