@@ -1,5 +1,5 @@
 footer {
-	min-height: 120px;
+	min-height: 130px;
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -11,13 +11,48 @@ footer {
 	.footerContent {
 		@include center($max-width);
 		color: $white;
-		padding-top: 70px;
+		padding: 80px 10px 0 10px;
 		.info {
 			@include column(8/10);
 		}
 		.webbiker {
 			text-align: right !important;
 			@include column(2/10);
+		}
+	}
+}
+
+@media #{$slides-only}{
+	footer {
+		min-height: 210px;
+		.footerContent {
+			// padding: 70px 10px 0 10px;
+			.info {
+				@include stack(0, center);
+				// @include column(8/10);
+			}
+			.webbiker {
+				@include stack(0, center);
+				margin-top: 30px;
+				text-align: center !important;
+				// @include column(2/10);
+			}
+		}
+	}
+}
+
+@media #{$small-only}{
+	footer {
+		min-height: 220px;
+		.footerContent {
+			.info {
+				@include stack(0, center);
+			}
+			.webbiker {
+				@include stack(0, center);
+				margin-top: 18px;
+				text-align: center !important;
+			}
 		}
 	}
 }

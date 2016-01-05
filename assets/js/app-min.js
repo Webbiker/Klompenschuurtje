@@ -9380,6 +9380,7 @@ return jQuery;
 
 $(document).ready(function(){
 
+	// carousel on the homepage
 	$(".slides").slick({
 		autoplay: true,
 		infinite: true,

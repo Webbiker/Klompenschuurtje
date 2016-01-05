@@ -290,7 +290,7 @@ img {
   background-image: url(/assets/img/wood-pattern.png); }
 
 main {
-  margin: 60px 0 160px 0;
+  margin: 60px 0 170px 0;
   *zoom: 1;
   width: auto;
   max-width: 1170px;
@@ -360,9 +360,12 @@ main {
     main aside:last-child {
       margin-right: 0%; }
 
+@media only screen and (max-width: 860px) {
+  main {
+    margin: 40px 10px 250px 10px; } }
 @media only screen and (max-width: 640px) {
   main {
-    margin: 40px 10px 180px 10px; }
+    margin: 40px 10px 260px 10px; }
     main article {
       *zoom: 1;
       float: left;
@@ -787,7 +790,7 @@ header {
     bottom: 30px;
     height: 260px; } }
 footer {
-  min-height: 120px;
+  min-height: 130px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -807,7 +810,7 @@ footer {
     padding-left: 0;
     padding-right: 0;
     color: #FFF;
-    padding-top: 70px; }
+    padding: 80px 10px 0 10px; }
     footer .footerContent:before, footer .footerContent:after {
       content: '';
       display: table; }
@@ -844,5 +847,64 @@ footer {
         clear: both; }
       footer .footerContent .webbiker:last-child {
         margin-right: 0%; }
+
+@media only screen and (max-width: 860px) {
+  footer {
+    min-height: 210px; }
+    footer .footerContent .info {
+      display: block;
+      clear: both;
+      float: none;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center; }
+      footer .footerContent .info:first-child {
+        margin-left: auto; }
+      footer .footerContent .info:last-child {
+        margin-right: auto; }
+    footer .footerContent .webbiker {
+      display: block;
+      clear: both;
+      float: none;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      margin-top: 30px;
+      text-align: center !important; }
+      footer .footerContent .webbiker:first-child {
+        margin-left: auto; }
+      footer .footerContent .webbiker:last-child {
+        margin-right: auto; } }
+@media only screen and (max-width: 640px) {
+  footer {
+    min-height: 220px; }
+    footer .footerContent .info {
+      display: block;
+      clear: both;
+      float: none;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center; }
+      footer .footerContent .info:first-child {
+        margin-left: auto; }
+      footer .footerContent .info:last-child {
+        margin-right: auto; }
+    footer .footerContent .webbiker {
+      display: block;
+      clear: both;
+      float: none;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      margin-top: 18px;
+      text-align: center !important; }
+      footer .footerContent .webbiker:first-child {
+        margin-left: auto; }
+      footer .footerContent .webbiker:last-child {
+        margin-right: auto; } }
 
 /*# sourceMappingURL=screen.css.map */

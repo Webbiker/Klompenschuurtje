@@ -23,7 +23,7 @@ img {
 }
 
 main {
-	margin: 60px 0 160px 0;
+	margin: 60px 0 170px 0;
 	@include center($max-width);
 	padding: 0 10px;
 	background-image: url(/assets/img/smudges.png);
@@ -50,10 +50,15 @@ main {
 		padding: 20px;
 	}
 }
+@media #{$slides-only}{
+	main {
+		margin: 40px 10px 250px 10px;
+	}
+}
 
 @media #{$small-only}{
 	main {
-		margin: 40px 10px 180px 10px;
+		margin: 40px 10px 260px 10px;
 		article {
 			@include column(1);
 			@include unshift();
