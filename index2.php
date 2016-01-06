@@ -79,12 +79,26 @@
 			</header>
 
 			<main>		
-				<article>		
-					<h1>Test</h1>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime itaque molestiae et unde quos deleniti, saepe quasi. Unde sed doloribus quod assumenda animi dolorem necessitatibus velit odit maxime reiciendis repudiandae expedita quibusdam minus ad, rerum, nulla autem nihil repellat! Accusamus nam numquam iure alias maiores consectetur quo, illo quas inventore cumque officiis. Modi dolor rem ea placeat optio maxime aspernatur dolorem pariatur fuga voluptates suscipit aliquid repudiandae alias sunt itaque reiciendis voluptas harum, voluptatum totam deserunt necessitatibus eius. Mollitia culpa amet facilis, tenetur commodi aliquam vero animi sed et incidunt, explicabo itaque sequi adipisci aut dolor eius non ab nemo.</p>
+				<article>
+					<h1>Welkom bij het Klompenschuurtje</h1>
+					<p><strong>Nicole van Aarle is de 5de generatie van de van Aarle’s klompenmakers. Zij is ambachtelijk klompenmaakster, aan de Helmondseweg 3b in Aarle-Rixtel.</strong></p>
+					<p>Bij Nicole kunt u terecht voor alles wat te maken heeft met <a href="javascript:;">workshops</a> en <a href="javascript:;">demonstraties</a> over klompen. Tevens kunt u bij haar terecht voor <a href="javascript:;">draagklompen</a>, <a href="javascript:;">souvenirs</a>, <a href="javascript:;">relatiegeschenken</a> tot en met Oud-Hollandse fietsen en <a href="javascript:;">klompentochten</a>.</p>
+					<p>Wilt u een bezoek brengen aan de klompenmakerij? Deze is elke dinsdag en donderdag geopend vanaf 13.00 uur. Wilt u op een ander moment komen dan is dat geen enkel probleem laat het even weten.</p>
+					<p>Voor informatie over een van de producten of voor een demonstratie, kunt u vrijblijvend <a href="javascript:;">contact opnemen via het contactformulier</a>.</p>
+					<p class="call"><a href="tel:+310622994880"></a>Of bel: 06 229 948 80</p>
 				</article>
 				<aside>
-					<p>Sidebar</p>
+					<nav>
+						<ul>
+							<li><a href="javascript:;">Klompentochten</a></li>
+						</ul>
+					</nav>
+
+					<div class="container">					
+						<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>
+						<p><a href="javascript:;" class="button right">Meer over klompentochten</a></p>
+						<p><img class="fiets" src="/assets/img/fiets.png" alt="Klompentochten op de fiets door Aarle-Rixtel"></p>
+					</div>
 				</aside>
 			</main>
 

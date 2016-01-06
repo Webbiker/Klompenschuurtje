@@ -67,6 +67,11 @@ p {
     @include font-size(12px);
     @include line-height(18px);
     margin-bottom: 12px;
+    &.call {
+        @include font-size(14px);
+        font-family: 'BloklettersViltstift', _sans;
+    }
+
     &:last-child {
         margin-bottom: 0;
     }

@@ -343,15 +343,7 @@ main {
     margin-left: 0%;
     margin-right: 3%;
     position: relative;
-    left: -68.66667%;
-    background: #FFF;
-    -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    border-radius: 20px;
-    -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    padding: 20px; }
+    left: -68.66667%; }
     main aside:before, main aside:after {
       content: '';
       display: table; }
@@ -359,6 +351,27 @@ main {
       clear: both; }
     main aside:last-child {
       margin-right: 0%; }
+    main aside .container {
+      background: #FFF;
+      -moz-border-radius: 20px;
+      -webkit-border-radius: 20px;
+      border-radius: 20px;
+      -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+      padding: 20px 20px 180px 20px;
+      position: relative;
+      *zoom: 1; }
+      main aside .container:before, main aside .container:after {
+        content: '';
+        display: table; }
+      main aside .container:after {
+        clear: both; }
+      main aside .container .fiets {
+        position: absolute;
+        bottom: -38px;
+        left: 0;
+        right: 0; }
 
 @media only screen and (max-width: 860px) {
   main {
@@ -460,6 +473,10 @@ p {
   line-height: 18px;
   line-height: 1.125rem;
   margin-bottom: 12px; }
+  p.call {
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-family: 'BloklettersViltstift', _sans; }
   p:last-child {
     margin-bottom: 0; }
 
@@ -789,6 +806,48 @@ header {
     right: -40px;
     bottom: 30px;
     height: 260px; } }
+aside nav {
+  margin-bottom: 20px; }
+  aside nav ul li a {
+    background-image: url(/assets/img/wood-pattern-brown.png);
+    background-repeat: repeat;
+    background-position: center;
+    display: block;
+    color: #FFF;
+    font-family: 'BloklettersViltstift', _sans;
+    font-size: 14px;
+    font-size: 0.875rem;
+    padding: 20px 15px 14px 15px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -moz-box-shadow: 0 1px 2px #000;
+    -webkit-box-shadow: 0 1px 2px #000;
+    box-shadow: 0 1px 2px #000; }
+    aside nav ul li a:link, aside nav ul li a:active, aside nav ul li a:visited, aside nav ul li a:hover {
+      color: #FFF; }
+
+.button {
+  background-image: url(/assets/img/wood-pattern-yellow.png);
+  background-repeat: repeat;
+  background-position: top left;
+  color: #000;
+  display: inline-block;
+  padding: 12px 8px 8px 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  -moz-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  max-width: 180px;
+  font-family: 'BloklettersViltstift', _sans;
+  text-align: center; }
+  .button:link, .button:active, .button:visited, .button:hover {
+    color: #000; }
+  .button.right {
+    float: right; }
+
 footer {
   min-height: 130px;
   position: absolute;
