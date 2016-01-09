@@ -1,15 +1,5 @@
 // @include edit();
 
-* {
-	outline: none;
-	box-sizing: border-box;
-}
-
-img {
-	max-width: 100%;
-	height: auto;
-}
-
 .wrapper { 
 	display:block; 
 	min-height:100%; 
@@ -69,16 +59,21 @@ main {
 }
 
 @media #{$small-only}{
+	.wrapper {
+		overflow: hidden;
+	}
 	main {
 		margin: 40px 10px 260px 10px;
 		article {
 			@include column(1);
 			@include unshift();
+			margin-bottom: 40px;
 		}
 
 		aside {
 			@include column(1);
 			@include unshift();
+			margin-bottom: 40px;
 		}
 	}
 }

@@ -1,0 +1,42 @@
+.share {
+	background-image: url(/assets/img/wood-pattern-green.png);
+	background-size: 500px 53px;
+	background-position: bottom left;
+
+	height: 53px;
+	padding: 18px 12px;
+	margin-top: 40px;
+	color: $white;
+	@include border-radius(8px);
+	@include box-shadow(0 4px 8px rgba($black, 0.5));
+
+	.brand {
+		height: 90px;
+		margin: -32px 0 0 0;
+		float:left;
+	}
+
+	ul {
+		float: right;
+		margin: -12px 0 0 0;
+		li {
+			float: left;
+			a {
+				img {
+					height: 48px;
+
+				}
+			}
+		}
+	}
+}
+
+@media #{$slides-only}{
+	.share {
+		padding: 18px 8px;
+		span {
+			display: none;
+		}
+	}
+
+}

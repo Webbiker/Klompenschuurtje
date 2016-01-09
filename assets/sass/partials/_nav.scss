@@ -1,12 +1,13 @@
 aside {
 	nav {
-		margin-bottom: 20px;
 		ul {
 			li {
+				margin-bottom: 12px;
 				a {
 					background-image: url(/assets/img/wood-pattern-brown.png);
 					background-repeat: repeat;
-					background-position: center;
+					background-position: top left;
+					background-size: 500px;
 					display: block;
 					color: $white;
 					font-family: 'BloklettersViltstift', _sans;
@@ -14,11 +15,27 @@ aside {
 					padding: 20px 15px 14px 15px;
 					@include border-radius(8px);
 					@include box-shadow(0 1px 2px $black);
+					position: relative;
 					&:link,
 					&:active,
 					&:visited,
 					&:hover {
 						color: $white;
+					}
+
+					&.active {
+						&:before {
+							content: "";
+							background-image: url(/assets/img/klompen.png);
+							background-size: 57px 29px  ;
+							background-repeat: no-repeat;
+							display: block;
+							width: 57px;
+							height: 29px;
+							position: absolute;
+							right: 12px;
+							top: 14px;
+						}
 					}
 				}
 			}

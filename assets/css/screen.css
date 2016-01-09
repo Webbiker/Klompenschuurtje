@@ -270,14 +270,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /*-----------------------------------------------------------------------------------/
 / Partials
 /-----------------------------------------------------------------------------------*/
-* {
-  outline: none;
-  box-sizing: border-box; }
-
-img {
-  max-width: 100%;
-  height: auto; }
-
 .wrapper {
   display: block;
   min-height: 100%;
@@ -377,6 +369,9 @@ main {
   main {
     margin: 40px 10px 250px 10px; } }
 @media only screen and (max-width: 640px) {
+  .wrapper {
+    overflow: hidden; }
+
   main {
     margin: 40px 10px 260px 10px; }
     main article {
@@ -388,7 +383,8 @@ main {
       margin-left: 0%;
       margin-right: 3%;
       position: static;
-      left: 0; }
+      left: 0;
+      margin-bottom: 40px; }
       main article:before, main article:after {
         content: '';
         display: table; }
@@ -405,7 +401,8 @@ main {
       margin-left: 0%;
       margin-right: 3%;
       position: static;
-      left: 0; }
+      left: 0;
+      margin-bottom: 40px; }
       main aside:before, main aside:after {
         content: '';
         display: table; }
@@ -413,6 +410,23 @@ main {
         clear: both; }
       main aside:last-child {
         margin-right: 0%; } }
+* {
+  outline: none;
+  box-sizing: border-box; }
+
+img {
+  max-width: 100%;
+  height: auto; }
+
+.right {
+  text-align: right; }
+
+.small-only {
+  display: none; }
+
+@media only screen and (max-width: 640px) {
+  .small-only {
+    display: block; } }
 @font-face {
   font-family: 'BloklettersBalpen';
   src: url("/assets/fonts/Blokletters-Balpen-webfont.eot");
@@ -806,12 +820,13 @@ header {
     right: -40px;
     bottom: 30px;
     height: 260px; } }
-aside nav {
-  margin-bottom: 20px; }
+aside nav ul li {
+  margin-bottom: 12px; }
   aside nav ul li a {
     background-image: url(/assets/img/wood-pattern-brown.png);
     background-repeat: repeat;
-    background-position: center;
+    background-position: top left;
+    background-size: 500px;
     display: block;
     color: #FFF;
     font-family: 'BloklettersViltstift', _sans;
@@ -823,10 +838,53 @@ aside nav {
     border-radius: 8px;
     -moz-box-shadow: 0 1px 2px #000;
     -webkit-box-shadow: 0 1px 2px #000;
-    box-shadow: 0 1px 2px #000; }
+    box-shadow: 0 1px 2px #000;
+    position: relative; }
     aside nav ul li a:link, aside nav ul li a:active, aside nav ul li a:visited, aside nav ul li a:hover {
       color: #FFF; }
+    aside nav ul li a.active:before {
+      content: "";
+      background-image: url(/assets/img/klompen.png);
+      background-size: 57px 29px;
+      background-repeat: no-repeat;
+      display: block;
+      width: 57px;
+      height: 29px;
+      position: absolute;
+      right: 12px;
+      top: 14px; }
 
+.share {
+  background-image: url(/assets/img/wood-pattern-green.png);
+  background-size: 500px 53px;
+  background-position: bottom left;
+  height: 53px;
+  padding: 18px 12px;
+  margin-top: 40px;
+  color: #FFF;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  -moz-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); }
+  .share .brand {
+    height: 90px;
+    margin: -32px 0 0 0;
+    float: left; }
+  .share ul {
+    float: right;
+    margin: -12px 0 0 0; }
+    .share ul li {
+      float: left; }
+      .share ul li a img {
+        height: 48px; }
+
+@media only screen and (max-width: 860px) {
+  .share {
+    padding: 18px 8px; }
+    .share span {
+      display: none; } }
 .button {
   background-image: url(/assets/img/wood-pattern-yellow.png);
   background-repeat: repeat;
@@ -845,8 +903,6 @@ aside nav {
   text-align: center; }
   .button:link, .button:active, .button:visited, .button:hover {
     color: #000; }
-  .button.right {
-    float: right; }
 
 footer {
   min-height: 130px;
