@@ -421,6 +421,23 @@ img {
 .right {
   text-align: right; }
 
+.center {
+  *zoom: 1;
+  width: auto;
+  max-width: 1170px;
+  float: none;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 0;
+  padding-right: 0;
+  position: relative; }
+  .center:before, .center:after {
+    content: '';
+    display: table; }
+  .center:after {
+    clear: both; }
+
 .small-only {
   display: none; }
 
@@ -502,8 +519,9 @@ header {
   position: relative;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: bottom center;
-  background-image: url(/assets/img/header-bground.jpg); }
+  background-position: center;
+  background-image: url(/assets/img/header-bground.jpg);
+  min-height: 250px; }
   header:after {
     position: absolute;
     left: 0;
@@ -517,22 +535,6 @@ header {
   header nav {
     height: 36px;
     border-bottom: 1px solid #CDCED3; }
-    header nav .center {
-      *zoom: 1;
-      width: auto;
-      max-width: 1170px;
-      float: none;
-      display: block;
-      margin-right: auto;
-      margin-left: auto;
-      padding-left: 0;
-      padding-right: 0;
-      position: relative; }
-      header nav .center:before, header nav .center:after {
-        content: '';
-        display: table; }
-      header nav .center:after {
-        clear: both; }
     header nav ul li {
       display: inline-block;
       position: relative; }
@@ -594,6 +596,13 @@ header {
       font-size: 14px;
       font-size: 0.875rem;
       vertical-align: middle; }
+  header .logo {
+    position: relative;
+    z-index: 1050;
+    text-align: left;
+    margin: 12px 0 -40px 0; }
+    header .logo img {
+      height: 135px; }
 
 @media only screen and (max-width: 890px) {
   header:before {
@@ -624,7 +633,7 @@ header {
     -o-transition: all 0.3s cubic-bezier(0.4, 0.24, 0.15, 1);
     -webkit-transition: all 0.3s cubic-bezier(0.4, 0.24, 0.15, 1);
     transition: all 0.3s cubic-bezier(0.4, 0.24, 0.15, 1);
-    z-index: 1000;
+    z-index: 1050;
     -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); }
@@ -651,11 +660,27 @@ header {
           background-repeat: no-repeat;
           background-position: center bottom;
           color: #117f3b; } }
+@media only screen and (max-width: 890px) {
+  header .logo {
+    text-align: center;
+    margin: -24px auto -40px auto;
+    display: table; }
+    header .logo img {
+      height: 120px; } }
 @media only screen and (max-width: 640px) {
   header:before {
     height: 80px;
-    width: 122px; } }
+    width: 122px; }
+  header .logo {
+    text-align: center;
+    margin: -12px auto -30px auto;
+    display: table; }
+    header .logo img {
+      height: 90px; } }
 .carousel {
+  display: none; }
+
+.home .carousel {
   *zoom: 1;
   width: auto;
   max-width: 1170px;
@@ -665,13 +690,14 @@ header {
   margin-left: auto;
   padding-left: 0;
   padding-right: 0;
-  position: relative; }
-  .carousel:before, .carousel:after {
+  position: relative;
+  display: block; }
+  .home .carousel:before, .home .carousel:after {
     content: '';
     display: table; }
-  .carousel:after {
+  .home .carousel:after {
     clear: both; }
-  .carousel:before {
+  .home .carousel:before {
     content: "";
     height: 116px;
     width: 228px;
@@ -682,7 +708,7 @@ header {
     z-index: 10;
     left: -50px;
     bottom: -30px; }
-  .carousel .slick {
+  .home .carousel .slick {
     *zoom: 1;
     float: left;
     clear: none;
@@ -690,26 +716,21 @@ header {
     width: 58.8%;
     margin-left: 0%;
     margin-right: 3%; }
-    .carousel .slick:before, .carousel .slick:after {
+    .home .carousel .slick:before, .home .carousel .slick:after {
       content: '';
       display: table; }
-    .carousel .slick:after {
+    .home .carousel .slick:after {
       clear: both; }
-    .carousel .slick:last-child {
+    .home .carousel .slick:last-child {
       margin-right: 0%; }
-    .carousel .slick .logo {
-      height: 135px;
-      margin: 12px 0 -40px 0;
-      position: relative;
-      z-index: 1020; }
-    .carousel .slick .slides {
-      height: 410px;
+    .home .carousel .slick .slides {
+      height: 390px;
       background: #FFF;
       margin-left: 10px;
       -moz-box-shadow: inset 0 0 0 3px #000, inset 0 0 0 6px #117f3b;
       -webkit-box-shadow: inset 0 0 0 3px #000, inset 0 0 0 6px #117f3b;
       box-shadow: inset 0 0 0 3px #000, inset 0 0 0 6px #117f3b; }
-      .carousel .slick .slides .slide {
+      .home .carousel .slick .slides .slide {
         margin: 6px;
         height: 380px;
         background-size: cover;
@@ -717,16 +738,16 @@ header {
         color: #FFF;
         font-family: 'BloklettersViltstift', Arial, sans-serif;
         text-shadow: 4px 4px 2px #000; }
-        .carousel .slick .slides .slide h1 {
+        .home .carousel .slick .slides .slide h1 {
           font-size: 24px;
           font-size: 1.5rem;
           margin: 20px 20px 0 20px;
           line-height: 1.2; }
-        .carousel .slick .slides .slide p {
+        .home .carousel .slick .slides .slide p {
           font-size: 14px;
           font-size: 0.875rem;
           margin: 0 20px 0 20px; }
-  .carousel .nicole {
+  .home .carousel .nicole {
     *zoom: 1;
     float: left;
     clear: none;
@@ -734,57 +755,54 @@ header {
     width: 38.2%;
     margin-left: 0%;
     margin-right: 3%;
-    height: 410px;
+    height: 310px;
     margin-top: 110px;
     position: relative; }
-    .carousel .nicole:before, .carousel .nicole:after {
+    .home .carousel .nicole:before, .home .carousel .nicole:after {
       content: '';
       display: table; }
-    .carousel .nicole:after {
+    .home .carousel .nicole:after {
       clear: both; }
-    .carousel .nicole:last-child {
+    .home .carousel .nicole:last-child {
       margin-right: 0%; }
-    .carousel .nicole img {
+    .home .carousel .nicole img {
       float: right;
       bottom: -50px;
       z-index: 1;
       position: absolute; }
 
 @media only screen and (min-width: 861px) and (max-width: 1024px) {
-  .carousel .slick .slides {
-    height: 360px; }
-    .carousel .slick .slides .slide {
+  .home .carousel .slick .slides {
+    height: 330px; }
+    .home .carousel .slick .slides .slide {
       height: 320px; }
-      .carousel .slick .slides .slide h1 {
+      .home .carousel .slick .slides .slide h1 {
         font-size: 18px;
         font-size: 1.125rem;
         margin: 20px 20px 0 20px; }
-      .carousel .slick .slides .slide p {
+      .home .carousel .slick .slides .slide p {
         font-size: 12px;
         font-size: 0.75rem;
         margin: 0 20px 0 20px; }
-  .carousel .nicole {
-    height: 360px; } }
+  .home .carousel .nicole {
+    height: 250px; } }
 @media only screen and (max-width: 860px) {
-  .carousel .slick .logo {
-    height: 90px;
-    margin: 12px 0 -30px 0; }
-  .carousel .slick .slides {
-    height: 260px; }
-    .carousel .slick .slides .slide {
+  .home .carousel .slick .slides {
+    height: 270px; }
+    .home .carousel .slick .slides .slide {
       height: 260px; }
-      .carousel .slick .slides .slide h1 {
+      .home .carousel .slick .slides .slide h1 {
         font-size: 18px;
         font-size: 1.125rem;
         margin: 20px 20px 0 20px; }
-      .carousel .slick .slides .slide p {
+      .home .carousel .slick .slides .slide p {
         font-size: 12px;
         font-size: 0.75rem;
         margin: 0 20px 0 20px; }
-  .carousel .nicole {
-    height: 260px; } }
+  .home .carousel .nicole {
+    height: 190px; } }
 @media only screen and (max-width: 640px) {
-  .carousel .slick {
+  .home .carousel .slick {
     *zoom: 1;
     float: left;
     clear: none;
@@ -793,32 +811,29 @@ header {
     margin-left: 0%;
     margin-right: 3%;
     text-align: center; }
-    .carousel .slick:before, .carousel .slick:after {
+    .home .carousel .slick:before, .home .carousel .slick:after {
       content: '';
       display: table; }
-    .carousel .slick:after {
+    .home .carousel .slick:after {
       clear: both; }
-    .carousel .slick:last-child {
+    .home .carousel .slick:last-child {
       margin-right: 0%; }
-    .carousel .slick .logo {
-      height: 90px;
-      margin: -12px 0 -24px 0; }
-    .carousel .slick .slides {
+    .home .carousel .slick .slides {
       margin-left: -6px;
       margin-right: -6px;
       text-indent: left; }
-      .carousel .slick .slides .slide {
+      .home .carousel .slick .slides .slide {
         height: 230px;
         text-align: left; }
-        .carousel .slick .slides .slide h1 {
+        .home .carousel .slick .slides .slide h1 {
           font-size: 18px;
           font-size: 1.125rem;
           margin: 10px 30% 0 10px; }
-        .carousel .slick .slides .slide p {
+        .home .carousel .slick .slides .slide p {
           font-size: 12px;
           font-size: 0.75rem;
           margin: 0 30% 0 10px; }
-  .carousel .nicole {
+  .home .carousel .nicole {
     position: absolute;
     right: -40px;
     bottom: 30px;

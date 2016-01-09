@@ -1,4 +1,4 @@
-<?php 	$class = "home";
+<?php 	$class = "overview";
 		include("assets/chunks/header.tpl"); ?>
 <article>
 	<h1>Welkom bij het Klompenschuurtje</h1>

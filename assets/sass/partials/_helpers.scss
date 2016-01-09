@@ -12,6 +12,11 @@ img {
 	text-align: right;
 }
 
+.center {
+	@include center($max-width);
+	position: relative;
+}
+
 
 .small-only {
 	display: none;
