@@ -9,6 +9,7 @@
 	@include box-shadow(0 4px 8px rgba($black, 0.5));
 	max-width: 180px;
 	font-family: 'BloklettersViltstift', _sans;
+	@include font-size(12px);
 	text-align: center;
 
 	&:link,

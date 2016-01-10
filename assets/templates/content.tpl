@@ -1,56 +1,42 @@
 <?php 	$class = "content";
 		include("assets/chunks/header.tpl"); ?>
 <article>
-	<h1>Welkom bij het Klompenschuurtje</h1>
-	<p><strong>Nicole van Aarle is de 5de generatie van de van Aarle’s klompenmakers. Zij is ambachtelijk klompenmaakster, aan de Helmondseweg 3b in Aarle-Rixtel.</strong></p>
-	<p>Bij Nicole kunt u terecht voor alles wat te maken heeft met <a href="javascript:;">workshops</a> en <a href="javascript:;">demonstraties</a> over klompen. Tevens kunt u bij haar terecht voor <a href="javascript:;">draagklompen</a>, <a href="javascript:;">souvenirs</a>, <a href="javascript:;">relatiegeschenken</a> tot en met Oud-Hollandse fietsen en <a href="javascript:;">klompentochten</a>.</p>
-	<p>Wilt u een bezoek brengen aan de klompenmakerij? Deze is elke dinsdag en donderdag geopend vanaf 13.00 uur. Wilt u op een ander moment komen dan is dat geen enkel probleem laat het even weten.</p>
-	<p>Voor informatie over een van de producten of voor een demonstratie, kunt u vrijblijvend <a href="javascript:;">contact opnemen via het contactformulier</a>.</p>
-	<p class="call"><a href="tel:+310622994880"></a>Of bel: 06 229 948 80</p>
-	<p class="right"><a href="javascript:;" class="button">Meer over het Klompenschuurtje</a></p>
-	<div class="share">
-		<ul>
-			<li><a href="javascript:;"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
-		</ul>
-		<p><img src="/assets/img/brand.png" alt="Klomepenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
-	</div>
+	<h1>Geschiedenis</h1>
+	<h2>5 generaties klompenmakers van Aarle</h2>
+	<p>In de Ambachtelijke klompenmakerij aan de helmondseweg
+	in Aarle-Rixtel. Maakt Nicole van Aarle handmatig de klompen.&nbsp;Zij is de vijfde generatie van de van Aarle’s, en de eerste en enige vrouwelijke klompenmaakster. De eerste klompen die Nicole
+	maakte was in 2006 in de werkplaats van haar vader waar ze les kreeg van hem. De vader van Nicole doet dit zijn levenlang al.&nbsp;Zij is opgegroeid in een echte klompenmakers familie.&nbsp;Nicole vertelt graag haar verhaal, maar dan wel demonstrerend.</p>
+	<p>Het begin van een klomp is een boom. Van de boom zagen
+	we een bol, van de bol worden moten gekapt. Door de moten met enkele bijlslagen te kappen krijgt het al de contouren van een klomp.&nbsp;Op het snijpaard worden doormiddel met het paalmes de contouren steeds duidelijker en dan is de buitenkant voor zover klaar
+	en worden de klompen uitgehold in de heulbank.&nbsp;</p>
+	<h2>Betovergrootvader: Antony Cornelis van Aarle</h2>
+	<p>Geboren 17 juni 1830, Sint Oedenrode<br>Beroep klompenmaker</p>
+	<h2>Overgrootvader: Leonardus van Aarle</h2>
+	<p>Geboren 25 Januari 1866, Sint Oedenrode<br>Beroep klompenmaker<br>Zoon Hein en Karel van Aarle werden beide klompenmaker<br>Karel heeft
+	later op de bestaande klompenmakerij een zagerij opgericht.</p>
+	<h2>Grootvader: Henricus Embertus (Hein) van Aarle</h2>
+	<p>Geboren 5 december 1904, Sint-Oedenrode. getrouwd met
+	Maria Elbertha Megens die de verkoop van klompen op haar rekening nam<br>Beroep klompenmaker.<br>In 1953 is Hein verhuisd naar Son en Breugel waar hij
+	de bestaande klompenmakerij aan de Dommelstraat overnam van familie Weijns.<br>1972 gestopt met de klompenmakerij</p>
+	<h2>Vader: Hendrikus Antonius (Harrie) van Aarle</h2>
+	<p>Geboren 17 augustus 1950<br>Beroep klompenmaker/chauffeur<br>Na dat Hein van Aarle in 1972 stopte met de
+	klompenmakerij, is Harrie van Aarle is in 1975 weer begonnen met het maken van
+	klompen op ambachtelijke wijze</p>
+	<h2>Nicole van Aarle</h2>
+	<p>Geboren 22 december 1975 in Aarle-Rixtel . Na bijna 10
+	jaar in het leger gezeten te hebben en een aantal jaren als chauffeur gewerkt
+	te hebben heeft zij in 2005 besloten om het klompenmakersvak over te nemen van
+	haar vader Harrie.&nbsp;Tot op de dag van vandaag geeft zij demonstraties in
+	binnen en buitenland.&nbsp;Zo wordt een oud Hollands ambacht in stand
+	gehouden.</p>
+	<p class="right"><a href="vraag-en-antwoord/infoaanvragen.html" class="button">Vraag vrijblijvend<br>meer informatie aan</a></p>
 </article>
 
 <aside>
-
-	<nav class="small-only">
-		<ul>
-			<li>
-				<a href="/klompen/draagklompen/" title="Draagklompen" class="active">Draagklompen</a>
-			</li>
-			<li>
-				<a href="/klompen/souvenirs/" title="Souvenirs">Souvenirs</a>
-			</li>
-			<li>
-				<a href="/klompen/relatiegeschenken.html" title="Relatiegeschenken">Relatiegeschenken</a>
-			</li>
-			<li>
-				<a href="/klompen/speelgoed.html" title="Speelgoed">Speelgoed</a>
-			</li>
-			<li>
-				<a href="/klompen/diversen/" title="Diversen">Diversen</a>
-			</li>
-		</ul>
-	</nav>
-	<nav>
-		<ul>
-			<li><a href="javascript:;">Klompentochten</a></li>
-		</ul>
-	</nav>
-
-	<div class="container">
-		<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>
-		<p class="right"><a href="javascript:;" class="button">Meer over klompentochten</a></p>
-		<p><img class="fiets" src="/assets/img/fiets.png" alt="Klompentochten op de fiets door Aarle-Rixtel"></p>
-
-	</div>
+    <p>
+		<img src="media/geschiedenis-1.jpg" alt="Henricus Embertus (Hein) van Aarle">
+		<img src="media/geschiedenis-2.jpg" alt="Hendrikus Antonius (Harrie) van Aarle">
+		<img src="media/geschiedenis-3.jpg" alt="Nicole van Aarle">
+	</p>
 </aside>
 <?php include("assets/chunks/footer.tpl"); ?>

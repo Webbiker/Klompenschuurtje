@@ -111,15 +111,11 @@ header {
 		}
 	}
 
-	// .logo {
-	// 	height: 135px;
-	// 	margin: 12px 0 -40px 0;
-	// }
 	.logo {
 		position: relative;
 		z-index: 1050;
 		text-align: left;
-		margin: 12px 0 -40px 0;
+		margin: 12px auto -40px auto;
 		img {
 			height: 135px;
 		}
@@ -137,14 +133,14 @@ header {
 			#offcanvas-menu {
 				display: block;
 				float: left;
-				padding-left: 10px;
+				padding-left: 20px;
 				position: relative;
 				z-index: 1010;
 			}
 			#offcanvas-lang {
 				display: block;
 				float: right;
-				padding-right: 10px;
+				padding-right: 20px;
 				position: relative;
 				z-index: 1010;
 			}
@@ -172,9 +168,6 @@ header {
 
 				li {
 					float: none;
-					&:first-child {		
-						// padding-top:110px;
-					}
 					.icon {
 						display: none;
 					}

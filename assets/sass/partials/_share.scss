@@ -31,6 +31,16 @@
 	}
 }
 
+aside {
+	.share {
+		padding: 18px 8px;
+		span {
+			display: none;
+		}
+	}
+}
+
+
 @media #{$slides-only}{
 	.share {
 		padding: 18px 8px;

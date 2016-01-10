@@ -22,19 +22,16 @@
 
 		.slick{
 			@include column(60/100);
-			// .logo {
-			// 	height: 135px;
-			// 	margin: 12px 0 -40px 0;
-			// 	position: relative;
-			// 	z-index: 1020;
-			// }
 			.slides {
 				height: 390px;
 				background: $white;
 				margin-left: 10px;
-				@include box-shadow( inset 0 0 0 3px $black,
-	    							 inset 0 0 0 6px $green);
-				// overflow: hidden;
+				// @include box-shadow( inset 0 0 0 3px $black,
+		  //   							 inset 0 0 0 6px $green);
+				@include box-shadow( inset 0 0 0 2px $green,
+									 inset 0 0 0 4px $yellow,
+	    							 inset 0 0 0 6px $green,
+	    							 0 4px 8px rgba($black, 0.3));
 				.slide {
 					margin: 6px;
 					height: 380px;

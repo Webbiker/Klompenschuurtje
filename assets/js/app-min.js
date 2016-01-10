@@ -9392,9 +9392,9 @@ $(document).ready(function(){
 	});
 
 	//Styling of the images on the sidebar of a content template
-	$('.OneColumnLayout .sidebar IMG').each(function(){
+	$('.content aside img').each(function(){
 		var alt = $(this).attr('alt');
-		$(this).wrap('<div class="imgPlaceHolder">').before('<div class="mask"></div>');
+		$(this).wrap('<div class="imgPlaceHolder"><div class="border">');
 		if(alt!=""){
 			$(this).after('<p>'+alt+'</p>');
 		}

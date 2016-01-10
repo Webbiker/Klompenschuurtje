@@ -59,7 +59,6 @@
 
 				<div class="carousel">
 					<div class="slick">
-<!-- 						<img class="logo" src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"> -->
 						<section class="slides">
 							<div class="slide" style="background-image:url(/media/carrousel/wimlex-maxima-klompen.jpg);">
 								<h1>Grote houten klomp te huur (te koop)</h1>

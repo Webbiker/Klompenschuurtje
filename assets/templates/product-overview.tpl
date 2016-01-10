@@ -1,27 +1,54 @@
 <?php 	$class = "overview";
 		include("assets/chunks/header.tpl"); ?>
+
 <article>
-	<h1>Welkom bij het Klompenschuurtje</h1>
-	<p><strong>Nicole van Aarle is de 5de generatie van de van Aarle’s klompenmakers. Zij is ambachtelijk klompenmaakster, aan de Helmondseweg 3b in Aarle-Rixtel.</strong></p>
-	<p>Bij Nicole kunt u terecht voor alles wat te maken heeft met <a href="javascript:;">workshops</a> en <a href="javascript:;">demonstraties</a> over klompen. Tevens kunt u bij haar terecht voor <a href="javascript:;">draagklompen</a>, <a href="javascript:;">souvenirs</a>, <a href="javascript:;">relatiegeschenken</a> tot en met Oud-Hollandse fietsen en <a href="javascript:;">klompentochten</a>.</p>
-	<p>Wilt u een bezoek brengen aan de klompenmakerij? Deze is elke dinsdag en donderdag geopend vanaf 13.00 uur. Wilt u op een ander moment komen dan is dat geen enkel probleem laat het even weten.</p>
-	<p>Voor informatie over een van de producten of voor een demonstratie, kunt u vrijblijvend <a href="javascript:;">contact opnemen via het contactformulier</a>.</p>
-	<p class="call"><a href="tel:+310622994880"></a>Of bel: 06 229 948 80</p>
-	<p class="right"><a href="javascript:;" class="button">Meer over het Klompenschuurtje</a></p>
-	<div class="share">
-		<ul>
-			<li><a href="javascript:;"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
-		</ul>
-		<p><img src="/assets/img/brand.png" alt="Klomepenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
-	</div>
+	<h1>Draagklompen</h1>
+	<p>Bij het Klompenschuurtje kunt u het zo gek niet bedenken of we hebben wel een paar klompen die bij u past, kijkt u lekker op uw gemak rond en voor vragen kunt u altijd vrijblijvend contact met ons opnemen. Of u nu een paar klompjes zoekt als kraamgeschenk of voor een trouwerij, maak uw wensen kenbaar en wij denken met u mee.</p>
+	<p><strong>Bijna niets is te gek!</strong></p>
+	<p>Wij hebben verschillende soorten klompen van hoogmodel (kapklompen) tot laagmodel (tripklompen).</p>
+
+	<ul class="list">
+		<li>
+			<a href="/klompen/draagklompen/standaard-draagklompen.html" style="background-image:url(/assets/components/phpthumbof/cache/klompen-59.d4d6e7c6bdc96afd1cd75d00639d54e27.jpg);" title="Standaard draagklompen">
+				<div class="button">Standaard draagklompen</div>
+			</a>
+		</li>
+
+		<li>
+			<a href="/klompen/draagklompen/handgeschilderdeklompen.html" style="background-image:url(/assets/components/phpthumbof/cache/klompen-12.d4d6e7c6bdc96afd1cd75d00639d54e27.jpg" title="Handgeschilderde klompen);">
+				<div class="button">Handgeschilderde klompen</div>
+			</a>			
+		</li>
+		<li>
+			<a href="/klompen/draagklompen/klompenmetlogo.html" style="background-image:url(/assets/components/phpthumbof/cache/klompen-13.d4d6e7c6bdc96afd1cd75d00639d54e27.jpg);" title="Klompen met logo of opdruk">
+				<div class="button">Klompen met logo<br>(of opdruk)</div>
+			</a>
+		</li>
+		<li>
+			<a href="/klompen/draagklompen/funklompen.html" style="background-image:url(/assets/components/phpthumbof/cache/klompen-14.d4d6e7c6bdc96afd1cd75d00639d54e27.jpg);" title="FUN klompen">
+				<div class="button">FUN klompen</div>
+			</a>
+		</li>
+		<li onclick="javascript:location.href='';">
+			<a href="/klompen/draagklompen/geboorteklompen.html" style="background-image:url(/assets/components/phpthumbof/cache/klompen-15.d4d6e7c6bdc96afd1cd75d00639d54e27.jpg);" title="Geboorte klompen">
+				<div class="button">Geboorte klompen</div>
+			</a>
+		</li>
+		<li>
+			<a href="/klompen/draagklompen/airbrushklompen.html" style="background-image:url(/assets/components/phpthumbof/cache/klompen-16.d4d6e7c6bdc96afd1cd75d00639d54e27.jpg);" title="Airbrush klompen">
+				<div class="button">Airbrush klompen</div>
+			</a>
+		</li>
+		<li onclick="javascript:location.href='';">
+			<a href="/klompen/draagklompen/ingebrandeklompen.html" style="background-image:url(/assets/components/phpthumbof/cache/klompen-17.d4d6e7c6bdc96afd1cd75d00639d54e27.jpg);" title="Ingebrande klompen">
+				<div class="button">Ingebrande klompen</div>
+			</a>
+		</li>
+	</ul>
 </article>
 
 <aside>
-
-	<nav class="small-only">
+	<nav>
 		<ul>
 			<li>
 				<a href="/klompen/draagklompen/" title="Draagklompen" class="active">Draagklompen</a>
@@ -40,17 +67,15 @@
 			</li>
 		</ul>
 	</nav>
-	<nav>
+
+	<div class="share">
 		<ul>
-			<li><a href="javascript:;">Klompentochten</a></li>
+			<li><a href="javascript:;"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+			<li><a href="javascript:;"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+			<li><a href="javascript:;"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+			<li><a href="javascript:;"><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
 		</ul>
-	</nav>
-
-	<div class="container">
-		<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>
-		<p class="right"><a href="javascript:;" class="button">Meer over klompentochten</a></p>
-		<p><img class="fiets" src="/assets/img/fiets.png" alt="Klompentochten op de fiets door Aarle-Rixtel"></p>
-
+		<p><img src="/assets/img/brand.png" alt="Klomepenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
 	</div>
 </aside>
 <?php include("assets/chunks/footer.tpl"); ?>
