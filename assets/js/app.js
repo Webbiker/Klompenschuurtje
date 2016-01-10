@@ -4,6 +4,7 @@ $(document).ready(function(){
 
 	// carousel on the homepage
 	$(".slides").slick({
+        lazyload: 'progressive',
 		autoplay: true,
 		infinite: true,
 		arrows: false,
@@ -12,6 +13,18 @@ $(document).ready(function(){
 		autoplaySpeed: 6000,
 		speed: 1000
 	});
+
+	// carousels on detail page
+    var slickOpts = {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        lazyload: 'progressive',
+        dots: false,
+		fade: true,
+        prevArrow: '.btn-prev',
+        nextArrow: '.btn-next'
+    };
+    $('.detail .photos div').slick(slickOpts);
 
 	//Styling of the images on the sidebar of a content template
 	$('.content aside img').each(function(){

@@ -1,1 +1,1 @@
-<?php include("assets/templates/product-overview.tpl"); ?>
+<?php include("assets/templates/product-detail.tpl"); ?>
