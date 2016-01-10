@@ -995,7 +995,8 @@ aside .share {
 .button {
   background-image: url(/assets/img/wood-pattern-yellow.png);
   background-repeat: repeat;
-  background-position: top left;
+  background-position: center left;
+  border: 0;
   color: #000;
   display: inline-block;
   padding: 12px 8px 8px 8px;
@@ -1010,9 +1011,94 @@ aside .share {
   font-size: 12px;
   font-size: 0.75rem;
   text-align: center; }
+  .button.big {
+    padding: 16px 20px 12px 20px; }
   .button:link, .button:active, .button:visited, .button:hover {
     color: #000; }
 
+form p {
+  *zoom: 1; }
+  form p:before, form p:after {
+    content: '';
+    display: table; }
+  form p:after {
+    clear: both; }
+  form p label {
+    font-family: 'BloklettersViltstift', Arial, sans-serif;
+    width: 30%;
+    margin-right: 10px;
+    float: left;
+    padding-top: 6px; }
+  form p input[type=text],
+  form p select,
+  form p textarea {
+    border: 1px solid #117f3b;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    float: left;
+    padding: 8px 6px 5px 6px;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    line-height: 1;
+    margin-right: 8px;
+    min-width: 280px; }
+  form p select {
+    height: 30px;
+    padding-top: 4px;
+    width: 280px; }
+  form p textarea {
+    min-height: 90px; }
+  form p .asterix {
+    font-size: 18px;
+    font-size: 1.125rem;
+    font-family: 'BloklettersViltstift', Arial, sans-serif;
+    color: #CC0000;
+    height: 0;
+    line-height: 1;
+    vertical-align: baseline;
+    position: relative;
+    top: 0.9ex; }
+  form p.voetnoot {
+    font-size: 10px;
+    font-size: 0.625rem;
+    font-family: 'BloklettersViltstift', Arial, sans-serif;
+    border-top: 1px solid #CDCED3;
+    margin-top: 30px;
+    padding-top: 4px;
+    text-align: right; }
+
+@media only screen and (min-width: 861px) and (max-width: 1024px) {
+  form p input[type=text],
+  form p select,
+  form p textarea {
+    min-width: 200px; }
+  form p select {
+    width: 200px; } }
+@media only screen and (max-width: 860px) {
+  form p label {
+    width: 40%; }
+  form p input[type=text],
+  form p select,
+  form p textarea {
+    min-width: 180px; }
+  form p select {
+    width: 180px; } }
+@media only screen and (max-width: 640px) {
+  form p {
+    position: relative; }
+    form p label {
+      width: 100%; }
+    form p input[type=text],
+    form p select,
+    form p textarea {
+      min-width: 100%;
+      width: 100%; }
+    form p .asterix {
+      right: 0;
+      top: 16x;
+      position: absolute; } }
 footer {
   min-height: 130px;
   position: absolute;

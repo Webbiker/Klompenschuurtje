@@ -26,16 +26,13 @@ footer {
 	footer {
 		min-height: 210px;
 		.footerContent {
-			// padding: 70px 10px 0 10px;
 			.info {
 				@include stack(0, center);
-				// @include column(8/10);
 			}
 			.webbiker {
 				@include stack(0, center);
 				margin-top: 30px;
 				text-align: center !important;
-				// @include column(2/10);
 			}
 		}
 	}

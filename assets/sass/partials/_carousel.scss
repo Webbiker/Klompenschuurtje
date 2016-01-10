@@ -95,10 +95,6 @@
 	.home {	
 		.carousel {
 			.slick {
-				// .logo {
-				// 	height: 90px;
-				// 	margin: 12px 0 -30px 0;
-				// }
 				.slides {
 					height: 270px;
 					.slide {
@@ -127,10 +123,6 @@
 			.slick {
 				@include column(100/100);
 				text-align: center;
-				// .logo {
-				// 	height: 90px;
-				// 	margin: -12px 0 -24px 0;
-				// }
 
 				.slides {
 					margin-left: -6px;

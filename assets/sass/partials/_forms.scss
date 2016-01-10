@@ -1,0 +1,124 @@
+form {
+	p {
+		@include cf();
+
+		label {
+			font-family: 'BloklettersViltstift', Arial, sans-serif;
+			width: 30%;
+			margin-right: 10px;
+			float: left;
+			padding-top: 6px;
+		}
+
+
+		input[type=text],
+		select,
+		textarea {
+			border: 1px solid $green;
+			@include border-radius(4px);
+			float: left;
+			padding: 8px 6px 5px 6px;
+			@include font-size(14px);
+			font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    		line-height: 1;
+    		margin-right: 8px;
+			min-width: 280px;
+		}
+
+		select {
+			height: 30px;
+			padding-top: 4px;
+			width: 280px;
+		}
+
+		textarea {
+			min-height: 90px;
+
+		}
+
+		.asterix {
+			@include font-size(18px);
+			font-family: 'BloklettersViltstift', Arial, sans-serif;
+			color: $alert;
+
+			height: 0;
+			line-height: 1;
+			vertical-align: baseline;
+			position: relative;
+			top: 0.9ex;			
+		}
+
+		&.voetnoot {
+			@include font-size(10px);
+			font-family: 'BloklettersViltstift', Arial, sans-serif;
+			border-top: 1px solid $grey;
+			margin-top: 30px;
+			padding-top: 4px;
+			text-align: right;
+		}
+	}
+}
+
+@media #{$medium-only} {
+	form {
+		p {
+			label {
+
+			}
+
+			input[type=text],
+			select,
+			textarea {
+				min-width: 200px;
+			}
+			select {
+				width: 200px;
+			}
+		}
+	}	
+}
+
+@media #{$slides-only} {
+	form {
+		p {
+			label {
+				width: 40%;
+			}
+
+			input[type=text],
+			select,
+			textarea {
+				min-width: 180px;
+			}
+
+			select {
+				width: 180px;
+			}
+		}
+	}	
+}
+
+@media #{$small-only} {
+	form {
+		p {
+			position: relative;
+			label {
+				width: 100%;
+			}
+
+			input[type=text],
+			select,
+			textarea {
+				min-width: 100%;
+				width: 100%;
+			}
+
+			.asterix {
+				right: 0;
+				top: 16x;
+				position: absolute;
+			}
+
+		}
+	}
+}

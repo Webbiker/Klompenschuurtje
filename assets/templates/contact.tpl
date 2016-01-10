@@ -1,22 +1,59 @@
 <?php 	$class = "contact";
 		include("assets/chunks/header.tpl"); ?>
 <article>
-	<h1>Welkom bij het Klompenschuurtje</h1>
-	<p><strong>Nicole van Aarle is de 5de generatie van de van Aarle’s klompenmakers. Zij is ambachtelijk klompenmaakster, aan de Helmondseweg 3b in Aarle-Rixtel.</strong></p>
-	<p>Bij Nicole kunt u terecht voor alles wat te maken heeft met <a href="javascript:;">workshops</a> en <a href="javascript:;">demonstraties</a> over klompen. Tevens kunt u bij haar terecht voor <a href="javascript:;">draagklompen</a>, <a href="javascript:;">souvenirs</a>, <a href="javascript:;">relatiegeschenken</a> tot en met Oud-Hollandse fietsen en <a href="javascript:;">klompentochten</a>.</p>
-	<p>Wilt u een bezoek brengen aan de klompenmakerij? Deze is elke dinsdag en donderdag geopend vanaf 13.00 uur. Wilt u op een ander moment komen dan is dat geen enkel probleem laat het even weten.</p>
-	<p>Voor informatie over een van de producten of voor een demonstratie, kunt u vrijblijvend <a href="javascript:;">contact opnemen via het contactformulier</a>.</p>
-	<p class="call"><a href="tel:+310622994880"></a>Of bel: 06 229 948 80</p>
-	<p class="right"><a href="javascript:;" class="button">Meer over het Klompenschuurtje</a></p>
-	<div class="share">
-		<ul>
-			<li><a href="javascript:;"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
-			<li><a href="javascript:;"><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
-		</ul>
-		<p><img src="/assets/img/brand.png" alt="Klomepenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
-	</div>
+	<h1>Informatie aanvragen</h1>
+	<p>Wilt u graag draagklompen of souvenirs
+	bestellen of heeft u een vraag over één van onze workshops? Wilt u graag een fietstocht met picknick maken of een demonstratie bijwonen of heeft u gewoon een vraag? U kunt altijd informatie aanvragen via ons contactformulier.</p>
+	<p>Wij willen u graag van dienst zijn, dus stelt u
+	ons uw vraag en wij zoeken voor u het juiste product of antwoord.</p>
+	<form class="contactForm" id="contactForm" method="post" action="vraag-en-antwoord/infoaanvragen.html">
+		<p>
+			<label>Naam:</label>
+			<input type="text" name="naam" id="naam" value="">
+			<span class="asterix">*</span>
+			<span class="error"></span>
+		</p>
+		<p>
+			<label>E-mail:</label>
+			<input type="text" name="email" id="email" value="">
+			<span class="asterix">*</span>
+			<span class="error"></span>
+		</p>
+		<p>
+			<label>Telefoonnummer:</label>
+			<input type="text" name="phone" id="phone" value="">
+		</p>
+		<p>
+			<label>Ik wil informatie over:</label>
+			<select name="subject" id="subject">
+				<option value="">Maak een keuze</option>
+				<option value="Demonstraties">Demonstraties</option>	
+				<option value="Workshops">Workshops</option>	
+				<option value="Klomptochten">Klomptochten, "Trap terug in de tijd"</option>	
+				<optgroup label="Draagklompen">
+					<option value="Handgeschilderde klompen">Handgeschilderde klompen</option>	
+					<option value="Klompen met logo">Klompen met logo</option>	
+					<option value="FUN klompen">FUN klompen</option>	
+					<option value="Geboorte klompen">Geboorte klompen</option>	
+					<option value="Airbrush klompen">Airbrush klompen</option>
+					<option value="Ingebrande klompen">Ingebrande klompen</option>
+				</optgroup>
+				<option value="Souvenirs">Souvenirs</option>	
+				<option value="Relatiegeschenken">Relatiegeschenken</option>	
+				<option value="Speelgoed">Speelgoed</option>	
+				<option value="Diversen">Diversen</option>	
+				<option value="Iets anders, namelijk:">Iets anders, namelijk:</option>	
+			</select>
+		</p>
+		<p>
+			<label>Uw bericht:</label><textarea name="message" id="message" value=""></textarea>
+		</p>
+		<p>
+			<label>&nbsp;</label><input type="submit" value="Verzend" class="button big">
+		</p>
+		<p class="voetnoot">Velden met een asterix (<span class="asterix">*</span>) zijn verplichte velden.</p>
+        <input type="hidden" name="workemail" value="">
+	</form>
 </article>
 
 <aside>
