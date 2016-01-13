@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.4, created on 2015-12-23 20:56:26
+<?php /* Smarty version Smarty-3.0.4, created on 2016-01-13 20:53:30
          compiled from "/Users/joostbrommert/Sites/GitHub/Klompenschuurtje/manager/templates/default/header.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:457434048567afc6acbccb6-10744812%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:5847989185696ab3a632793-45028838%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     'd36663159a286d5e05a91fe7a6fe0176ba7d7db5' => 
     array (
       0 => '/Users/joostbrommert/Sites/GitHub/Klompenschuurtje/manager/templates/default/header.tpl',
-      1 => 1444129578,
+      1 => 1450905016,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '457434048567afc6acbccb6-10744812',
+  'nocache_hash' => '5847989185696ab3a632793-45028838',
   'function' => 
   array (
   ),

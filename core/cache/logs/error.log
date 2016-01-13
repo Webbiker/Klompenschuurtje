@@ -12,3 +12,15 @@
 [2016-01-10 13:59:50] (ERROR @ /index.php) Could not cache source data for 5.
 [2016-01-10 13:59:50] (ERROR @ /index.php) Could not cache source data for 5.
 [2016-01-10 13:59:50] (ERROR @ /index.php) Could not cache source data for 5.
+[2016-01-13 21:01:56] (ERROR @ /connectors/lang.js.php) Error caching lexicon topic lexicon/en/core/resource
+[2016-01-13 21:37:04] (ERROR @ /connectors/lang.js.php) Error caching lexicon topic lexicon/en/core/resource
+[2016-01-13 22:13:31] (ERROR @ /index.php) Could not cache source data for 5.
+[2016-01-13 22:13:31] (ERROR @ /index.php) Could not cache resource 1
+[2016-01-13 22:16:34] (ERROR @ /index.php) Could not cache source data for 5.
+[2016-01-13 22:16:34] (ERROR @ /index.php) Could not cache source data for 5.
+[2016-01-13 22:16:34] (ERROR @ /index.php) Could not cache source data for 5.
+[2016-01-13 22:21:39] (ERROR @ /connectors/lang.js.php) Error caching lexicon topic lexicon/en/core/resource
+[2016-01-13 22:21:43] (ERROR @ /index.php) Could not cache source data for 5.
+[2016-01-13 22:23:23] (ERROR @ /index.php) Could not cache source data for 5.
+[2016-01-13 22:23:23] (ERROR @ /index.php) Could not cache resource 1
+[2016-01-13 22:24:02] (ERROR @ /index.php) Could not cache source data for 5.

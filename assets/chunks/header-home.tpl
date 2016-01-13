@@ -48,5 +48,6 @@
 				</nav>
 
 				<a href="[[++site_url]]" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+                [[$Carousel? ]]
 			</header>
 			<main>

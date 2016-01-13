@@ -4,7 +4,7 @@
   ),
   'aliasMap' => 
   array (
-    '1.html' => 1,
+    'home.html' => 1,
     'geschiedenis.html' => 2,
     'klompen/' => 3,
     'workshops.html' => 4,
@@ -63,7 +63,7 @@
     '23/willem-alexander-en-maxima-klompen.html' => 51,
     '23/cadeauverpakkingen.html' => 54,
     '23/mats-en-zeb.html' => 58,
-    '23/46.html' => 46,
+    '23/klompenschuurtje.html' => 46,
     '23/jaarmarkt-aarle-rixtel-2011.html' => 53,
     '23/omroep-brabant.html' => 47,
     '23/nk-2011.html' => 48,

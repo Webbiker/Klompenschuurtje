@@ -680,9 +680,6 @@ header {
     header .logo img {
       height: 90px; } }
 .carousel {
-  display: none; }
-
-.home .carousel {
   *zoom: 1;
   width: auto;
   max-width: 1170px;
@@ -694,12 +691,12 @@ header {
   padding-right: 0;
   position: relative;
   display: block; }
-  .home .carousel:before, .home .carousel:after {
+  .carousel:before, .carousel:after {
     content: '';
     display: table; }
-  .home .carousel:after {
+  .carousel:after {
     clear: both; }
-  .home .carousel:before {
+  .carousel:before {
     content: "";
     height: 116px;
     width: 228px;
@@ -710,7 +707,7 @@ header {
     z-index: 10;
     left: -50px;
     bottom: -30px; }
-  .home .carousel .slick {
+  .carousel .slick {
     *zoom: 1;
     float: left;
     clear: none;
@@ -718,21 +715,21 @@ header {
     width: 58.8%;
     margin-left: 0%;
     margin-right: 3%; }
-    .home .carousel .slick:before, .home .carousel .slick:after {
+    .carousel .slick:before, .carousel .slick:after {
       content: '';
       display: table; }
-    .home .carousel .slick:after {
+    .carousel .slick:after {
       clear: both; }
-    .home .carousel .slick:last-child {
+    .carousel .slick:last-child {
       margin-right: 0%; }
-    .home .carousel .slick .slides {
+    .carousel .slick .slides {
       height: 390px;
       background: #FFF;
       margin-left: 10px;
       -moz-box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3);
       -webkit-box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3);
       box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3); }
-      .home .carousel .slick .slides .slide {
+      .carousel .slick .slides .slide {
         margin: 6px;
         height: 380px;
         background-size: cover;
@@ -740,16 +737,16 @@ header {
         color: #FFF;
         font-family: 'BloklettersViltstift', Arial, sans-serif;
         text-shadow: 4px 4px 2px #000; }
-        .home .carousel .slick .slides .slide h1 {
+        .carousel .slick .slides .slide h1 {
           font-size: 24px;
           font-size: 1.5rem;
           margin: 20px 20px 0 20px;
           line-height: 1.2; }
-        .home .carousel .slick .slides .slide p {
+        .carousel .slick .slides .slide p {
           font-size: 14px;
           font-size: 0.875rem;
           margin: 0 20px 0 20px; }
-  .home .carousel .nicole {
+  .carousel .nicole {
     *zoom: 1;
     float: left;
     clear: none;
@@ -760,51 +757,51 @@ header {
     height: 310px;
     margin-top: 110px;
     position: relative; }
-    .home .carousel .nicole:before, .home .carousel .nicole:after {
+    .carousel .nicole:before, .carousel .nicole:after {
       content: '';
       display: table; }
-    .home .carousel .nicole:after {
+    .carousel .nicole:after {
       clear: both; }
-    .home .carousel .nicole:last-child {
+    .carousel .nicole:last-child {
       margin-right: 0%; }
-    .home .carousel .nicole img {
+    .carousel .nicole img {
       float: right;
       bottom: -50px;
       z-index: 1;
       position: absolute; }
 
 @media only screen and (min-width: 861px) and (max-width: 1024px) {
-  .home .carousel .slick .slides {
+  .carousel .slick .slides {
     height: 330px; }
-    .home .carousel .slick .slides .slide {
+    .carousel .slick .slides .slide {
       height: 320px; }
-      .home .carousel .slick .slides .slide h1 {
+      .carousel .slick .slides .slide h1 {
         font-size: 18px;
         font-size: 1.125rem;
         margin: 20px 20px 0 20px; }
-      .home .carousel .slick .slides .slide p {
+      .carousel .slick .slides .slide p {
         font-size: 12px;
         font-size: 0.75rem;
         margin: 0 20px 0 20px; }
-  .home .carousel .nicole {
+  .carousel .nicole {
     height: 250px; } }
 @media only screen and (max-width: 860px) {
-  .home .carousel .slick .slides {
+  .carousel .slick .slides {
     height: 270px; }
-    .home .carousel .slick .slides .slide {
+    .carousel .slick .slides .slide {
       height: 260px; }
-      .home .carousel .slick .slides .slide h1 {
+      .carousel .slick .slides .slide h1 {
         font-size: 18px;
         font-size: 1.125rem;
         margin: 20px 20px 0 20px; }
-      .home .carousel .slick .slides .slide p {
+      .carousel .slick .slides .slide p {
         font-size: 12px;
         font-size: 0.75rem;
         margin: 0 20px 0 20px; }
-  .home .carousel .nicole {
+  .carousel .nicole {
     height: 190px; } }
 @media only screen and (max-width: 640px) {
-  .home .carousel .slick {
+  .carousel .slick {
     *zoom: 1;
     float: left;
     clear: none;
@@ -813,29 +810,29 @@ header {
     margin-left: 0%;
     margin-right: 3%;
     text-align: center; }
-    .home .carousel .slick:before, .home .carousel .slick:after {
+    .carousel .slick:before, .carousel .slick:after {
       content: '';
       display: table; }
-    .home .carousel .slick:after {
+    .carousel .slick:after {
       clear: both; }
-    .home .carousel .slick:last-child {
+    .carousel .slick:last-child {
       margin-right: 0%; }
-    .home .carousel .slick .slides {
+    .carousel .slick .slides {
       margin-left: -6px;
       margin-right: -6px;
       text-indent: left; }
-      .home .carousel .slick .slides .slide {
+      .carousel .slick .slides .slide {
         height: 230px;
         text-align: left; }
-        .home .carousel .slick .slides .slide h1 {
+        .carousel .slick .slides .slide h1 {
           font-size: 18px;
           font-size: 1.125rem;
           margin: 10px 30% 0 10px; }
-        .home .carousel .slick .slides .slide p {
+        .carousel .slick .slides .slide p {
           font-size: 12px;
           font-size: 0.75rem;
           margin: 0 30% 0 10px; }
-  .home .carousel .nicole {
+  .carousel .nicole {
     position: absolute;
     right: -40px;
     bottom: 30px;
@@ -910,7 +907,7 @@ aside .share {
     padding: 18px 8px; }
     .share span {
       display: none; } }
-.overview .list li {
+.list li {
   *zoom: 1;
   float: left;
   clear: none;
@@ -924,25 +921,25 @@ aside .share {
   -moz-box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3); }
-  .overview .list li:before, .overview .list li:after {
+  .list li:before, .list li:after {
     content: '';
     display: table; }
-  .overview .list li:after {
+  .list li:after {
     clear: both; }
-  .overview .list li:nth-child(2n) {
+  .list li:nth-child(2n) {
     margin-right: 0%;
     float: right; }
-  .overview .list li:nth-child(2n + 1) {
+  .list li:nth-child(2n + 1) {
     clear: both; }
-  .overview .list li:nth-last-of-type(-n+2) {
+  .list li:nth-last-of-type(-n+2) {
     margin-bottom: 30px; }
-  .overview .list li a {
+  .list li a {
     display: block;
     height: 210px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center; }
-  .overview .list li .button {
+  .list li .button {
     position: absolute;
     left: 50%;
     right: 50%;

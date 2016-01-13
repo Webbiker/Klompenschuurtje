@@ -17,24 +17,18 @@
     'isfolder' => 1,
     'introtext' => '',
     'content' => '<h1>Draagklompen</h1>
-<p>Bij het Klompenschuurtje kunt u het zo gek
-niet bedenken of we hebben wel een paar klompen die bij u past, kijkt u
-lekker op uw gemak rond en voor vragen kunt u altijd vrijblijvend contact met
-ons opnemen. Of u nu een paar klompjes zoekt als
-kraamgeschenk of voor een trouwerij, maak uw wensen kenbaar en wij denken met u
-mee.</p>
+<p>Bij het Klompenschuurtje kunt u het zo gek niet bedenken of we hebben wel een paar klompen die bij u past, kijkt u lekker op uw gemak rond en voor vragen kunt u altijd vrijblijvend contact met ons opnemen. Of u nu een paar klompjes zoekt als kraamgeschenk of voor een trouwerij, maak uw wensen kenbaar en wij denken met u mee.</p>
 <p><strong>Bijna niets is te gek!</strong></p>
-<p>Wij hebben verschillende soorten klompen van hoogmodel
-(kapklompen) tot laagmodel (tripklompen).</p>',
+<p>Wij hebben verschillende soorten klompen van hoogmodel (kapklompen) tot laagmodel (tripklompen).</p>',
     'richtext' => 1,
-    'template' => 3,
+    'template' => 12,
     'menuindex' => 0,
     'searchable' => 1,
     'cacheable' => 1,
     'createdby' => 1,
     'createdon' => 1303418874,
     'editedby' => 1,
-    'editedon' => 1306927793,
+    'editedon' => 1452719605,
     'deleted' => 0,
     'deletedon' => 0,
     'deletedby' => 0,
@@ -54,112 +48,150 @@ mee.</p>
     'hide_children_in_tree' => 0,
     'show_in_tree' => 1,
     'properties' => NULL,
-    '_content' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Klompen die gedragen kunnen worden - Het Klompenschuurtje</title>
+    '_content' => '<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<base href="http://local.klompenschuurtje.nl/" />
+		<title>Klompen die gedragen kunnen worden - Het Klompenschuurtje</title>
 
-<link rel="Shortcut Icon" href="/favicon.ico">
-<link rel="icon" type="image/ico" href="/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/css/default.css" />
+		<base href="http://local.klompenschuurtje.nl/" />
 
-<script language="javascript" type="text/javascript" src="/scripts/jquery-1.5.1.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/jquery.cycle.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/functions.js"></script>
-</head>
-<body>
-	<div class="wrapper">
-		<div class="header">
-			<div class="headerGrass">
-				<div class="headerGrassContent">
-					<img class="klompen" src="/images/default/klompjesRight.png" width="228" height="116" border="0" />
-				</div>
-			</div>
-			<div class="headerHomeBGround">
-				<div class="headerContent">
-					<a href="http://local.klompenschuurtje.nl/"><img src="/images/default/logo.png" width="469" height="175" border="0" alt="het Klompenschuurtje" /></a>
-                                        <ul class="navigation">
-<ul><li class=""><a href="http://local.klompenschuurtje.nl/" title="Homepage">Home</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="geschiedenis.html" title="Geschiedenis">Geschiedenis</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="active"><a href="klompen/" title="Klompen">Klompen</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="workshops.html" title="Workshops">Workshops</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="demonstraties.html" title="Demonstraties">Demonstraties</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="last"><a href="vraag-en-antwoord/" title="Vraag & Antwoord">Vraag & Antwoord</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+        <link rel="stylesheet" href="/assets/css/screen.css">
+        <script src="/assets/bower_components/modernizr/modernizr.js"></script>
+    </head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<div class="center">
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
+						</a>
+                        <ul class="offcanvas main-menu">
+	<ul><li>
+	<a href="http://local.klompenschuurtje.nl/" class="">Home</a>
+</li>
+<li>
+	<a href="geschiedenis.html" class="">Geschiedenis</a>
+</li>
+<li>
+	<a href="klompen/" class="active">Klompen</a>
+</li>
+<li>
+	<a href="workshops.html" class="">Workshops</a>
+</li>
+<li>
+	<a href="demonstraties.html" class="">Demonstraties</a>
+</li>
+<li>
+	<a href="vraag-en-antwoord/" class="last">Vraag & Antwoord</a>
+</li>
 </ul>
 </ul>
 
-				</div>
-			</div>
-		</div>
-		<div class="mainContent">
-<div class="TwoColumnLayout">
-	<div class="sidebar">
-                <ul><a href="/klompen/draagklompen/" title="Draagklompen" class="button active">Draagklompen</a>
-<a href="/klompen/souvenirs/" title="Souvenirs" class="button ">Souvenirs</a>
-<a href="/klompen/relatiegeschenken.html" title="Relatiegeschenken" class="button ">Relatiegeschenken</a>
-<a href="/klompen/speelgoed.html" title="Speelgoed" class="button ">Speelgoed</a>
-<a href="/klompen/diversen/" title="Diversen" class="button ">Diversen</a>
-</ul>
-                <div class="share">
-  <p>Deel het klompenschuurtje</p>
-	<a target="_blank" href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl"><img src="/images/default/shareTwitterIcon.png" width="40" height="41" border="0" /></a>
-	<a target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></a>
-</div>
-	</div>
-	<div class="rightContent">
-                <h1>Draagklompen</h1>
-<p>Bij het Klompenschuurtje kunt u het zo gek
-niet bedenken of we hebben wel een paar klompen die bij u past, kijkt u
-lekker op uw gemak rond en voor vragen kunt u altijd vrijblijvend contact met
-ons opnemen. Of u nu een paar klompjes zoekt als
-kraamgeschenk of voor een trouwerij, maak uw wensen kenbaar en wij denken met u
-mee.</p>
+						<ul class="offcanvas lang-menu">
+							<li><a href="/nl/" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="/en/">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="/de/">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
+					</div>
+				</nav>
+
+				<a href="http://local.klompenschuurtje.nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+			</header>
+			<main>
+<article>
+    <h1>Draagklompen</h1>
+<p>Bij het Klompenschuurtje kunt u het zo gek niet bedenken of we hebben wel een paar klompen die bij u past, kijkt u lekker op uw gemak rond en voor vragen kunt u altijd vrijblijvend contact met ons opnemen. Of u nu een paar klompjes zoekt als kraamgeschenk of voor een trouwerij, maak uw wensen kenbaar en wij denken met u mee.</p>
 <p><strong>Bijna niets is te gek!</strong></p>
-<p>Wij hebben verschillende soorten klompen van hoogmodel
-(kapklompen) tot laagmodel (tripklompen).</p>
-                [[!Wayfinder?
+<p>Wij hebben verschillende soorten klompen van hoogmodel (kapklompen) tot laagmodel (tripklompen).</p>
+    [[!Wayfinder?
     &level=`1`
     &firstClass=``
-    &lastClass=`last`
-    &outerTpl=`productOverview.outerTpl`
-    &rowTpl=`productOverview.item`
+    &lastClass=``
+    &outerTpl=`Product Overview Outer`
+    &rowTpl=`Product Overview Item`
 ]]
 [[*Overview Thumbnail?]]
-	</div>
+</article>
+<aside>
+    <nav>
+        <ul>
+    <ul><li>
+	<a href="/klompen/draagklompen/" class="active">Draagklompen</a>
+</li>
+<li>
+	<a href="/klompen/souvenirs/" class="">Souvenirs</a>
+</li>
+<li>
+	<a href="/klompen/relatiegeschenken.html" class="">Relatiegeschenken</a>
+</li>
+<li>
+	<a href="/klompen/speelgoed.html" class="">Speelgoed</a>
+</li>
+<li>
+	<a href="/klompen/diversen/" class="">Diversen</a>
+</li>
+</ul>
+</ul>
+    </nav>
+    <div class="share">
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
 </div>
-                </div>
-		<div class="footer">
-			<div class="footerContent">
-				<div class="sidebar">
-					Deze website is gemaakt door:<br /><a href="http://www.webbiker.nl" target="_blank"><img src="/images/default/footerWebbikerLogo.png" width="100" height="30" alt="Webbiker | Web - Prepress - Multimedia" border="0" /></a>
+</aside>
+			</main>
+
+			<footer>
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
 				</div>
-				<div class="footerBody">
-					<p>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776<br />
-					<strong>Meer informatie bel 06 229 948 80 of e-mail <a href="mailto:nicole@klompenschuurtje.nl">nicole@klompenschuurtje.nl</a></strong></p>
-				</div>
-			</div>
+			</footer>
 		</div>
-	</div>
-<script>
-  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+	</body>
+    <script src="/assets/js/app-min.js"></script>
 
-  ga(\'create\', \'UA-8234771-6\', \'klompenschuurtje.nl\');
-  ga(\'send\', \'pageview\');
-
-</script>
-</body>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site\'s ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src=\'https://www.google-analytics.com/analytics.js\';
+        r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));
+        ga(\'create\',\'UA-XXXXX-X\',\'auto\');ga(\'send\',\'pageview\');
+    </script>
 </html>',
     '_isForward' => false,
   ),
@@ -180,501 +212,651 @@ mee.</p>
   array (
     '[[*longtitle]]' => 'Klompen die gedragen kunnen worden',
     '[[Wayfinder?
-    &startId=`0`
-    &level=`1`
-    &firstClass=``
-    &lastClass=`last`
-    &rowTpl=`mainNavigation.item`
-    &hereClass=`active`
-]]' => '<ul><li class=""><a href="http://local.klompenschuurtje.nl/" title="Homepage">Home</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="geschiedenis.html" title="Geschiedenis">Geschiedenis</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="active"><a href="klompen/" title="Klompen">Klompen</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="workshops.html" title="Workshops">Workshops</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="demonstraties.html" title="Demonstraties">Demonstraties</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="last"><a href="vraag-en-antwoord/" title="Vraag & Antwoord">Vraag & Antwoord</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
+	    &startId=`0`
+	    &level=`1`
+	    &firstClass=``
+	    &lastClass=`last`
+	    &rowTpl=`Navigation Main Item`
+	    &hereClass=`active`
+	]]' => '<ul><li>
+	<a href="http://local.klompenschuurtje.nl/" class="">Home</a>
+</li>
+<li>
+	<a href="geschiedenis.html" class="">Geschiedenis</a>
+</li>
+<li>
+	<a href="klompen/" class="active">Klompen</a>
+</li>
+<li>
+	<a href="workshops.html" class="">Workshops</a>
+</li>
+<li>
+	<a href="demonstraties.html" class="">Demonstraties</a>
+</li>
+<li>
+	<a href="vraag-en-antwoord/" class="last">Vraag & Antwoord</a>
+</li>
 </ul>',
-    '[[$mainNavigation]]' => '<ul class="navigation">
-<ul><li class=""><a href="http://local.klompenschuurtje.nl/" title="Homepage">Home</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="geschiedenis.html" title="Geschiedenis">Geschiedenis</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="active"><a href="klompen/" title="Klompen">Klompen</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="workshops.html" title="Workshops">Workshops</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="demonstraties.html" title="Demonstraties">Demonstraties</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="last"><a href="vraag-en-antwoord/" title="Vraag & Antwoord">Vraag & Antwoord</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
+    '[[$Navigation Main? ]]' => '<ul class="offcanvas main-menu">
+	<ul><li>
+	<a href="http://local.klompenschuurtje.nl/" class="">Home</a>
+</li>
+<li>
+	<a href="geschiedenis.html" class="">Geschiedenis</a>
+</li>
+<li>
+	<a href="klompen/" class="active">Klompen</a>
+</li>
+<li>
+	<a href="workshops.html" class="">Workshops</a>
+</li>
+<li>
+	<a href="demonstraties.html" class="">Demonstraties</a>
+</li>
+<li>
+	<a href="vraag-en-antwoord/" class="last">Vraag & Antwoord</a>
+</li>
+</ul>
+</ul>',
+    '[[$Header? ]]' => '<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>Klompen die gedragen kunnen worden - Het Klompenschuurtje</title>
+
+		<base href="http://local.klompenschuurtje.nl/" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+        <link rel="stylesheet" href="/assets/css/screen.css">
+        <script src="/assets/bower_components/modernizr/modernizr.js"></script>
+    </head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<div class="center">
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
+						</a>
+                        <ul class="offcanvas main-menu">
+	<ul><li>
+	<a href="http://local.klompenschuurtje.nl/" class="">Home</a>
+</li>
+<li>
+	<a href="geschiedenis.html" class="">Geschiedenis</a>
+</li>
+<li>
+	<a href="klompen/" class="active">Klompen</a>
+</li>
+<li>
+	<a href="workshops.html" class="">Workshops</a>
+</li>
+<li>
+	<a href="demonstraties.html" class="">Demonstraties</a>
+</li>
+<li>
+	<a href="vraag-en-antwoord/" class="last">Vraag & Antwoord</a>
+</li>
 </ul>
 </ul>
-',
-    '[[$header]]' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Klompen die gedragen kunnen worden - Het Klompenschuurtje</title>
 
-<base href="http://local.klompenschuurtje.nl/" />
+						<ul class="offcanvas lang-menu">
+							<li><a href="/nl/" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="/en/">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="/de/">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
+					</div>
+				</nav>
 
-<link rel="Shortcut Icon" href="/favicon.ico">
-<link rel="icon" type="image/ico" href="/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/css/default.css" />
-
-<script language="javascript" type="text/javascript" src="/scripts/jquery-1.5.1.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/jquery.cycle.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/functions.js"></script>
-</head>
-<body>
-	<div class="wrapper">
-		<div class="header">
-			<div class="headerGrass">
-				<div class="headerGrassContent">
-					<img class="klompen" src="/images/default/klompjesRight.png" width="228" height="116" border="0" />
-				</div>
-			</div>
-			<div class="headerHomeBGround">
-				<div class="headerContent">
-					<a href="http://local.klompenschuurtje.nl/"><img src="/images/default/logo.png" width="469" height="175" border="0" alt="het Klompenschuurtje" /></a>
-                                        <ul class="navigation">
-<ul><li class=""><a href="http://local.klompenschuurtje.nl/" title="Homepage">Home</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="geschiedenis.html" title="Geschiedenis">Geschiedenis</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="active"><a href="klompen/" title="Klompen">Klompen</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="workshops.html" title="Workshops">Workshops</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="demonstraties.html" title="Demonstraties">Demonstraties</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="last"><a href="vraag-en-antwoord/" title="Vraag & Antwoord">Vraag & Antwoord</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-</ul>
-</ul>
-
-				</div>
-			</div>
-		</div>
-		<div class="mainContent">',
-    '[[UltimateParent]]' => 3,
-    '[[Wayfinder?
-    &startId=`3`
+				<a href="http://local.klompenschuurtje.nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+			</header>
+			<main>',
+    '[[$Product Overview? ]]' => '[[!Wayfinder?
     &level=`1`
     &firstClass=``
     &lastClass=``
-    &rowTpl=`subNavigation.item`
-    &hereClass=`active`
-]]' => '<ul><a href="/klompen/draagklompen/" title="Draagklompen" class="button active">Draagklompen</a>
-<a href="/klompen/souvenirs/" title="Souvenirs" class="button ">Souvenirs</a>
-<a href="/klompen/relatiegeschenken.html" title="Relatiegeschenken" class="button ">Relatiegeschenken</a>
-<a href="/klompen/speelgoed.html" title="Speelgoed" class="button ">Speelgoed</a>
-<a href="/klompen/diversen/" title="Diversen" class="button ">Diversen</a>
-</ul>',
-    '[[$subNavigation]]' => '<ul><a href="/klompen/draagklompen/" title="Draagklompen" class="button active">Draagklompen</a>
-<a href="/klompen/souvenirs/" title="Souvenirs" class="button ">Souvenirs</a>
-<a href="/klompen/relatiegeschenken.html" title="Relatiegeschenken" class="button ">Relatiegeschenken</a>
-<a href="/klompen/speelgoed.html" title="Speelgoed" class="button ">Speelgoed</a>
-<a href="/klompen/diversen/" title="Diversen" class="button ">Diversen</a>
-</ul>',
-    '[[$sidebarShare]]' => '<div class="share">
-  <p>Deel het klompenschuurtje</p>
-	<a target="_blank" href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl"><img src="/images/default/shareTwitterIcon.png" width="40" height="41" border="0" /></a>
-	<a target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></a>
-</div>',
-    '[[$productOverview]]' => '[[!Wayfinder?
-    &level=`1`
-    &firstClass=``
-    &lastClass=`last`
-    &outerTpl=`productOverview.outerTpl`
-    &rowTpl=`productOverview.item`
+    &outerTpl=`Product Overview Outer`
+    &rowTpl=`Product Overview Item`
 ]]
 [[*Overview Thumbnail?]]',
-    '[[$footer]]' => '                </div>
-		<div class="footer">
-			<div class="footerContent">
-				<div class="sidebar">
-					Deze website is gemaakt door:<br /><a href="http://www.webbiker.nl" target="_blank"><img src="/images/default/footerWebbikerLogo.png" width="100" height="30" alt="Webbiker | Web - Prepress - Multimedia" border="0" /></a>
+    '[[Wayfinder?
+        &startId=`3`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]' => '<ul><li>
+	<a href="/klompen/draagklompen/" class="active">Draagklompen</a>
+</li>
+<li>
+	<a href="/klompen/souvenirs/" class="">Souvenirs</a>
+</li>
+<li>
+	<a href="/klompen/relatiegeschenken.html" class="">Relatiegeschenken</a>
+</li>
+<li>
+	<a href="/klompen/speelgoed.html" class="">Speelgoed</a>
+</li>
+<li>
+	<a href="/klompen/diversen/" class="">Diversen</a>
+</li>
+</ul>',
+    '[[$Navigation Sub? ]]' => '<ul>
+    <ul><li>
+	<a href="/klompen/draagklompen/" class="active">Draagklompen</a>
+</li>
+<li>
+	<a href="/klompen/souvenirs/" class="">Souvenirs</a>
+</li>
+<li>
+	<a href="/klompen/relatiegeschenken.html" class="">Relatiegeschenken</a>
+</li>
+<li>
+	<a href="/klompen/speelgoed.html" class="">Speelgoed</a>
+</li>
+<li>
+	<a href="/klompen/diversen/" class="">Diversen</a>
+</li>
+</ul>
+</ul>',
+    '[[$Share? ]]' => '<div class="share">
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
+</div>',
+    '[[$Footer? ]]' => '			</main>
+
+			<footer>
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
 				</div>
-				<div class="footerBody">
-					<p>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776<br />
-					<strong>Meer informatie bel 06 229 948 80 of e-mail <a href="mailto:nicole@klompenschuurtje.nl">nicole@klompenschuurtje.nl</a></strong></p>
-				</div>
-			</div>
+			</footer>
 		</div>
-	</div>
-<script>
-  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+	</body>
+    <script src="/assets/js/app-min.js"></script>
 
-  ga(\'create\', \'UA-8234771-6\', \'klompenschuurtje.nl\');
-  ga(\'send\', \'pageview\');
-
-</script>
-</body>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site\'s ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src=\'https://www.google-analytics.com/analytics.js\';
+        r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));
+        ga(\'create\',\'UA-XXXXX-X\',\'auto\');ga(\'send\',\'pageview\');
+    </script>
 </html>',
   ),
   'sourceCache' => 
   array (
     'modChunk' => 
     array (
-      'header' => 
+      'Header' => 
       array (
         'fields' => 
+        array (
+          'id' => 27,
+          'source' => 1,
+          'property_preprocess' => false,
+          'name' => 'Header',
+          'description' => '',
+          'editor_type' => 0,
+          'category' => 0,
+          'cache_type' => 0,
+          'snippet' => '<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>[[*longtitle]] - [[++site_name]]</title>
+
+		<base href="[[++site_url]]" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+        <link rel="stylesheet" href="/assets/css/screen.css">
+        <script src="/assets/bower_components/modernizr/modernizr.js"></script>
+    </head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<div class="center">
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
+						</a>
+                        [[$Navigation Main? ]]
+
+						<ul class="offcanvas lang-menu">
+							<li><a href="/nl/" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="/en/">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="/de/">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
+					</div>
+				</nav>
+
+				<a href="[[++site_url]]" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+			</header>
+			<main>',
+          'locked' => false,
+          'properties' => 
+          array (
+          ),
+          'static' => true,
+          'static_file' => 'assets/chunks/header.tpl',
+          'content' => '<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>[[*longtitle]] - [[++site_name]]</title>
+
+		<base href="[[++site_url]]" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+        <link rel="stylesheet" href="/assets/css/screen.css">
+        <script src="/assets/bower_components/modernizr/modernizr.js"></script>
+    </head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<div class="center">
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
+						</a>
+                        [[$Navigation Main? ]]
+
+						<ul class="offcanvas lang-menu">
+							<li><a href="/nl/" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="/en/">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="/de/">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
+					</div>
+				</nav>
+
+				<a href="[[++site_url]]" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+			</header>
+			<main>',
+        ),
+        'policies' => 
+        array (
+        ),
+        'source' => 
         array (
           'id' => 1,
-          'source' => 0,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
+        ),
+      ),
+      'Navigation Main' => 
+      array (
+        'fields' => 
+        array (
+          'id' => 22,
+          'source' => 1,
           'property_preprocess' => false,
-          'name' => 'header',
-          'description' => 'top portion of the master template',
+          'name' => 'Navigation Main',
+          'description' => '',
           'editor_type' => 0,
-          'category' => 2,
+          'category' => 0,
           'cache_type' => 0,
-          'snippet' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>[[*longtitle]] - [[++site_name]]</title>
-
-<base href="[[++site_url]]" />
-
-<link rel="Shortcut Icon" href="/favicon.ico">
-<link rel="icon" type="image/ico" href="/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/css/default.css" />
-
-<script language="javascript" type="text/javascript" src="/scripts/jquery-1.5.1.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/jquery.cycle.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/functions.js"></script>
-</head>
-<body>
-	<div class="wrapper">
-		<div class="header">
-			<div class="headerGrass">
-				<div class="headerGrassContent">
-					<img class="klompen" src="/images/default/klompjesRight.png" width="228" height="116" border="0" />
-				</div>
-			</div>
-			<div class="headerHomeBGround">
-				<div class="headerContent">
-					<a href="[[++site_url]]"><img src="/images/default/logo.png" width="469" height="175" border="0" alt="het Klompenschuurtje" /></a>
-                                        [[$mainNavigation]]
-				</div>
-			</div>
-		</div>
-		<div class="mainContent">',
+          'snippet' => '<ul class="offcanvas main-menu">
+	[[Wayfinder?
+	    &startId=`0`
+	    &level=`1`
+	    &firstClass=``
+	    &lastClass=`last`
+	    &rowTpl=`Navigation Main Item`
+	    &hereClass=`active`
+	]]
+</ul>',
           'locked' => false,
           'properties' => 
           array (
           ),
-          'static' => false,
-          'static_file' => '',
-          'content' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>[[*longtitle]] - [[++site_name]]</title>
-
-<base href="[[++site_url]]" />
-
-<link rel="Shortcut Icon" href="/favicon.ico">
-<link rel="icon" type="image/ico" href="/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/css/default.css" />
-
-<script language="javascript" type="text/javascript" src="/scripts/jquery-1.5.1.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/jquery.cycle.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/functions.js"></script>
-</head>
-<body>
-	<div class="wrapper">
-		<div class="header">
-			<div class="headerGrass">
-				<div class="headerGrassContent">
-					<img class="klompen" src="/images/default/klompjesRight.png" width="228" height="116" border="0" />
-				</div>
-			</div>
-			<div class="headerHomeBGround">
-				<div class="headerContent">
-					<a href="[[++site_url]]"><img src="/images/default/logo.png" width="469" height="175" border="0" alt="het Klompenschuurtje" /></a>
-                                        [[$mainNavigation]]
-				</div>
-			</div>
-		</div>
-		<div class="mainContent">',
+          'static' => true,
+          'static_file' => 'assets/chunks/navigation-main.tpl',
+          'content' => '<ul class="offcanvas main-menu">
+	[[Wayfinder?
+	    &startId=`0`
+	    &level=`1`
+	    &firstClass=``
+	    &lastClass=`last`
+	    &rowTpl=`Navigation Main Item`
+	    &hereClass=`active`
+	]]
+</ul>',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
-        ),
-      ),
-      'mainNavigation' => 
-      array (
-        'fields' => 
-        array (
-          'id' => 4,
-          'source' => 0,
-          'property_preprocess' => false,
-          'name' => 'mainNavigation',
-          'description' => 'Main navigation in the header',
-          'editor_type' => 0,
-          'category' => 2,
-          'cache_type' => 0,
-          'snippet' => '<ul class="navigation">
-[[Wayfinder?
-    &startId=`0`
-    &level=`1`
-    &firstClass=``
-    &lastClass=`last`
-    &rowTpl=`mainNavigation.item`
-    &hereClass=`active`
-]]
-</ul>
-',
-          'locked' => false,
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
           'properties' => 
           array (
           ),
-          'static' => false,
-          'static_file' => '',
-          'content' => '<ul class="navigation">
-[[Wayfinder?
-    &startId=`0`
-    &level=`1`
-    &firstClass=``
-    &lastClass=`last`
-    &rowTpl=`mainNavigation.item`
-    &hereClass=`active`
-]]
-</ul>
-',
-        ),
-        'policies' => 
-        array (
-          'web' => 
-          array (
-          ),
-        ),
-        'source' => 
-        array (
+          'is_stream' => true,
         ),
       ),
-      'subNavigation' => 
+      'Product Overview' => 
       array (
         'fields' => 
         array (
-          'id' => 6,
-          'source' => 0,
+          'id' => 30,
+          'source' => 1,
           'property_preprocess' => false,
-          'name' => 'subNavigation',
-          'description' => 'Second navigation for subpages',
+          'name' => 'Product Overview',
+          'description' => '',
           'editor_type' => 0,
-          'category' => 2,
-          'cache_type' => 0,
-          'snippet' => '[[Wayfinder?
-    &startId=`[[UltimateParent]]`
-    &level=`1`
-    &firstClass=``
-    &lastClass=``
-    &rowTpl=`subNavigation.item`
-    &hereClass=`active`
-]]',
-          'locked' => false,
-          'properties' => 
-          array (
-          ),
-          'static' => false,
-          'static_file' => '',
-          'content' => '[[Wayfinder?
-    &startId=`[[UltimateParent]]`
-    &level=`1`
-    &firstClass=``
-    &lastClass=``
-    &rowTpl=`subNavigation.item`
-    &hereClass=`active`
-]]',
-        ),
-        'policies' => 
-        array (
-          'web' => 
-          array (
-          ),
-        ),
-        'source' => 
-        array (
-        ),
-      ),
-      'sidebarShare' => 
-      array (
-        'fields' => 
-        array (
-          'id' => 11,
-          'source' => 0,
-          'property_preprocess' => false,
-          'name' => 'sidebarShare',
-          'description' => 'Share options in the sidebar',
-          'editor_type' => 0,
-          'category' => 2,
-          'cache_type' => 0,
-          'snippet' => '<div class="share">
-  <p>Deel het klompenschuurtje</p>
-	<a target="_blank" href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl"><img src="/images/default/shareTwitterIcon.png" width="40" height="41" border="0" /></a>
-	<a target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></a>
-</div>',
-          'locked' => false,
-          'properties' => 
-          array (
-          ),
-          'static' => false,
-          'static_file' => '',
-          'content' => '<div class="share">
-  <p>Deel het klompenschuurtje</p>
-	<a target="_blank" href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl"><img src="/images/default/shareTwitterIcon.png" width="40" height="41" border="0" /></a>
-	<a target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></a>
-</div>',
-        ),
-        'policies' => 
-        array (
-          'web' => 
-          array (
-          ),
-        ),
-        'source' => 
-        array (
-        ),
-      ),
-      'productOverview' => 
-      array (
-        'fields' => 
-        array (
-          'id' => 9,
-          'source' => 0,
-          'property_preprocess' => false,
-          'name' => 'productOverview',
-          'description' => 'Main navigation in the header',
-          'editor_type' => 0,
-          'category' => 2,
+          'category' => 0,
           'cache_type' => 0,
           'snippet' => '[[!Wayfinder?
     &level=`1`
     &firstClass=``
-    &lastClass=`last`
-    &outerTpl=`productOverview.outerTpl`
-    &rowTpl=`productOverview.item`
+    &lastClass=``
+    &outerTpl=`Product Overview Outer`
+    &rowTpl=`Product Overview Item`
 ]]
 [[*Overview Thumbnail?]]',
           'locked' => false,
           'properties' => 
           array (
           ),
-          'static' => false,
-          'static_file' => '',
+          'static' => true,
+          'static_file' => 'assets/chunks/product-overview.tpl',
           'content' => '[[!Wayfinder?
     &level=`1`
     &firstClass=``
-    &lastClass=`last`
-    &outerTpl=`productOverview.outerTpl`
-    &rowTpl=`productOverview.item`
+    &lastClass=``
+    &outerTpl=`Product Overview Outer`
+    &rowTpl=`Product Overview Item`
 ]]
 [[*Overview Thumbnail?]]',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
         ),
       ),
-      'footer' => 
+      'Navigation Sub' => 
       array (
         'fields' => 
         array (
-          'id' => 2,
-          'source' => 0,
+          'id' => 28,
+          'source' => 1,
           'property_preprocess' => false,
-          'name' => 'footer',
-          'description' => 'Bottom part of the master template',
+          'name' => 'Navigation Sub',
+          'description' => '',
           'editor_type' => 0,
-          'category' => 2,
+          'category' => 0,
           'cache_type' => 0,
-          'snippet' => '                </div>
-		<div class="footer">
-			<div class="footerContent">
-				<div class="sidebar">
-					Deze website is gemaakt door:<br /><a href="http://www.webbiker.nl" target="_blank"><img src="/images/default/footerWebbikerLogo.png" width="100" height="30" alt="Webbiker | Web - Prepress - Multimedia" border="0" /></a>
+          'snippet' => '<ul>
+    [[Wayfinder?
+        &startId=`3`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]
+</ul>',
+          'locked' => false,
+          'properties' => 
+          array (
+          ),
+          'static' => true,
+          'static_file' => 'assets/chunks/navigation-sub.tpl',
+          'content' => '<ul>
+    [[Wayfinder?
+        &startId=`3`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]
+</ul>',
+        ),
+        'policies' => 
+        array (
+        ),
+        'source' => 
+        array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
+        ),
+      ),
+      'Share' => 
+      array (
+        'fields' => 
+        array (
+          'id' => 26,
+          'source' => 1,
+          'property_preprocess' => false,
+          'name' => 'Share',
+          'description' => '',
+          'editor_type' => 0,
+          'category' => 0,
+          'cache_type' => 0,
+          'snippet' => '<div class="share">
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
+</div>',
+          'locked' => false,
+          'properties' => 
+          array (
+          ),
+          'static' => true,
+          'static_file' => 'assets/chunks/share.tpl',
+          'content' => '<div class="share">
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
+</div>',
+        ),
+        'policies' => 
+        array (
+        ),
+        'source' => 
+        array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
+        ),
+      ),
+      'Footer' => 
+      array (
+        'fields' => 
+        array (
+          'id' => 24,
+          'source' => 1,
+          'property_preprocess' => false,
+          'name' => 'Footer',
+          'description' => '',
+          'editor_type' => 0,
+          'category' => 0,
+          'cache_type' => 0,
+          'snippet' => '			</main>
+
+			<footer>
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
 				</div>
-				<div class="footerBody">
-					<p>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776<br />
-					<strong>Meer informatie bel 06 229 948 80 of e-mail <a href="mailto:nicole@klompenschuurtje.nl">nicole@klompenschuurtje.nl</a></strong></p>
-				</div>
-			</div>
+			</footer>
 		</div>
-	</div>
-<script>
-  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+	</body>
+    <script src="/assets/js/app-min.js"></script>
 
-  ga(\'create\', \'UA-8234771-6\', \'klompenschuurtje.nl\');
-  ga(\'send\', \'pageview\');
-
-</script>
-</body>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site\'s ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src=\'https://www.google-analytics.com/analytics.js\';
+        r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));
+        ga(\'create\',\'UA-XXXXX-X\',\'auto\');ga(\'send\',\'pageview\');
+    </script>
 </html>',
           'locked' => false,
           'properties' => 
           array (
           ),
-          'static' => false,
-          'static_file' => '',
-          'content' => '                </div>
-		<div class="footer">
-			<div class="footerContent">
-				<div class="sidebar">
-					Deze website is gemaakt door:<br /><a href="http://www.webbiker.nl" target="_blank"><img src="/images/default/footerWebbikerLogo.png" width="100" height="30" alt="Webbiker | Web - Prepress - Multimedia" border="0" /></a>
+          'static' => true,
+          'static_file' => 'assets/chunks/footer.tpl',
+          'content' => '			</main>
+
+			<footer>
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
 				</div>
-				<div class="footerBody">
-					<p>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776<br />
-					<strong>Meer informatie bel 06 229 948 80 of e-mail <a href="mailto:nicole@klompenschuurtje.nl">nicole@klompenschuurtje.nl</a></strong></p>
-				</div>
-			</div>
+			</footer>
 		</div>
-	</div>
-<script>
-  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+	</body>
+    <script src="/assets/js/app-min.js"></script>
 
-  ga(\'create\', \'UA-8234771-6\', \'klompenschuurtje.nl\');
-  ga(\'send\', \'pageview\');
-
-</script>
-</body>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site\'s ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src=\'https://www.google-analytics.com/analytics.js\';
+        r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));
+        ga(\'create\',\'UA-XXXXX-X\',\'auto\');ga(\'send\',\'pageview\');
+    </script>
 </html>',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
         ),
       ),
     ),
@@ -1484,145 +1666,6 @@ if ($wf->_config[\'ph\']) {
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
-        ),
-        'source' => 
-        array (
-        ),
-      ),
-      'UltimateParent' => 
-      array (
-        'fields' => 
-        array (
-          'id' => 2,
-          'source' => 0,
-          'property_preprocess' => false,
-          'name' => 'UltimateParent',
-          'description' => 'Return the "ultimate" parent of a resource.',
-          'editor_type' => 0,
-          'category' => 0,
-          'cache_type' => 0,
-          'snippet' => '/**
- * @name UltimateParent
- * @version 1.3
- * @author Susan Ottwell <sottwell@sottwell.com> March 2006
- * @author Al B <> May 18, 2007
- * @author S. Hamblett <shamblett@cwazy.co.uk>
- * @author Shaun McCormick <shaun@modx.com>
- * @author Jason Coward <modx@modx.com>
- *
- * @param &id The id of the document whose parent you want to find.
- * @param &top The top node for the search.
- * @param &topLevel The top level node for the search (root = level 1)
- *
- * @license Public Domain, use as you like.
- *
- * @example [[UltimateParent? &id=`45` &top=`6`]]
- * Will find the ultimate parent of document 45 if it is a child of document 6;
- * otherwise it will return 45.
- *
- * @example [[UltimateParent? &topLevel=`2`]]
- * Will find the ultimate parent of the current document at a depth of 2 levels
- * in the document hierarchy, with the root level being level 1.
- *
- * This snippet travels up the document tree from a specified document and
- * returns the "ultimate" parent.  Version 2.0 was rewritten to use the new
- * getParentIds function features available only in MODx 0.9.5 or later.
- *
- * Based on the original UltimateParent 1.x snippet by Susan Ottwell
- * <sottwell@sottwell.com>.  The topLevel parameter was introduced by staed and
- * adopted here.
- */
-if (!isset($modx)) return \'\';
-
-$top = isset($top) && intval($top) ? $top : 0;
-$id= isset($id) && intval($id) ? intval($id) : $modx->resource->get(\'id\');
-$topLevel= isset($topLevel) && intval($topLevel) ? intval($topLevel) : 0;
-if ($id && $id != $top) {
-    $pid = $id;
-    $pids = $modx->getParentIds($id);
-    if (!$topLevel || count($pids) >= $topLevel) {
-        while ($parentIds= $modx->getParentIds($id, 1)) {
-            $pid = array_pop($parentIds);
-            if ($pid == $top) {
-                break;
-            }
-            $id = $pid;
-            $parentIds = $modx->getParentIds($id);
-            if ($topLevel && count($parentIds) < $topLevel) {
-                break;
-            }
-        }
-    }
-}
-return $id;',
-          'locked' => false,
-          'properties' => NULL,
-          'moduleguid' => '',
-          'static' => false,
-          'static_file' => '',
-          'content' => '/**
- * @name UltimateParent
- * @version 1.3
- * @author Susan Ottwell <sottwell@sottwell.com> March 2006
- * @author Al B <> May 18, 2007
- * @author S. Hamblett <shamblett@cwazy.co.uk>
- * @author Shaun McCormick <shaun@modx.com>
- * @author Jason Coward <modx@modx.com>
- *
- * @param &id The id of the document whose parent you want to find.
- * @param &top The top node for the search.
- * @param &topLevel The top level node for the search (root = level 1)
- *
- * @license Public Domain, use as you like.
- *
- * @example [[UltimateParent? &id=`45` &top=`6`]]
- * Will find the ultimate parent of document 45 if it is a child of document 6;
- * otherwise it will return 45.
- *
- * @example [[UltimateParent? &topLevel=`2`]]
- * Will find the ultimate parent of the current document at a depth of 2 levels
- * in the document hierarchy, with the root level being level 1.
- *
- * This snippet travels up the document tree from a specified document and
- * returns the "ultimate" parent.  Version 2.0 was rewritten to use the new
- * getParentIds function features available only in MODx 0.9.5 or later.
- *
- * Based on the original UltimateParent 1.x snippet by Susan Ottwell
- * <sottwell@sottwell.com>.  The topLevel parameter was introduced by staed and
- * adopted here.
- */
-if (!isset($modx)) return \'\';
-
-$top = isset($top) && intval($top) ? $top : 0;
-$id= isset($id) && intval($id) ? intval($id) : $modx->resource->get(\'id\');
-$topLevel= isset($topLevel) && intval($topLevel) ? intval($topLevel) : 0;
-if ($id && $id != $top) {
-    $pid = $id;
-    $pids = $modx->getParentIds($id);
-    if (!$topLevel || count($pids) >= $topLevel) {
-        while ($parentIds= $modx->getParentIds($id, 1)) {
-            $pid = array_pop($parentIds);
-            if ($pid == $top) {
-                break;
-            }
-            $id = $pid;
-            $parentIds = $modx->getParentIds($id);
-            if ($topLevel && count($parentIds) < $topLevel) {
-                break;
-            }
-        }
-    }
-}
-return $id;',
-        ),
-        'policies' => 
-        array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
@@ -1752,9 +1795,6 @@ return $thumbnail->render();',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (

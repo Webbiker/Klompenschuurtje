@@ -13,7 +13,7 @@
   'cache_db' => '0',
   'cache_db_expires' => '0',
   'cache_default' => '1',
-  'cache_disabled' => '0',
+  'cache_disabled' => '1',
   'cache_expires' => '0',
   'cache_json' => '0',
   'cache_json_expires' => '0',

@@ -8,7 +8,7 @@
     'pagetitle' => 'Homepage',
     'longtitle' => 'Welkom bij het Klompenschuurtje',
     'description' => '',
-    'alias' => '',
+    'alias' => 'home',
     'link_attributes' => '',
     'published' => 1,
     'pub_date' => 0,
@@ -18,25 +18,20 @@
     'introtext' => '',
     'content' => '<h1>Welkom bij het Klompenschuurtje</h1>
 <p><strong>Het klompenschuurtje is gesloten vanaf donderdag 24 December 2016, 13.00 uur t/m 4 Januari 2016.</strong></p>
-<p><span style="line-height: 1.5em;">Nicole van Aarle is de 5</span><sup style="line-height: 1.5em;">de</sup><span style="line-height: 1.5em;">
-generatie van de van Aarle’s klompenmakers. Zij is ambachtelijk klompenmaakster, aan de
-Helmondseweg 3b in Aarle-Rixtel.</span></p>
+<p><span style="line-height: 1.5em;">Nicole van Aarle is de 5</span><sup style="line-height: 1.5em;">de</sup><span style="line-height: 1.5em;"> generatie van de van Aarle’s klompenmakers. Zij is ambachtelijk klompenmaakster, aan de Helmondseweg 3b in Aarle-Rixtel.</span></p>
 <p>Bij Nicole kunt u terecht voor alles wat te maken heeft met <a href="[[~4]]">workshops</a> en <a href="[[~5]]">demonstraties</a> over klompen. Tevens kunt u bij haar terecht voor <a href="[[~7]]">draagklompen</a>, <a href="[[~8]]">souvenirs</a>, <a href="[[~9]]">relatiegeschenken</a> tot en met Oud-Hollandse fietsen en <a href="[[~21]]">klompentochten</a>.</p>
-<p>Wilt u een bezoek brengen aan de
-klompenmakerij? Deze is elke dinsdag en donderdag geopend
-vanaf 13.00 uur. Wilt u op een ander moment komen dan is dat geen
-enkel probleem laat het even weten.</p>
+<p>Wilt u een bezoek brengen aan de klompenmakerij? Deze is elke dinsdag en donderdag geopend vanaf 13.00 uur. Wilt u op een ander moment komen dan is dat geen enkel probleem laat het even weten.</p>
 <p>Voor informatie over een van de producten of voor een demonstratie, kunt u vrijblijvend <a href="[[~20]]">contact</a> opnemen via het contactformulier.</p>
 <h2 style="color: #000; margin: 0;">Of bel: 06 229 948 80</h2>',
     'richtext' => 1,
-    'template' => 5,
+    'template' => 11,
     'menuindex' => 0,
     'searchable' => 1,
     'cacheable' => 1,
     'createdby' => 1,
     'createdon' => 1303329599,
     'editedby' => 1,
-    'editedon' => 1450184403,
+    'editedon' => 1452715112,
     'deleted' => 0,
     'deletedon' => 0,
     'deletedby' => 0,
@@ -51,167 +46,185 @@ enkel probleem laat het even weten.</p>
     'class_key' => 'modDocument',
     'context_key' => 'web',
     'content_type' => 1,
-    'uri' => '1.html',
+    'uri' => 'home.html',
     'uri_override' => 0,
     'hide_children_in_tree' => 0,
     'show_in_tree' => 1,
     'properties' => NULL,
-    'Sidebar text' => 
-    array (
-      0 => 'Sidebar text',
-      1 => '<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen
-met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>',
-      2 => 'default',
-      3 => NULL,
-      4 => 'richtext',
-    ),
-    '_content' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Welkom bij het Klompenschuurtje - Het Klompenschuurtje</title>
+    '_content' => '<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<base href="http://local.klompenschuurtje.nl/" />
+		<title>Welkom bij het Klompenschuurtje - Het Klompenschuurtje</title>
 
-<link rel="Shortcut Icon" href="/favicon.ico">
-<link rel="icon" type="image/ico" href="/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/css/default.css" />
+		<base href="http://local.klompenschuurtje.nl/" />
 
-<script language="javascript" type="text/javascript" src="/scripts/jquery-1.5.1.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/jquery.cycle.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/functions.js"></script>
-<script type="text/javascript">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  var _gaq = _gaq || [];
-  _gaq.push([\'_setAccount\', \'UA-8234771-6\']);
-  _gaq.push([\'_trackPageview\']);
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
-  (function() {
-    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
-    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
-    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script></head>
-
-<body>
-	<div class="wrapper">
-		<div class="headerHome">
-			<div class="headerGrass">
-				<div class="headerGrassContent">
-					<img class="klompen" src="/images/default/klompjesLeft.png" width="228" height="116" border="0" />
-					<img class="portret" src="/images/default/portretfoto-1.png" width="398" height="529" border="0" />
-				</div>
-			</div>
-			<div class="headerHomeBGround">
-				<div class="headerContent">
-					<a href="http://local.klompenschuurtje.nl/"><img src="/images/default/logo.png" width="469" height="175" border="0" alt="het Klompenschuurtje" /></a>
-                                        <ul class="navigation">
-<ul><li class="active"><a href="http://local.klompenschuurtje.nl/" title="Homepage">Home</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="geschiedenis.html" title="Geschiedenis">Geschiedenis</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="klompen/" title="Klompen">Klompen</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="workshops.html" title="Workshops">Workshops</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="demonstraties.html" title="Demonstraties">Demonstraties</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="last"><a href="vraag-en-antwoord/" title="Vraag & Antwoord">Vraag & Antwoord</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
+        <link rel="stylesheet" href="/assets/css/screen.css">
+        <script src="/assets/bower_components/modernizr/modernizr.js"></script>
+    </head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<div class="center">
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
+						</a>
+                        <ul class="offcanvas main-menu">
+	<ul><li>
+	<a href="http://local.klompenschuurtje.nl/" class="active">Home</a>
+</li>
+<li>
+	<a href="geschiedenis.html" class="">Geschiedenis</a>
+</li>
+<li>
+	<a href="klompen/" class="">Klompen</a>
+</li>
+<li>
+	<a href="workshops.html" class="">Workshops</a>
+</li>
+<li>
+	<a href="demonstraties.html" class="">Demonstraties</a>
+</li>
+<li>
+	<a href="vraag-en-antwoord/" class="last">Vraag & Antwoord</a>
+</li>
 </ul>
 </ul>
 
-					<div class="carrousel">
-						<div class="mask"></div>
-						<div class="slides">
-                                                        [[!getResources:default=`No results found`? 
-                                                              &parents=`23` 
-                                                              &showHidden=`1` 
-                                                              &tpl=`CarrouselSlide` 
-                                                              &includeContent=`1`  
-                                                              &includeTVs=`1`
-                                                              &limit=`10`
-                                                              &sortby=`menuindex`
-                                                              &sortdir=`ASC`
-                                                        ]]
-						</div>
+						<ul class="offcanvas lang-menu">
+							<li><a href="/nl/" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="/en/">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="/de/">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
 					</div>
-				</div>
-			</div>
-			
-		</div>
-		<div class="mainContent">
-<div class="TwoColumnLayout">
-	<div class="sidebar">
-		<a href="trapterugindetijd.html" class="button">Klompentochten</a>
-		<div class="leftContent">
-			<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen
-met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>
-			<p><a href="trapterugindetijd.html" class="actionBtn">Meer over klompentochten</a></p>
-			<br class="clearfloat" />
-			<img src="/images/default/fiets.png" width="388" height="200" border="0" class="fiets" />
-		</div>
+				</nav>
+
+				<a href="http://local.klompenschuurtje.nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+                <div class="carousel">
+	<div class="slick">
+		<section class="slides">
+            [[!getResources:default=`No results found`? 
+                  &parents=`23` 
+                  &showHidden=`1` 
+                  &tpl=`Carousel Slide` 
+                  &includeContent=`1`  
+                  &includeTVs=`1`
+                  &limit=`10`
+                  &sortby=`menuindex`
+                  &sortdir=`ASC`
+            ]]
+		</section>
 	</div>
-	<div class="rightContent">
-                <h1>Welkom bij het Klompenschuurtje</h1>
+	<div class="nicole">					
+		<img src="/assets/img/nicole.png" alt="Nicole van Aarle" />
+	</div>
+</div>
+
+			</header>
+			<main>
+<article>
+        <h1>Welkom bij het Klompenschuurtje</h1>
 <p><strong>Het klompenschuurtje is gesloten vanaf donderdag 24 December 2016, 13.00 uur t/m 4 Januari 2016.</strong></p>
-<p><span style="line-height: 1.5em;">Nicole van Aarle is de 5</span><sup style="line-height: 1.5em;">de</sup><span style="line-height: 1.5em;">
-generatie van de van Aarle’s klompenmakers. Zij is ambachtelijk klompenmaakster, aan de
-Helmondseweg 3b in Aarle-Rixtel.</span></p>
+<p><span style="line-height: 1.5em;">Nicole van Aarle is de 5</span><sup style="line-height: 1.5em;">de</sup><span style="line-height: 1.5em;"> generatie van de van Aarle’s klompenmakers. Zij is ambachtelijk klompenmaakster, aan de Helmondseweg 3b in Aarle-Rixtel.</span></p>
 <p>Bij Nicole kunt u terecht voor alles wat te maken heeft met <a href="workshops.html">workshops</a> en <a href="demonstraties.html">demonstraties</a> over klompen. Tevens kunt u bij haar terecht voor <a href="klompen/draagklompen/">draagklompen</a>, <a href="klompen/souvenirs/">souvenirs</a>, <a href="klompen/relatiegeschenken.html">relatiegeschenken</a> tot en met Oud-Hollandse fietsen en <a href="trapterugindetijd.html">klompentochten</a>.</p>
-<p>Wilt u een bezoek brengen aan de
-klompenmakerij? Deze is elke dinsdag en donderdag geopend
-vanaf 13.00 uur. Wilt u op een ander moment komen dan is dat geen
-enkel probleem laat het even weten.</p>
+<p>Wilt u een bezoek brengen aan de klompenmakerij? Deze is elke dinsdag en donderdag geopend vanaf 13.00 uur. Wilt u op een ander moment komen dan is dat geen enkel probleem laat het even weten.</p>
 <p>Voor informatie over een van de producten of voor een demonstratie, kunt u vrijblijvend <a href="vraag-en-antwoord/infoaanvragen.html">contact</a> opnemen via het contactformulier.</p>
 <h2 style="color: #000; margin: 0;">Of bel: 06 229 948 80</h2>
-		<p><a href="geschiedenis.html" class="actionBtn">Meer over het klompenschuurtje</a></p>
-		<div class="share">
-	<a target="_blank" href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl"><img src="/images/default/shareTwitterIcon.png" width="40" height="41" border="0" /></a>
-
-
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1&appId=233171656723193";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, \'script\', \'facebook-jssdk\'));</script>
-
-	<!-- div class="fb-like" data-href="https://www.facebook.com/Klompenschuurtje" data-send="false" data-layout="box_count" data-width="450" data-show-faces="false"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></div -->
-
-	<a target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></a>
-
-	<p>Deel het klompenschuurtje</p>
+	<p class="right"><a href="geschiedenis.html" class="button">Meer over het Klompenschuurtje</a></p>
+	<div class="share">
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
 </div>
+</article>
+
+<aside>
+    <nav class="small-only">
+        <ul>
+    <ul><li>
+	<a href="/klompen/draagklompen/" class="">Draagklompen</a>
+</li>
+<li>
+	<a href="/klompen/souvenirs/" class="">Souvenirs</a>
+</li>
+<li>
+	<a href="/klompen/relatiegeschenken.html" class="">Relatiegeschenken</a>
+</li>
+<li>
+	<a href="/klompen/speelgoed.html" class="">Speelgoed</a>
+</li>
+<li>
+	<a href="/klompen/diversen/" class="">Diversen</a>
+</li>
+</ul>
+</ul>
+	</nav>
+	<nav>
+		<ul>
+			<li><a href="trapterugindetijd.html">Klompentochten</a></li>
+		</ul>
+	</nav>
+
+	<div class="container">
+		<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen
+met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>
+		<p class="right"><a href="trapterugindetijd.html" class="button">Meer over klompentochten</a></p>
+		<p><img class="fiets" src="/assets/img/fiets.png" alt="Klompentochten op de fiets door Aarle-Rixtel"></p>
+
 	</div>
-</div>
-                </div>
-		<div class="footer">
-			<div class="footerContent">
-				<div class="sidebar">
-					Deze website is gemaakt door:<br /><a href="http://www.webbiker.nl" target="_blank"><img src="/images/default/footerWebbikerLogo.png" width="100" height="30" alt="Webbiker | Web - Prepress - Multimedia" border="0" /></a>
+</aside>
+			</main>
+
+			<footer>
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
 				</div>
-				<div class="footerBody">
-					<p>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776<br />
-					<strong>Meer informatie bel 06 229 948 80 of e-mail <a href="mailto:nicole@klompenschuurtje.nl">nicole@klompenschuurtje.nl</a></strong></p>
-				</div>
-			</div>
+			</footer>
 		</div>
-	</div>
-<script>
-  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+	</body>
+    <script src="/assets/js/app-min.js"></script>
 
-  ga(\'create\', \'UA-8234771-6\', \'klompenschuurtje.nl\');
-  ga(\'send\', \'pageview\');
-
-</script>
-</body>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site\'s ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src=\'https://www.google-analytics.com/analytics.js\';
+        r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));
+        ga(\'create\',\'UA-XXXXX-X\',\'auto\');ga(\'send\',\'pageview\');
+    </script>
 </html>',
     '_isForward' => false,
   ),
@@ -232,526 +245,719 @@ enkel probleem laat het even weten.</p>
   array (
     '[[*longtitle]]' => 'Welkom bij het Klompenschuurtje',
     '[[Wayfinder?
-    &startId=`0`
-    &level=`1`
-    &firstClass=``
-    &lastClass=`last`
-    &rowTpl=`mainNavigation.item`
-    &hereClass=`active`
-]]' => '<ul><li class="active"><a href="http://local.klompenschuurtje.nl/" title="Homepage">Home</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="geschiedenis.html" title="Geschiedenis">Geschiedenis</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="klompen/" title="Klompen">Klompen</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="workshops.html" title="Workshops">Workshops</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="demonstraties.html" title="Demonstraties">Demonstraties</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="last"><a href="vraag-en-antwoord/" title="Vraag & Antwoord">Vraag & Antwoord</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
+	    &startId=`0`
+	    &level=`1`
+	    &firstClass=``
+	    &lastClass=`last`
+	    &rowTpl=`Navigation Main Item`
+	    &hereClass=`active`
+	]]' => '<ul><li>
+	<a href="http://local.klompenschuurtje.nl/" class="active">Home</a>
+</li>
+<li>
+	<a href="geschiedenis.html" class="">Geschiedenis</a>
+</li>
+<li>
+	<a href="klompen/" class="">Klompen</a>
+</li>
+<li>
+	<a href="workshops.html" class="">Workshops</a>
+</li>
+<li>
+	<a href="demonstraties.html" class="">Demonstraties</a>
+</li>
+<li>
+	<a href="vraag-en-antwoord/" class="last">Vraag & Antwoord</a>
+</li>
 </ul>',
-    '[[$mainNavigation]]' => '<ul class="navigation">
-<ul><li class="active"><a href="http://local.klompenschuurtje.nl/" title="Homepage">Home</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="geschiedenis.html" title="Geschiedenis">Geschiedenis</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="klompen/" title="Klompen">Klompen</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="workshops.html" title="Workshops">Workshops</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="demonstraties.html" title="Demonstraties">Demonstraties</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="last"><a href="vraag-en-antwoord/" title="Vraag & Antwoord">Vraag & Antwoord</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
+    '[[$Navigation Main? ]]' => '<ul class="offcanvas main-menu">
+	<ul><li>
+	<a href="http://local.klompenschuurtje.nl/" class="active">Home</a>
+</li>
+<li>
+	<a href="geschiedenis.html" class="">Geschiedenis</a>
+</li>
+<li>
+	<a href="klompen/" class="">Klompen</a>
+</li>
+<li>
+	<a href="workshops.html" class="">Workshops</a>
+</li>
+<li>
+	<a href="demonstraties.html" class="">Demonstraties</a>
+</li>
+<li>
+	<a href="vraag-en-antwoord/" class="last">Vraag & Antwoord</a>
+</li>
 </ul>
-</ul>
+</ul>',
+    '[[$Carousel? ]]' => '<div class="carousel">
+	<div class="slick">
+		<section class="slides">
+            [[!getResources:default=`No results found`? 
+                  &parents=`23` 
+                  &showHidden=`1` 
+                  &tpl=`Carousel Slide` 
+                  &includeContent=`1`  
+                  &includeTVs=`1`
+                  &limit=`10`
+                  &sortby=`menuindex`
+                  &sortdir=`ASC`
+            ]]
+		</section>
+	</div>
+	<div class="nicole">					
+		<img src="/assets/img/nicole.png" alt="Nicole van Aarle" />
+	</div>
+</div>
 ',
-    '[[$headerhome]]' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Welkom bij het Klompenschuurtje - Het Klompenschuurtje</title>
+    '[[$Header Home?]]' => '<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<base href="http://local.klompenschuurtje.nl/" />
+		<title>Welkom bij het Klompenschuurtje - Het Klompenschuurtje</title>
 
-<link rel="Shortcut Icon" href="/favicon.ico">
-<link rel="icon" type="image/ico" href="/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/css/default.css" />
+		<base href="http://local.klompenschuurtje.nl/" />
 
-<script language="javascript" type="text/javascript" src="/scripts/jquery-1.5.1.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/jquery.cycle.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/functions.js"></script>
-<script type="text/javascript">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  var _gaq = _gaq || [];
-  _gaq.push([\'_setAccount\', \'UA-8234771-6\']);
-  _gaq.push([\'_trackPageview\']);
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
-  (function() {
-    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
-    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
-    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script></head>
-
-<body>
-	<div class="wrapper">
-		<div class="headerHome">
-			<div class="headerGrass">
-				<div class="headerGrassContent">
-					<img class="klompen" src="/images/default/klompjesLeft.png" width="228" height="116" border="0" />
-					<img class="portret" src="/images/default/portretfoto-1.png" width="398" height="529" border="0" />
-				</div>
-			</div>
-			<div class="headerHomeBGround">
-				<div class="headerContent">
-					<a href="http://local.klompenschuurtje.nl/"><img src="/images/default/logo.png" width="469" height="175" border="0" alt="het Klompenschuurtje" /></a>
-                                        <ul class="navigation">
-<ul><li class="active"><a href="http://local.klompenschuurtje.nl/" title="Homepage">Home</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="geschiedenis.html" title="Geschiedenis">Geschiedenis</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="klompen/" title="Klompen">Klompen</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="workshops.html" title="Workshops">Workshops</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class=""><a href="demonstraties.html" title="Demonstraties">Demonstraties</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
-<li class="last"><a href="vraag-en-antwoord/" title="Vraag & Antwoord">Vraag & Antwoord</a></li>
-<li><img src="/images/default/ruitje.png" width="24" height="32" border="0" /></li>
+        <link rel="stylesheet" href="/assets/css/screen.css">
+        <script src="/assets/bower_components/modernizr/modernizr.js"></script>
+    </head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<div class="center">
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
+						</a>
+                        <ul class="offcanvas main-menu">
+	<ul><li>
+	<a href="http://local.klompenschuurtje.nl/" class="active">Home</a>
+</li>
+<li>
+	<a href="geschiedenis.html" class="">Geschiedenis</a>
+</li>
+<li>
+	<a href="klompen/" class="">Klompen</a>
+</li>
+<li>
+	<a href="workshops.html" class="">Workshops</a>
+</li>
+<li>
+	<a href="demonstraties.html" class="">Demonstraties</a>
+</li>
+<li>
+	<a href="vraag-en-antwoord/" class="last">Vraag & Antwoord</a>
+</li>
 </ul>
 </ul>
 
-					<div class="carrousel">
-						<div class="mask"></div>
-						<div class="slides">
-                                                        [[!getResources:default=`No results found`? 
-                                                              &parents=`23` 
-                                                              &showHidden=`1` 
-                                                              &tpl=`CarrouselSlide` 
-                                                              &includeContent=`1`  
-                                                              &includeTVs=`1`
-                                                              &limit=`10`
-                                                              &sortby=`menuindex`
-                                                              &sortdir=`ASC`
-                                                        ]]
-						</div>
+						<ul class="offcanvas lang-menu">
+							<li><a href="/nl/" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="/en/">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="/de/">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
 					</div>
-				</div>
-			</div>
-			
-		</div>
-		<div class="mainContent">',
-    '[[~21]]' => 'trapterugindetijd.html',
-    '[[getResourceField? &id=`21` &field=`pagetitle`]]' => 'Klompentochten',
-    '[[*Sidebar text?]]' => '<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen
-met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>',
+				</nav>
+
+				<a href="http://local.klompenschuurtje.nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+                <div class="carousel">
+	<div class="slick">
+		<section class="slides">
+            [[!getResources:default=`No results found`? 
+                  &parents=`23` 
+                  &showHidden=`1` 
+                  &tpl=`Carousel Slide` 
+                  &includeContent=`1`  
+                  &includeTVs=`1`
+                  &limit=`10`
+                  &sortby=`menuindex`
+                  &sortdir=`ASC`
+            ]]
+		</section>
+	</div>
+	<div class="nicole">					
+		<img src="/assets/img/nicole.png" alt="Nicole van Aarle" />
+	</div>
+</div>
+
+			</header>
+			<main>',
     '[[~4]]' => 'workshops.html',
     '[[~5]]' => 'demonstraties.html',
     '[[~7]]' => 'klompen/draagklompen/',
     '[[~8]]' => 'klompen/souvenirs/',
     '[[~9]]' => 'klompen/relatiegeschenken.html',
+    '[[~21]]' => 'trapterugindetijd.html',
     '[[~20]]' => 'vraag-en-antwoord/infoaanvragen.html',
     '[[~2]]' => 'geschiedenis.html',
-    '[[$maincontentShare?]]' => '<div class="share">
-	<a target="_blank" href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl"><img src="/images/default/shareTwitterIcon.png" width="40" height="41" border="0" /></a>
-
-
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1&appId=233171656723193";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, \'script\', \'facebook-jssdk\'));</script>
-
-	<!-- div class="fb-like" data-href="https://www.facebook.com/Klompenschuurtje" data-send="false" data-layout="box_count" data-width="450" data-show-faces="false"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></div -->
-
-	<a target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></a>
-
-	<p>Deel het klompenschuurtje</p>
+    '[[$Share? ]]' => '<div class="share">
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
 </div>',
-    '[[$footer]]' => '                </div>
-		<div class="footer">
-			<div class="footerContent">
-				<div class="sidebar">
-					Deze website is gemaakt door:<br /><a href="http://www.webbiker.nl" target="_blank"><img src="/images/default/footerWebbikerLogo.png" width="100" height="30" alt="Webbiker | Web - Prepress - Multimedia" border="0" /></a>
+    '[[Wayfinder?
+        &startId=`3`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]' => '<ul><li>
+	<a href="/klompen/draagklompen/" class="">Draagklompen</a>
+</li>
+<li>
+	<a href="/klompen/souvenirs/" class="">Souvenirs</a>
+</li>
+<li>
+	<a href="/klompen/relatiegeschenken.html" class="">Relatiegeschenken</a>
+</li>
+<li>
+	<a href="/klompen/speelgoed.html" class="">Speelgoed</a>
+</li>
+<li>
+	<a href="/klompen/diversen/" class="">Diversen</a>
+</li>
+</ul>',
+    '[[$Navigation Sub? ]]' => '<ul>
+    <ul><li>
+	<a href="/klompen/draagklompen/" class="">Draagklompen</a>
+</li>
+<li>
+	<a href="/klompen/souvenirs/" class="">Souvenirs</a>
+</li>
+<li>
+	<a href="/klompen/relatiegeschenken.html" class="">Relatiegeschenken</a>
+</li>
+<li>
+	<a href="/klompen/speelgoed.html" class="">Speelgoed</a>
+</li>
+<li>
+	<a href="/klompen/diversen/" class="">Diversen</a>
+</li>
+</ul>
+</ul>',
+    '[[*Sidebar text?]]' => '<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen
+met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>',
+    '[[$Footer? ]]' => '			</main>
+
+			<footer>
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
 				</div>
-				<div class="footerBody">
-					<p>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776<br />
-					<strong>Meer informatie bel 06 229 948 80 of e-mail <a href="mailto:nicole@klompenschuurtje.nl">nicole@klompenschuurtje.nl</a></strong></p>
-				</div>
-			</div>
+			</footer>
 		</div>
-	</div>
-<script>
-  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+	</body>
+    <script src="/assets/js/app-min.js"></script>
 
-  ga(\'create\', \'UA-8234771-6\', \'klompenschuurtje.nl\');
-  ga(\'send\', \'pageview\');
-
-</script>
-</body>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site\'s ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src=\'https://www.google-analytics.com/analytics.js\';
+        r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));
+        ga(\'create\',\'UA-XXXXX-X\',\'auto\');ga(\'send\',\'pageview\');
+    </script>
 </html>',
   ),
   'sourceCache' => 
   array (
     'modChunk' => 
     array (
-      'headerhome' => 
+      'Header Home' => 
       array (
         'fields' => 
         array (
-          'id' => 3,
-          'source' => 0,
+          'id' => 20,
+          'source' => 1,
           'property_preprocess' => false,
-          'name' => 'headerhome',
-          'description' => 'top portion of the home template',
+          'name' => 'Header Home',
+          'description' => '',
           'editor_type' => 0,
-          'category' => 2,
+          'category' => 0,
           'cache_type' => 0,
-          'snippet' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>[[*longtitle]] - [[++site_name]]</title>
+          'snippet' => '<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<base href="[[++site_url]]" />
+		<title>[[*longtitle]] - [[++site_name]]</title>
 
-<link rel="Shortcut Icon" href="/favicon.ico">
-<link rel="icon" type="image/ico" href="/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/css/default.css" />
+		<base href="[[++site_url]]" />
 
-<script language="javascript" type="text/javascript" src="/scripts/jquery-1.5.1.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/jquery.cycle.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/functions.js"></script>
-<script type="text/javascript">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  var _gaq = _gaq || [];
-  _gaq.push([\'_setAccount\', \'UA-8234771-6\']);
-  _gaq.push([\'_trackPageview\']);
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
-  (function() {
-    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
-    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
-    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+        <link rel="stylesheet" href="/assets/css/screen.css">
+        <script src="/assets/bower_components/modernizr/modernizr.js"></script>
+    </head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<div class="center">
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
+						</a>
+                        [[$Navigation Main? ]]
 
-</script></head>
-
-<body>
-	<div class="wrapper">
-		<div class="headerHome">
-			<div class="headerGrass">
-				<div class="headerGrassContent">
-					<img class="klompen" src="/images/default/klompjesLeft.png" width="228" height="116" border="0" />
-					<img class="portret" src="/images/default/portretfoto-1.png" width="398" height="529" border="0" />
-				</div>
-			</div>
-			<div class="headerHomeBGround">
-				<div class="headerContent">
-					<a href="[[++site_url]]"><img src="/images/default/logo.png" width="469" height="175" border="0" alt="het Klompenschuurtje" /></a>
-                                        [[$mainNavigation]]
-					<div class="carrousel">
-						<div class="mask"></div>
-						<div class="slides">
-                                                        [[!getResources:default=`No results found`? 
-                                                              &parents=`23` 
-                                                              &showHidden=`1` 
-                                                              &tpl=`CarrouselSlide` 
-                                                              &includeContent=`1`  
-                                                              &includeTVs=`1`
-                                                              &limit=`10`
-                                                              &sortby=`menuindex`
-                                                              &sortdir=`ASC`
-                                                        ]]
-						</div>
+						<ul class="offcanvas lang-menu">
+							<li><a href="/nl/" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="/en/">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="/de/">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
 					</div>
-				</div>
-			</div>
-			
-		</div>
-		<div class="mainContent">',
+				</nav>
+
+				<a href="[[++site_url]]" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+                [[$Carousel? ]]
+			</header>
+			<main>',
           'locked' => false,
           'properties' => 
           array (
           ),
-          'static' => false,
-          'static_file' => '',
-          'content' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>[[*longtitle]] - [[++site_name]]</title>
+          'static' => true,
+          'static_file' => 'assets/chunks/header-home.tpl',
+          'content' => '<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<base href="[[++site_url]]" />
+		<title>[[*longtitle]] - [[++site_name]]</title>
 
-<link rel="Shortcut Icon" href="/favicon.ico">
-<link rel="icon" type="image/ico" href="/favicon.ico">
-<link rel="stylesheet" type="text/css" href="/css/default.css" />
+		<base href="[[++site_url]]" />
 
-<script language="javascript" type="text/javascript" src="/scripts/jquery-1.5.1.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/jquery.cycle.min.js"></script>
-<script language="javascript" type="text/javascript" src="/scripts/functions.js"></script>
-<script type="text/javascript">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  var _gaq = _gaq || [];
-  _gaq.push([\'_setAccount\', \'UA-8234771-6\']);
-  _gaq.push([\'_trackPageview\']);
+        <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
-  (function() {
-    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
-    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
-    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+        <link rel="stylesheet" href="/assets/css/screen.css">
+        <script src="/assets/bower_components/modernizr/modernizr.js"></script>
+    </head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<div class="center">
+						<a href="javascript:;" id="offcanvas-menu">
+							<svg class="icon icon-bars"><use xlink:href="/assets/img/symbol-defs.svg#icon-bars"></use></svg>
+							<span>Menu</span>
+						</a>
+						<a href="javascript:;" id="offcanvas-lang">
+							<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+							<span class="mls">Nederlands</span>
+						</a>
+                        [[$Navigation Main? ]]
 
-</script></head>
-
-<body>
-	<div class="wrapper">
-		<div class="headerHome">
-			<div class="headerGrass">
-				<div class="headerGrassContent">
-					<img class="klompen" src="/images/default/klompjesLeft.png" width="228" height="116" border="0" />
-					<img class="portret" src="/images/default/portretfoto-1.png" width="398" height="529" border="0" />
-				</div>
-			</div>
-			<div class="headerHomeBGround">
-				<div class="headerContent">
-					<a href="[[++site_url]]"><img src="/images/default/logo.png" width="469" height="175" border="0" alt="het Klompenschuurtje" /></a>
-                                        [[$mainNavigation]]
-					<div class="carrousel">
-						<div class="mask"></div>
-						<div class="slides">
-                                                        [[!getResources:default=`No results found`? 
-                                                              &parents=`23` 
-                                                              &showHidden=`1` 
-                                                              &tpl=`CarrouselSlide` 
-                                                              &includeContent=`1`  
-                                                              &includeTVs=`1`
-                                                              &limit=`10`
-                                                              &sortby=`menuindex`
-                                                              &sortdir=`ASC`
-                                                        ]]
-						</div>
+						<ul class="offcanvas lang-menu">
+							<li><a href="/nl/" class="active">
+								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+								<span class="mls">Nederlands</span>
+							</a></li>
+							<li><a href="/en/">
+								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+								<span class="mls">English</span>
+							</a></li>
+							<li><a href="/de/">
+								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+								<span class="mls">Deutsch</span>
+							</a></li>
+						</ul>
 					</div>
-				</div>
-			</div>
-			
-		</div>
-		<div class="mainContent">',
+				</nav>
+
+				<a href="[[++site_url]]" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+                [[$Carousel? ]]
+			</header>
+			<main>',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
         ),
       ),
-      'mainNavigation' => 
+      'Navigation Main' => 
       array (
         'fields' => 
         array (
-          'id' => 4,
-          'source' => 0,
+          'id' => 22,
+          'source' => 1,
           'property_preprocess' => false,
-          'name' => 'mainNavigation',
-          'description' => 'Main navigation in the header',
+          'name' => 'Navigation Main',
+          'description' => '',
           'editor_type' => 0,
-          'category' => 2,
+          'category' => 0,
           'cache_type' => 0,
-          'snippet' => '<ul class="navigation">
-[[Wayfinder?
-    &startId=`0`
-    &level=`1`
-    &firstClass=``
-    &lastClass=`last`
-    &rowTpl=`mainNavigation.item`
-    &hereClass=`active`
-]]
-</ul>
+          'snippet' => '<ul class="offcanvas main-menu">
+	[[Wayfinder?
+	    &startId=`0`
+	    &level=`1`
+	    &firstClass=``
+	    &lastClass=`last`
+	    &rowTpl=`Navigation Main Item`
+	    &hereClass=`active`
+	]]
+</ul>',
+          'locked' => false,
+          'properties' => 
+          array (
+          ),
+          'static' => true,
+          'static_file' => 'assets/chunks/navigation-main.tpl',
+          'content' => '<ul class="offcanvas main-menu">
+	[[Wayfinder?
+	    &startId=`0`
+	    &level=`1`
+	    &firstClass=``
+	    &lastClass=`last`
+	    &rowTpl=`Navigation Main Item`
+	    &hereClass=`active`
+	]]
+</ul>',
+        ),
+        'policies' => 
+        array (
+        ),
+        'source' => 
+        array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
+        ),
+      ),
+      'Carousel' => 
+      array (
+        'fields' => 
+        array (
+          'id' => 21,
+          'source' => 1,
+          'property_preprocess' => false,
+          'name' => 'Carousel',
+          'description' => '',
+          'editor_type' => 0,
+          'category' => 0,
+          'cache_type' => 0,
+          'snippet' => '<div class="carousel">
+	<div class="slick">
+		<section class="slides">
+            [[!getResources:default=`No results found`? 
+                  &parents=`23` 
+                  &showHidden=`1` 
+                  &tpl=`Carousel Slide` 
+                  &includeContent=`1`  
+                  &includeTVs=`1`
+                  &limit=`10`
+                  &sortby=`menuindex`
+                  &sortdir=`ASC`
+            ]]
+		</section>
+	</div>
+	<div class="nicole">					
+		<img src="/assets/img/nicole.png" alt="Nicole van Aarle" />
+	</div>
+</div>
 ',
           'locked' => false,
           'properties' => 
           array (
           ),
-          'static' => false,
-          'static_file' => '',
-          'content' => '<ul class="navigation">
-[[Wayfinder?
-    &startId=`0`
-    &level=`1`
-    &firstClass=``
-    &lastClass=`last`
-    &rowTpl=`mainNavigation.item`
-    &hereClass=`active`
-]]
-</ul>
+          'static' => true,
+          'static_file' => 'assets/chunks/carousel.tpl',
+          'content' => '<div class="carousel">
+	<div class="slick">
+		<section class="slides">
+            [[!getResources:default=`No results found`? 
+                  &parents=`23` 
+                  &showHidden=`1` 
+                  &tpl=`Carousel Slide` 
+                  &includeContent=`1`  
+                  &includeTVs=`1`
+                  &limit=`10`
+                  &sortby=`menuindex`
+                  &sortdir=`ASC`
+            ]]
+		</section>
+	</div>
+	<div class="nicole">					
+		<img src="/assets/img/nicole.png" alt="Nicole van Aarle" />
+	</div>
+</div>
 ',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
         ),
       ),
-      'maincontentShare' => 
+      'Share' => 
       array (
         'fields' => 
         array (
-          'id' => 15,
-          'source' => 0,
+          'id' => 26,
+          'source' => 1,
           'property_preprocess' => false,
-          'name' => 'maincontentShare',
-          'description' => 'Sharing on mainContent',
+          'name' => 'Share',
+          'description' => '',
           'editor_type' => 0,
-          'category' => 2,
+          'category' => 0,
           'cache_type' => 0,
           'snippet' => '<div class="share">
-	<a target="_blank" href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl"><img src="/images/default/shareTwitterIcon.png" width="40" height="41" border="0" /></a>
-
-
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1&appId=233171656723193";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, \'script\', \'facebook-jssdk\'));</script>
-
-	<!-- div class="fb-like" data-href="https://www.facebook.com/Klompenschuurtje" data-send="false" data-layout="box_count" data-width="450" data-show-faces="false"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></div -->
-
-	<a target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></a>
-
-	<p>Deel het klompenschuurtje</p>
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
 </div>',
           'locked' => false,
           'properties' => 
           array (
           ),
-          'static' => false,
-          'static_file' => '',
+          'static' => true,
+          'static_file' => 'assets/chunks/share.tpl',
           'content' => '<div class="share">
-	<a target="_blank" href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl"><img src="/images/default/shareTwitterIcon.png" width="40" height="41" border="0" /></a>
-
-
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/nl_NL/all.js#xfbml=1&appId=233171656723193";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, \'script\', \'facebook-jssdk\'));</script>
-
-	<!-- div class="fb-like" data-href="https://www.facebook.com/Klompenschuurtje" data-send="false" data-layout="box_count" data-width="450" data-show-faces="false"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></div -->
-
-	<a target="_blank" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!"><img src="/images/default/shareFacebookIcon.png" width="40" height="41" border="0" /></a>
-
-	<p>Deel het klompenschuurtje</p>
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
 </div>',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
         ),
       ),
-      'footer' => 
+      'Navigation Sub' => 
       array (
         'fields' => 
         array (
-          'id' => 2,
-          'source' => 0,
+          'id' => 28,
+          'source' => 1,
           'property_preprocess' => false,
-          'name' => 'footer',
-          'description' => 'Bottom part of the master template',
+          'name' => 'Navigation Sub',
+          'description' => '',
           'editor_type' => 0,
-          'category' => 2,
+          'category' => 0,
           'cache_type' => 0,
-          'snippet' => '                </div>
-		<div class="footer">
-			<div class="footerContent">
-				<div class="sidebar">
-					Deze website is gemaakt door:<br /><a href="http://www.webbiker.nl" target="_blank"><img src="/images/default/footerWebbikerLogo.png" width="100" height="30" alt="Webbiker | Web - Prepress - Multimedia" border="0" /></a>
+          'snippet' => '<ul>
+    [[Wayfinder?
+        &startId=`3`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]
+</ul>',
+          'locked' => false,
+          'properties' => 
+          array (
+          ),
+          'static' => true,
+          'static_file' => 'assets/chunks/navigation-sub.tpl',
+          'content' => '<ul>
+    [[Wayfinder?
+        &startId=`3`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]
+</ul>',
+        ),
+        'policies' => 
+        array (
+        ),
+        'source' => 
+        array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
+        ),
+      ),
+      'Footer' => 
+      array (
+        'fields' => 
+        array (
+          'id' => 24,
+          'source' => 1,
+          'property_preprocess' => false,
+          'name' => 'Footer',
+          'description' => '',
+          'editor_type' => 0,
+          'category' => 0,
+          'cache_type' => 0,
+          'snippet' => '			</main>
+
+			<footer>
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
 				</div>
-				<div class="footerBody">
-					<p>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776<br />
-					<strong>Meer informatie bel 06 229 948 80 of e-mail <a href="mailto:nicole@klompenschuurtje.nl">nicole@klompenschuurtje.nl</a></strong></p>
-				</div>
-			</div>
+			</footer>
 		</div>
-	</div>
-<script>
-  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+	</body>
+    <script src="/assets/js/app-min.js"></script>
 
-  ga(\'create\', \'UA-8234771-6\', \'klompenschuurtje.nl\');
-  ga(\'send\', \'pageview\');
-
-</script>
-</body>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site\'s ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src=\'https://www.google-analytics.com/analytics.js\';
+        r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));
+        ga(\'create\',\'UA-XXXXX-X\',\'auto\');ga(\'send\',\'pageview\');
+    </script>
 </html>',
           'locked' => false,
           'properties' => 
           array (
           ),
-          'static' => false,
-          'static_file' => '',
-          'content' => '                </div>
-		<div class="footer">
-			<div class="footerContent">
-				<div class="sidebar">
-					Deze website is gemaakt door:<br /><a href="http://www.webbiker.nl" target="_blank"><img src="/images/default/footerWebbikerLogo.png" width="100" height="30" alt="Webbiker | Web - Prepress - Multimedia" border="0" /></a>
+          'static' => true,
+          'static_file' => 'assets/chunks/footer.tpl',
+          'content' => '			</main>
+
+			<footer>
+				<div class="footerContent">				
+					<div class="info">				
+						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
+						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+					</div>
+					<div class="webbiker">
+						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>
+					</div>
 				</div>
-				<div class="footerBody">
-					<p>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776<br />
-					<strong>Meer informatie bel 06 229 948 80 of e-mail <a href="mailto:nicole@klompenschuurtje.nl">nicole@klompenschuurtje.nl</a></strong></p>
-				</div>
-			</div>
+			</footer>
 		</div>
-	</div>
-<script>
-  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');
+	</body>
+    <script src="/assets/js/app-min.js"></script>
 
-  ga(\'create\', \'UA-8234771-6\', \'klompenschuurtje.nl\');
-  ga(\'send\', \'pageview\');
-
-</script>
-</body>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site\'s ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src=\'https://www.google-analytics.com/analytics.js\';
+        r.parentNode.insertBefore(e,r)}(window,document,\'script\',\'ga\'));
+        ga(\'create\',\'UA-XXXXX-X\',\'auto\');ga(\'send\',\'pageview\');
+    </script>
 </html>',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
         ),
       ),
     ),
@@ -1561,169 +1767,6 @@ if ($wf->_config[\'ph\']) {
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
-        ),
-        'source' => 
-        array (
-        ),
-      ),
-      'getResourceField' => 
-      array (
-        'fields' => 
-        array (
-          'id' => 13,
-          'source' => 0,
-          'property_preprocess' => false,
-          'name' => 'getResourceField',
-          'description' => 'Grab a value from a resource field or a TV',
-          'editor_type' => 0,
-          'category' => 6,
-          'cache_type' => 0,
-          'snippet' => '/**
- *
- * getResourceField
- *
- * A snippet to grab a value from a resource field or a TV
- *
- * @ author Paul Merchant
- * @ author Shaun McCormick
- * @ copyright 2010 Paul Merchant
- * @ version 1.0.0 - April 30, 2010
- * @ MIT License
- *
- * OPTIONS
- * id - The resource ID
- * field - (Opt) The field or template variable name, defaults to pagetitle
- * isTV - (Opt) Set as true to return a raw template variable
- * processTV - (Opt) Set as true to return a rendered template variable
- * default - (Opt) The value returned if no field is found
- *
- * Exmaple1: [[getResourceField? &id=`123`]]
- * Example2: [[getResourceField? &id=`[[UltimateParent?]]` &field=`myTV` &isTV=`1`]]
- * Example3: [[getResourceField? &id=`[[*parent]]` &field=`myTV` &processTV=`1`]]
- *
-**/
-
-// set defaults
-$id = $modx->getOption(\'id\',$scriptProperties,$modx->resource->get(\'id\'));
-$field = $modx->getOption(\'field\',$scriptProperties,\'pagetitle\');
-$isTV = $modx->getOption(\'isTV\',$scriptProperties,false);
-$processTV = $modx->getOption(\'processTV\',$scriptProperties,false);
-$output = $modx->getOption(\'default\',$scriptProperties,\'\');
-
-if ($isTV || $processTV) {
-    // get the tv object
-    $tv = $modx->getObject(\'modTemplateVar\',array(\'name\'=>$field));
-    if (empty($tv)) return $output;
-    if ($processTV) {
-        // get rendered tv value
-        $tvValue = $tv->renderOutput($id);
-    } else {
-        // get raw tv value
-        $tvValue = $tv->getValue($id);
-    }
-    if ($tvValue !== null) {
-        $output = $tvValue;
-    }
-} else {
-    if ($id == $modx->resource->get(\'id\')) {
-        // use the current resource
-        $resource =& $modx->resource;
-    } else {
-        // grab only the columns we need
-        $criteria = $modx->newQuery(\'modResource\');
-        $criteria->select($modx->getSelectColumns(\'modResource\',\'modResource\',\'\',array(\'id\',$field)));
-        $criteria->where(array(\'id\'=>$id,));
-        $resource = $modx->getObject(\'modResource\',$criteria);
-        if (empty($resource)) return $output;
-    }
-    $fieldValue = $resource->get($field);
-    if ($fieldValue !== null) {
-        $output = $fieldValue;
-    }
-}
-
-return $output;',
-          'locked' => false,
-          'properties' => 
-          array (
-          ),
-          'moduleguid' => '',
-          'static' => false,
-          'static_file' => '',
-          'content' => '/**
- *
- * getResourceField
- *
- * A snippet to grab a value from a resource field or a TV
- *
- * @ author Paul Merchant
- * @ author Shaun McCormick
- * @ copyright 2010 Paul Merchant
- * @ version 1.0.0 - April 30, 2010
- * @ MIT License
- *
- * OPTIONS
- * id - The resource ID
- * field - (Opt) The field or template variable name, defaults to pagetitle
- * isTV - (Opt) Set as true to return a raw template variable
- * processTV - (Opt) Set as true to return a rendered template variable
- * default - (Opt) The value returned if no field is found
- *
- * Exmaple1: [[getResourceField? &id=`123`]]
- * Example2: [[getResourceField? &id=`[[UltimateParent?]]` &field=`myTV` &isTV=`1`]]
- * Example3: [[getResourceField? &id=`[[*parent]]` &field=`myTV` &processTV=`1`]]
- *
-**/
-
-// set defaults
-$id = $modx->getOption(\'id\',$scriptProperties,$modx->resource->get(\'id\'));
-$field = $modx->getOption(\'field\',$scriptProperties,\'pagetitle\');
-$isTV = $modx->getOption(\'isTV\',$scriptProperties,false);
-$processTV = $modx->getOption(\'processTV\',$scriptProperties,false);
-$output = $modx->getOption(\'default\',$scriptProperties,\'\');
-
-if ($isTV || $processTV) {
-    // get the tv object
-    $tv = $modx->getObject(\'modTemplateVar\',array(\'name\'=>$field));
-    if (empty($tv)) return $output;
-    if ($processTV) {
-        // get rendered tv value
-        $tvValue = $tv->renderOutput($id);
-    } else {
-        // get raw tv value
-        $tvValue = $tv->getValue($id);
-    }
-    if ($tvValue !== null) {
-        $output = $tvValue;
-    }
-} else {
-    if ($id == $modx->resource->get(\'id\')) {
-        // use the current resource
-        $resource =& $modx->resource;
-    } else {
-        // grab only the columns we need
-        $criteria = $modx->newQuery(\'modResource\');
-        $criteria->select($modx->getSelectColumns(\'modResource\',\'modResource\',\'\',array(\'id\',$field)));
-        $criteria->where(array(\'id\'=>$id,));
-        $resource = $modx->getObject(\'modResource\',$criteria);
-        if (empty($resource)) return $output;
-    }
-    $fieldValue = $resource->get($field);
-    if ($fieldValue !== null) {
-        $output = $fieldValue;
-    }
-}
-
-return $output;',
-        ),
-        'policies' => 
-        array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
@@ -3631,9 +3674,6 @@ return $output;',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
@@ -3763,9 +3803,6 @@ return $thumbnail->render();',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
@@ -3803,9 +3840,6 @@ return $thumbnail->render();',
         ),
         'policies' => 
         array (
-          'web' => 
-          array (
-          ),
         ),
         'source' => 
         array (
