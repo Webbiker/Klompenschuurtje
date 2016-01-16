@@ -9402,7 +9402,7 @@ $(document).ready(function(){
         prevArrow: '.btn-prev',
         nextArrow: '.btn-next'
     };
-    $('.detail .photos div').slick(slickOpts);
+    $('.photos div').slick(slickOpts);
 
 	//Styling of the images on the sidebar of a content template
 	$('.content aside img').each(function(){

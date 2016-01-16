@@ -1,0 +1,1 @@
+<img src="[[!phpthumbof? &input=`/[[+path]]` &options=`&w=703&h=395&zc=1`]]" border="0" />

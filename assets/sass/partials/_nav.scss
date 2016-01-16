@@ -3,6 +3,10 @@ aside {
 		ul {
 			li {
 				margin-bottom: 12px;
+				padding: 0;
+				&:after {
+					display: none;
+				}
 				a {
 					background-image: url(/assets/img/wood-pattern-brown.png);
 					background-repeat: repeat;

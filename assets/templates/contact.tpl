@@ -1,5 +1,4 @@
-<?php 	$class = "contact";
-		include("assets/chunks/header.tpl"); ?>
+[[$Header? ]]
 <article>
 	<h1>Informatie aanvragen</h1>
 	<p>Wilt u graag draagklompen of souvenirs
@@ -57,37 +56,9 @@
 </article>
 
 <aside>
-
-	<nav class="small-only">
-		<ul>
-			<li>
-				<a href="/klompen/draagklompen/" title="Draagklompen" class="active">Draagklompen</a>
-			</li>
-			<li>
-				<a href="/klompen/souvenirs/" title="Souvenirs">Souvenirs</a>
-			</li>
-			<li>
-				<a href="/klompen/relatiegeschenken.html" title="Relatiegeschenken">Relatiegeschenken</a>
-			</li>
-			<li>
-				<a href="/klompen/speelgoed.html" title="Speelgoed">Speelgoed</a>
-			</li>
-			<li>
-				<a href="/klompen/diversen/" title="Diversen">Diversen</a>
-			</li>
-		</ul>
-	</nav>
-	<nav>
-		<ul>
-			<li><a href="javascript:;">Klompentochten</a></li>
-		</ul>
-	</nav>
-
-	<div class="container">
-		<p>Wil je een leuke middag hebben en lekker van de omgeving genieten, Stap dan op, en ga met Oudhollandse fietsen met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, vriend(innen)dag of een familiedag.</p>
-		<p class="right"><a href="javascript:;" class="button">Meer over klompentochten</a></p>
-		<p><img class="fiets" src="/assets/img/fiets.png" alt="Klompentochten op de fiets door Aarle-Rixtel"></p>
-
-	</div>
+    <nav>
+        [[$Navigation Sub Contact? ]]
+    </nav>
+    [[$Share? ]]
 </aside>
-<?php include("assets/chunks/footer.tpl"); ?>
+[[$Footer? ]]

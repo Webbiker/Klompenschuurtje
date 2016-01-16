@@ -63,23 +63,43 @@ h4 {
     @include line-height(18px);
 }
 
-p {
-    @include font-size(12px);
-    @include line-height(18px);
-    margin-bottom: 12px;
-    &.call {
-        @include font-size(14px);
+main,
+footer {
+    p, ul, table {
+        @include font-size(12px);
+        @include line-height(18px);
+        margin-bottom: 12px;
+        &.call {
+            @include font-size(14px);
+            font-family: 'BloklettersViltstift', _sans;
+        }
+
+        li {
+            position: relative;
+            padding-left: 18px;
+            &:after {
+                position: absolute;
+                top: -2px;
+                left: 2px;
+                content: " ";
+                display: block;
+                width: 10px;
+                height: 17px;
+                background-image: url(/assets/img/ruitje.png);
+                background-size: 10px 17px;
+                background-repeat: no-repeat;
+            }
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    strong,
+    b {
         font-family: 'BloklettersViltstift', _sans;
     }
-
-    &:last-child {
-        margin-bottom: 0;
-    }
-}
-
-strong,
-b {
-    font-family: 'BloklettersViltstift', _sans;
 }
 
 @media #{$medium-only} {

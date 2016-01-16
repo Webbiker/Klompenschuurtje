@@ -21,6 +21,10 @@
 		margin: -12px 0 0 0;
 		li {
 			float: left;
+			padding: 0;
+			&:after {
+				display: none;
+			}
 			a {
 				img {
 					height: 48px;
