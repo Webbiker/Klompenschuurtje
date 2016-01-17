@@ -906,7 +906,7 @@ aside nav ul li {
 
 .share {
   background-image: url(/assets/img/wood-pattern-green.png);
-  background-size: 500px 53px;
+  background-size: 500px 120px;
   background-position: bottom left;
   height: 53px;
   padding: 18px 12px;
@@ -934,15 +934,20 @@ aside nav ul li {
         height: 48px; }
 
 aside .share {
-  padding: 18px 8px; }
-  aside .share span {
-    display: none; }
+  height: 120px;
+  padding: 18px 0px;
+  position: relative; }
+  aside .share ul {
+    position: absolute;
+    bottom: 0px;
+    right: 8px;
+    z-index: 10; }
+    aside .share ul li {
+      margin-left: -4px; }
 
 @media only screen and (max-width: 860px) {
   .share {
-    padding: 18px 8px; }
-    .share span {
-      display: none; } }
+    padding: 18px 8px; } }
 .list li {
   *zoom: 1;
   float: left;
@@ -1020,10 +1025,15 @@ main .content aside {
       box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3); }
     main .content aside .imgPlaceHolder p {
       position: absolute;
-      bottom: -20px;
+      bottom: -26px;
       right: 0;
       font-size: 10px;
-      font-size: 0.625rem; }
+      font-size: 0.625rem;
+      background: #FFF;
+      -moz-border-radius: 4px;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+      padding: 2px 4px; }
 
 .button {
   background-image: url(/assets/img/wood-pattern-yellow.png);
@@ -1093,6 +1103,15 @@ form p {
     vertical-align: baseline;
     position: relative;
     top: 0.9ex; }
+  form p .error {
+    display: block;
+    color: #CC0000;
+    font-size: 10px;
+    font-size: 0.625rem;
+    padding-left: 30%;
+    margin: 4px 0 4px 10px;
+    float: left;
+    width: 100%; }
   form p.voetnoot {
     font-size: 10px;
     font-size: 0.625rem;
@@ -1132,6 +1151,13 @@ form p {
       right: 0;
       top: 16x;
       position: absolute; } }
+.gmap {
+  -moz-box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 0 2px #117f3b, inset 0 0 0 4px #FAAF3F, inset 0 0 0 6px #117f3b, 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 6px;
+  margin: 40px 0 20px 0; }
+
 footer {
   min-height: 130px;
   position: absolute;

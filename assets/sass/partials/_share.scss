@@ -1,6 +1,6 @@
 .share {
 	background-image: url(/assets/img/wood-pattern-green.png);
-	background-size: 500px 53px;
+	background-size: 500px 120px;
 	background-position: bottom left;
 
 	height: 53px;
@@ -37,9 +37,17 @@
 
 aside {
 	.share {
-		padding: 18px 8px;
-		span {
-			display: none;
+		height: 120px;
+		padding: 18px 0px;
+		position: relative;
+		ul {
+			position: absolute;
+			bottom: 0px; 
+			right: 8px;
+			z-index: 10;
+			li {
+				margin-left: -4px;
+			}
 		}
 	}
 }
@@ -48,9 +56,6 @@ aside {
 @media #{$slides-only}{
 	.share {
 		padding: 18px 8px;
-		span {
-			display: none;
-		}
 	}
 
 }

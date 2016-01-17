@@ -10,4 +10,6 @@ return array (
   7 => '/root/web_0/web_6/web_20',
   8 => '/root/web_0/web_6/web_18',
   9 => '/root/web_0/web_6/web_22',
+  10 => '/root/web_0/web_6/web_19',
+  11 => '/root/web_0/web_6/web_52',
 );

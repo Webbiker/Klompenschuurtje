@@ -7,6 +7,6 @@
     <nav>
         [[$Navigation Sub? ]]
     </nav>
-    [[$Share? ]]
+    [[$Share Sidebar? ]]
 </aside>
 [[$Footer? ]]

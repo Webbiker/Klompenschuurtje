@@ -108,14 +108,14 @@
 <p><strong>Een klomp moet je passen!<br /></strong>Ga met dikke sokken in de klomp staan. Past uw wijsvinger tussen hiel en klomp dan heeft u de juiste maat en zult u volop genieten van uw klompen.</p>
 <p><img src="media/welkemaat.jpg" alt="" width="200" height="149" /></p>',
     'richtext' => 1,
-    'template' => 14,
+    'template' => 16,
     'menuindex' => 2,
     'searchable' => 1,
     'cacheable' => 1,
     'createdby' => 1,
     'createdon' => 1303936022,
     'editedby' => 1,
-    'editedon' => 1452984343,
+    'editedon' => 1453032801,
     'deleted' => 0,
     'deletedon' => 0,
     'deletedby' => 0,
@@ -142,6 +142,22 @@
       2 => 'default',
       3 => NULL,
       4 => 'richtext',
+    ),
+    'mkrImg' => 
+    array (
+      0 => 'mkrImg',
+      1 => '',
+      2 => 'default',
+      3 => NULL,
+      4 => 'text',
+    ),
+    'mkrLatLng' => 
+    array (
+      0 => 'mkrLatLng',
+      1 => '',
+      2 => 'default',
+      3 => NULL,
+      4 => 'text',
     ),
     '_content' => '<!doctype html>
 <html class="no-js" lang="">
@@ -215,9 +231,8 @@
 				<a href="http://local.klompenschuurtje.nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
 			</header>
 			<main>
-<div class="content">
-	<article>
-	    <h1>Welke maat heb ik?</h1>
+<article>
+    <h1>Welke maat heb ik?</h1>
 <table class="maat" width="160" border="0" cellspacing="0" cellpadding="4" align="right">
 <tbody>
 <tr>
@@ -308,13 +323,36 @@
 </table>
 <p><strong>Een klomp moet je passen!<br /></strong>Ga met dikke sokken in de klomp staan. Past uw wijsvinger tussen hiel en klomp dan heeft u de juiste maat en zult u volop genieten van uw klompen.</p>
 <p><img src="media/welkemaat.jpg" alt="" width="200" height="149" /></p>
-            <p class="right"><a href="vraag-en-antwoord/infoaanvragen.html" class="button">Vraag vrijblijvend<br />meer informatie aan</a></p>
-	</article>
-
-	<aside>
-	    <p></p>
-	</aside>
+</article>
+<aside>
+    <nav>
+        <ul>
+    <ul><li>
+	<a href="/vraag-en-antwoord/infoaanvragen.html" class="">Informatie aanvragen</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/welkemaathebik.html" class="active">Welke maat heb ik?</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/routebeschrijving.html" class="">Routebeschrijving</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/vrienden-van-het-klompenschuurtje.html" class="">Vrienden</a>
+</li>
+</ul>
+</ul>
+    </nav>
+    <div class="share">
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
 </div>
+</aside>
 			</main>
 
 			<footer>
@@ -479,8 +517,51 @@
 				<a href="http://local.klompenschuurtje.nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
 			</header>
 			<main>',
-    '[[~20]]' => 'vraag-en-antwoord/infoaanvragen.html',
-    '[[*ContentTplSidebar?]]' => '',
+    '[[Wayfinder?
+        &startId=`6`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]' => '<ul><li>
+	<a href="/vraag-en-antwoord/infoaanvragen.html" class="">Informatie aanvragen</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/welkemaathebik.html" class="active">Welke maat heb ik?</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/routebeschrijving.html" class="">Routebeschrijving</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/vrienden-van-het-klompenschuurtje.html" class="">Vrienden</a>
+</li>
+</ul>',
+    '[[$Navigation Sub Contact? ]]' => '<ul>
+    <ul><li>
+	<a href="/vraag-en-antwoord/infoaanvragen.html" class="">Informatie aanvragen</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/welkemaathebik.html" class="active">Welke maat heb ik?</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/routebeschrijving.html" class="">Routebeschrijving</a>
+</li>
+<li>
+	<a href="/vraag-en-antwoord/vrienden-van-het-klompenschuurtje.html" class="">Vrienden</a>
+</li>
+</ul>
+</ul>',
+    '[[$Share Sidebar? ]]' => '<div class="share">
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+</div>',
     '[[$Footer? ]]' => '			</main>
 
 			<footer>
@@ -689,6 +770,114 @@
 	    &hereClass=`active`
 	]]
 </ul>',
+        ),
+        'policies' => 
+        array (
+        ),
+        'source' => 
+        array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
+        ),
+      ),
+      'Navigation Sub Contact' => 
+      array (
+        'fields' => 
+        array (
+          'id' => 35,
+          'source' => 1,
+          'property_preprocess' => false,
+          'name' => 'Navigation Sub Contact',
+          'description' => '',
+          'editor_type' => 0,
+          'category' => 0,
+          'cache_type' => 0,
+          'snippet' => '<ul>
+    [[Wayfinder?
+        &startId=`6`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]
+</ul>',
+          'locked' => false,
+          'properties' => 
+          array (
+          ),
+          'static' => true,
+          'static_file' => 'assets/chunks/navigation-sub-contact.tpl',
+          'content' => '<ul>
+    [[Wayfinder?
+        &startId=`6`
+        &level=`1`
+        &firstClass=``
+        &lastClass=``
+        &rowTpl=`Navigation Sub Item`
+        &hereClass=`active`
+    ]]
+</ul>',
+        ),
+        'policies' => 
+        array (
+        ),
+        'source' => 
+        array (
+          'id' => 1,
+          'name' => 'Filesystem',
+          'description' => '',
+          'class_key' => 'sources.modFileMediaSource',
+          'properties' => 
+          array (
+          ),
+          'is_stream' => true,
+        ),
+      ),
+      'Share Sidebar' => 
+      array (
+        'fields' => 
+        array (
+          'id' => 38,
+          'source' => 1,
+          'property_preprocess' => false,
+          'name' => 'Share Sidebar',
+          'description' => '',
+          'editor_type' => 0,
+          'category' => 0,
+          'cache_type' => 0,
+          'snippet' => '<div class="share">
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+</div>',
+          'locked' => false,
+          'properties' => 
+          array (
+          ),
+          'static' => true,
+          'static_file' => 'assets/chunks/share-aside.tpl',
+          'content' => '<div class="share">
+	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
+	<ul>
+		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
+		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>
+		<li><a href="
+https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-googleplus.png" alt="Google+"></a></li>
+		<li><a data-pin-do="buttonPin" target="_blank" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fklompenschuurtje.nl%2F&media=http%3A%2F%2Fklompenschuurtje.nl%2Fassets%2Fimg%2Flogo-klompenschuurtje.png&description=Het%20Klompenschuurtje%3A%20klompenmakerij%2C%20winkel%20en%20museum%20in%20%C3%A9%C3%A9n."><img src="/assets/img/share-pinterest.png" alt="Pinterest"></a></li>
+	</ul>
+</div>',
         ),
         'policies' => 
         array (
@@ -1608,40 +1797,6 @@ if ($wf->_config[\'ph\']) {
     ),
     'modTemplateVar' => 
     array (
-      'ContentTplSidebar' => 
-      array (
-        'fields' => 
-        array (
-          'id' => 6,
-          'source' => 0,
-          'property_preprocess' => false,
-          'type' => 'richtext',
-          'name' => 'ContentTplSidebar',
-          'caption' => 'ContentTplSidebar',
-          'description' => 'Sidebar of the content template',
-          'editor_type' => 0,
-          'category' => 2,
-          'locked' => false,
-          'elements' => '',
-          'rank' => 0,
-          'display' => 'default',
-          'default_text' => '',
-          'properties' => 
-          array (
-          ),
-          'input_properties' => NULL,
-          'output_properties' => NULL,
-          'static' => false,
-          'static_file' => '',
-          'content' => '',
-        ),
-        'policies' => 
-        array (
-        ),
-        'source' => 
-        array (
-        ),
-      ),
     ),
   ),
 );

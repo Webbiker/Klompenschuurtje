@@ -33,7 +33,7 @@
   'cultureKey' => 'nl',
   'custom_resource_classes' => '',
   'default_per_page' => '20',
-  'default_template' => '1',
+  'default_template' => '14',
   'editor_css_path' => '',
   'editor_css_selectors' => '',
   'emailsender' => 'info@webbiker.nl',
