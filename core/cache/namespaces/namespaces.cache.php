@@ -5,6 +5,12 @@
     'path' => '/Users/joostbrommert/Sites/GitHub/Klompenschuurtje/core/components/autofiximagesize/',
     'assets_path' => '',
   ),
+  'babel' => 
+  array (
+    'name' => 'babel',
+    'path' => '/Users/joostbrommert/Sites/GitHub/Klompenschuurtje/core/components/babel/',
+    'assets_path' => '',
+  ),
   'core' => 
   array (
     'name' => 'core',

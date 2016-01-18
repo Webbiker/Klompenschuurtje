@@ -11,8 +11,6 @@
 RewriteEngine On
 RewriteBase /
 
-
-
 # Rewrite www.domain.com -> domain.com -- used with SEO Strict URLs plugin
 #RewriteCond %{HTTP_HOST} .
 #RewriteCond %{HTTP_HOST} !^example-domain-please-change\.com [NC]
@@ -25,21 +23,28 @@ RewriteBase /
 #RewriteCond %{HTTP_HOST} !^www\.example-domain-please-change\.com [NC]
 #RewriteRule (.*) http://www.example-domain-please-change.com/$1 [R=301,L]
 
-
-
-# Rewrite secure requests properly to prevent SSL cert warnings, e.g. prevent 
-# https://www.domain.com when your cert only allows https://secure.domain.com
-#RewriteCond %{SERVER_PORT} !^443
-#RewriteRule (.*) https://example-domain-please-change.com.com/$1 [R=301,L]
-
-
-
 # The Friendly URLs part
+# detect language when requesting the root (/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+RewriteRule ^(de|en|nl)?/?(.*)$ index.php?cultureKey=$1&q=$2 [L,QSA]
 
+# redirect all requests to /en/favicon.ico and /de/favicon.ico
+# to /favicon.ico
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(de|en|nl)/favicon.ico$ favicon.ico [L,QSA]
 
+# redirect all requests to /en/assets* and /de/assets* to /assets*
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(de|en|nl)/assets(.*)$ assets$2 [L,QSA]
+
+# redirect all other requests to /en/* and /de/*
+# to index.php and set the cultureKey parameter
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(de|en|nl)?/?(.*)$ index.php?cultureKey=$1&q=$2 [L,QSA]
 
 # Make sure .htc files are served with the proper MIME type, which is critical # for XP SP2. Un-comment if your host allows htaccess MIME type overrides.
 

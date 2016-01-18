@@ -327,4 +327,7 @@
   'formit.exclude_contexts' => 'mgr',
   'tiny.base_url' => '',
   'tiny.template_list_snippet' => '',
+  'babel.syncTvs' => '',
+  'babel.babelTvName' => 'babelLanguageLinks',
+  'babel.contextKeys' => 'web,en,de',
 );

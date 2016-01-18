@@ -59,7 +59,7 @@
 
 		<title>Welkom bij het Klompenschuurtje - Het Klompenschuurtje</title>
 
-		<base href="http://local.klompenschuurtje.nl/" />
+		<base href="http://local.klompenschuurtje.nl/nl/" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -83,7 +83,7 @@
 						</a>
                         <ul class="offcanvas main-menu">
 	<ul><li>
-	<a href="http://local.klompenschuurtje.nl/" class="active">Home</a>
+	<a href="http://local.klompenschuurtje.nl/nl/" class="active">Home</a>
 </li>
 <li>
 	<a href="geschiedenis.html" class="">Geschiedenis</a>
@@ -104,23 +104,29 @@
 </ul>
 
 						<ul class="offcanvas lang-menu">
-							<li><a href="/nl/" class="active">
-								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
-								<span class="mls">Nederlands</span>
-							</a></li>
-							<li><a href="/en/">
-								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
-								<span class="mls">English</span>
-							</a></li>
-							<li><a href="/de/">
-								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
-								<span class="mls">Deutsch</span>
-							</a></li>
+                                                        <li>
+  <a href="http://local.klompenschuurtje.nl/nl/" class=" active">
+    <svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+    <span class="mls">Nederlands</span>
+  </a>
+</li>
+<li>
+  <a href="http://local.klompenschuurtje.nl/en/" class="">
+    <svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+    <span class="mls">Engels</span>
+  </a>
+</li>
+<li>
+  <a href="http://local.klompenschuurtje.nl/de/" class="">
+    <svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+    <span class="mls">Duits</span>
+  </a>
+</li>
 						</ul>
 					</div>
 				</nav>
 
-				<a href="http://local.klompenschuurtje.nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+				<a href="http://local.klompenschuurtje.nl/nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
                 <div class="carousel">
 	<div class="slick">
 		<section class="slides">
@@ -252,7 +258,7 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
 	    &rowTpl=`Navigation Main Item`
 	    &hereClass=`active`
 	]]' => '<ul><li>
-	<a href="http://local.klompenschuurtje.nl/" class="active">Home</a>
+	<a href="http://local.klompenschuurtje.nl/nl/" class="active">Home</a>
 </li>
 <li>
 	<a href="geschiedenis.html" class="">Geschiedenis</a>
@@ -272,7 +278,7 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
 </ul>',
     '[[$Navigation Main? ]]' => '<ul class="offcanvas main-menu">
 	<ul><li>
-	<a href="http://local.klompenschuurtje.nl/" class="active">Home</a>
+	<a href="http://local.klompenschuurtje.nl/nl/" class="active">Home</a>
 </li>
 <li>
 	<a href="geschiedenis.html" class="">Geschiedenis</a>
@@ -291,6 +297,27 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
 </li>
 </ul>
 </ul>',
+    '[[%babel.language_nl? &topic=`default` &namespace=`babel`]]' => 'Nederlands',
+    '[[%babel.language_en? &topic=`default` &namespace=`babel`]]' => 'Engels',
+    '[[%babel.language_de? &topic=`default` &namespace=`babel`]]' => 'Duits',
+    '[[BabelLinks? &tpl=`language` &showCurrent=`1`]]' => '<li>
+  <a href="http://local.klompenschuurtje.nl/nl/" class=" active">
+    <svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+    <span class="mls">Nederlands</span>
+  </a>
+</li>
+<li>
+  <a href="http://local.klompenschuurtje.nl/en/" class="">
+    <svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+    <span class="mls">Engels</span>
+  </a>
+</li>
+<li>
+  <a href="http://local.klompenschuurtje.nl/de/" class="">
+    <svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+    <span class="mls">Duits</span>
+  </a>
+</li>',
     '[[$Carousel? ]]' => '<div class="carousel">
 	<div class="slick">
 		<section class="slides">
@@ -319,7 +346,7 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
 
 		<title>Welkom bij het Klompenschuurtje - Het Klompenschuurtje</title>
 
-		<base href="http://local.klompenschuurtje.nl/" />
+		<base href="http://local.klompenschuurtje.nl/nl/" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -343,7 +370,7 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
 						</a>
                         <ul class="offcanvas main-menu">
 	<ul><li>
-	<a href="http://local.klompenschuurtje.nl/" class="active">Home</a>
+	<a href="http://local.klompenschuurtje.nl/nl/" class="active">Home</a>
 </li>
 <li>
 	<a href="geschiedenis.html" class="">Geschiedenis</a>
@@ -364,23 +391,29 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
 </ul>
 
 						<ul class="offcanvas lang-menu">
-							<li><a href="/nl/" class="active">
-								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
-								<span class="mls">Nederlands</span>
-							</a></li>
-							<li><a href="/en/">
-								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
-								<span class="mls">English</span>
-							</a></li>
-							<li><a href="/de/">
-								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
-								<span class="mls">Deutsch</span>
-							</a></li>
+                                                        <li>
+  <a href="http://local.klompenschuurtje.nl/nl/" class=" active">
+    <svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
+    <span class="mls">Nederlands</span>
+  </a>
+</li>
+<li>
+  <a href="http://local.klompenschuurtje.nl/en/" class="">
+    <svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
+    <span class="mls">Engels</span>
+  </a>
+</li>
+<li>
+  <a href="http://local.klompenschuurtje.nl/de/" class="">
+    <svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
+    <span class="mls">Duits</span>
+  </a>
+</li>
 						</ul>
 					</div>
 				</nav>
 
-				<a href="http://local.klompenschuurtje.nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
+				<a href="http://local.klompenschuurtje.nl/nl/" class="center logo"><img src="/assets/img/logo-klompenschuurtje.png" alt="Het Klompenschuurtje"></a>
                 <div class="carousel">
 	<div class="slick">
 		<section class="slides">
@@ -541,18 +574,7 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
                         [[$Navigation Main? ]]
 
 						<ul class="offcanvas lang-menu">
-							<li><a href="/nl/" class="active">
-								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
-								<span class="mls">Nederlands</span>
-							</a></li>
-							<li><a href="/en/">
-								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
-								<span class="mls">English</span>
-							</a></li>
-							<li><a href="/de/">
-								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
-								<span class="mls">Deutsch</span>
-							</a></li>
+                                                        [[BabelLinks? &tpl=`language` &showCurrent=`1`]]
 						</ul>
 					</div>
 				</nav>
@@ -600,18 +622,7 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
                         [[$Navigation Main? ]]
 
 						<ul class="offcanvas lang-menu">
-							<li><a href="/nl/" class="active">
-								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
-								<span class="mls">Nederlands</span>
-							</a></li>
-							<li><a href="/en/">
-								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
-								<span class="mls">English</span>
-							</a></li>
-							<li><a href="/de/">
-								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
-								<span class="mls">Deutsch</span>
-							</a></li>
+                                                        [[BabelLinks? &tpl=`language` &showCurrent=`1`]]
 						</ul>
 					</div>
 				</nav>
@@ -623,6 +634,9 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -677,6 +691,9 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -751,6 +768,9 @@ met koopwaar langs de mooiste plekjes van Laarbeek. Voor vrijgezellenfeestjes, 
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -805,6 +825,9 @@ https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -859,6 +882,9 @@ https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -947,6 +973,9 @@ https://plus.google.com/share?url=http%3A%2F%2Fwww.klompenschuurtje.nl" target="
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -1767,6 +1796,451 @@ if ($wf->_config[\'ph\']) {
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
+        ),
+        'source' => 
+        array (
+        ),
+      ),
+      'BabelLinks' => 
+      array (
+        'fields' => 
+        array (
+          'id' => 24,
+          'source' => 0,
+          'property_preprocess' => false,
+          'name' => 'BabelLinks',
+          'description' => 'Displays links to translated resources.',
+          'editor_type' => 0,
+          'category' => 17,
+          'cache_type' => 0,
+          'snippet' => '/**
+ * Babel
+ *
+ * Copyright 2010 by Jakob Class <jakob.class@class-zec.de>
+ *
+ * This file is part of Babel.
+ *
+ * Babel is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Babel is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Babel; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA
+ *
+ * @package babel
+ */
+/**
+ * BabelLinks snippet to display links to translated resources
+ *
+ * Based on ideas of Sylvain Aerni <enzyms@gmail.com>
+ *
+ * @author Jakob Class <jakob.class@class-zec.de>
+ *         goldsky <goldsky@virtudraft.com>
+ *
+ * @package babel
+ *
+ * @param resourceId        optional: id of resource of which links to translations should be displayed. Default: current resource
+ * @param tpl               optional: Chunk to display a language link. Default: babelLink
+ * @param activeCls         optional: CSS class name for the current active language. Default: active
+ * @param showUnpublished   optional: flag whether to show unpublished translations. Default: 0
+ * @param showCurrent       optional: flag whether to show a link to a translation of the current language. Default: 1
+ */
+$babel = $modx->getService(\'babel\',\'Babel\',$modx->getOption(\'babel.core_path\',null,$modx->getOption(\'core_path\').\'components/babel/\').\'model/babel/\',$scriptProperties);
+
+/* be sure babel and babel TV is loaded */
+if (!($babel instanceof Babel) || !$babel->babelTv) return;
+
+/* get snippet properties */
+$resourceId = intval($modx->getOption(\'resourceId\',$scriptProperties));
+if (empty($resourceId)) {
+    if (!empty($modx->resource) && is_object($modx->resource)) {
+        $resourceId = $modx->resource->get(\'id\');
+    } else {
+        return;
+    }
+}
+$tpl = $modx->getOption(\'tpl\',$scriptProperties,\'babelLink\');
+$wrapperTpl = $modx->getOption(\'wrapperTpl\',$scriptProperties);
+$activeCls = $modx->getOption(\'activeCls\',$scriptProperties,\'active\');
+$showUnpublished = $modx->getOption(\'showUnpublished\',$scriptProperties,0);
+$showCurrent = $modx->getOption(\'showCurrent\',$scriptProperties,0);
+$outputSeparator = $modx->getOption(\'outputSeparator\',$scriptProperties,"\\n");
+$includeUnlinked = $modx->getOption(\'includeUnlinked\',$scriptProperties,0);
+$ignoreSiteStatus = $modx->getOption(\'ignoreSiteStatus\',$scriptProperties,0);
+
+if(!empty($modx->resource) && is_object($modx->resource) && $resourceId === $modx->resource->get(\'id\')) {
+    $contextKeys = $babel->getGroupContextKeys($modx->resource->get(\'context_key\'));
+    $resource = $modx->resource;
+} else {
+    $resource = $modx->getObject(\'modResource\', $resourceId);
+    if(!$resource) {
+        return;
+    }
+    $contextKeys = $babel->getGroupContextKeys($resource->get(\'context_key\'));
+}
+
+$linkedResources = $babel->getLinkedResources($resourceId);
+
+$outputArray = array();
+foreach($contextKeys as $contextKey) {
+    if(!$showCurrent && $contextKey === $resource->get(\'context_key\')) {
+        continue;
+    }
+    if (!$includeUnlinked && !isset($linkedResources[$contextKey])) {
+        continue;
+    }
+    $context = $modx->getObject(\'modContext\', array(\'key\' => $contextKey));
+    if(!$context) {
+        $modx->log(modX::LOG_LEVEL_ERROR, \'Could not load context: \'.$contextKey);
+        continue;
+    }
+    $context->prepare();
+    if (!$context->getOption(\'site_status\', null, true) && !$ignoreSiteStatus) {
+        continue;
+    }
+    $cultureKey = $context->getOption(\'cultureKey\',$modx->getOption(\'cultureKey\'));
+    $translationAvailable = false;
+    if(isset($linkedResources[$contextKey])) {
+        $c = $modx->newQuery(\'modResource\');
+        $c->where(array(
+            \'id\' => $linkedResources[$contextKey],
+            \'deleted:!=\' => 1,
+            \'published:=\' => 1,
+        ));
+        if ($showUnpublished) {
+            $c->where(array(
+                \'OR:published:=\' => 0,
+            ));
+        }
+        $count = $modx->getCount(\'modResource\',$c);
+        if($count) {
+            $translationAvailable = true;
+        }
+    }
+    $getRequest = $_GET;
+    unset($getRequest[\'id\']);
+    unset($getRequest[$modx->getOption(\'request_param_alias\', null, \'q\')]);
+    unset($getRequest[\'cultureKey\']);
+    if($translationAvailable) {
+        $url = $context->makeUrl($linkedResources[$contextKey],$getRequest,\'full\');
+        $active = ($resource->get(\'context_key\') == $contextKey) ? $activeCls : \'\';
+        $placeholders = array(
+            \'cultureKey\' => $cultureKey,
+            \'url\' => $url,
+            \'active\' => $active,
+            \'id\' => $linkedResources[$contextKey]
+        );
+
+        if (!empty($toArray)) {
+            $outputArray[] = $placeholders;
+        } else {
+            $chunk = $babel->getChunk($tpl,$placeholders);
+            if(!empty($chunk)) {
+                $outputArray[] = $chunk;
+            }
+        }
+    } elseif ($includeUnlinked) {
+        $url = $context->makeUrl($context->getOption(\'site_start\'),$getRequest,\'full\');
+        $active = ($resource->get(\'context_key\') == $contextKey) ? $activeCls : \'\';
+        $placeholders = array(
+            \'cultureKey\' => $cultureKey,
+            \'url\' => $url,
+            \'active\' => $active,
+            \'id\' => $context->getOption(\'site_start\')
+        );
+
+        if (!empty($toArray)) {
+            $outputArray[] = $placeholders;
+        } else {
+            $chunk = $babel->getChunk($tpl,$placeholders);
+            if(!empty($chunk)) {
+                $outputArray[] = $chunk;
+            }
+        }
+    }
+}
+
+if (!empty($toArray)) {
+    return \'<pre>\'.  print_r($outputArray, 1).\'</pre>\';
+}
+
+$output = implode($outputSeparator, $outputArray);
+if (!empty($wrapperTpl)) {
+    $output = $babel->getChunk($wrapperTpl,array(
+        \'babelLinks\' => $output
+    ));
+}
+
+if (!empty($toPlaceholder)) {
+    $modx->setPlaceholder($toPlaceholder, $output);
+    return;
+}
+
+return $output;',
+          'locked' => false,
+          'properties' => 
+          array (
+            'resourceId' => 
+            array (
+              'name' => 'resourceId',
+              'desc' => 'babellinks.resourceId',
+              'type' => 'textfield',
+              'options' => '',
+              'value' => '',
+              'lexicon' => 'babel:properties',
+              'area' => '',
+              'desc_trans' => 'Id van resource waarvan link naar vertaling moeten worden weergegeven',
+              'area_trans' => '',
+            ),
+            'tpl' => 
+            array (
+              'name' => 'tpl',
+              'desc' => 'babellinks.tpl',
+              'type' => 'textfield',
+              'options' => '',
+              'value' => 'babelLink',
+              'lexicon' => 'babel:properties',
+              'area' => '',
+              'desc_trans' => 'Chunk voor de weergave van een taal link',
+              'area_trans' => '',
+            ),
+            'activeCls' => 
+            array (
+              'name' => 'activeCls',
+              'desc' => 'babellinks.activeCls',
+              'type' => 'textfield',
+              'options' => '',
+              'value' => 'active',
+              'lexicon' => 'babel:properties',
+              'area' => '',
+              'desc_trans' => 'CSS class voor de actieve taal link',
+              'area_trans' => '',
+            ),
+            'showUnpublished' => 
+            array (
+              'name' => 'showUnpublished',
+              'desc' => 'babellinks.showUnpublished',
+              'type' => 'textfield',
+              'options' => '',
+              'value' => '0',
+              'lexicon' => 'babel:properties',
+              'area' => '',
+              'desc_trans' => 'Wel of niet tonen van ongepubliceerde vertalingen',
+              'area_trans' => '',
+            ),
+            'showCurrent' => 
+            array (
+              'name' => 'showCurrent',
+              'desc' => 'babellinks.showCurrent',
+              'type' => 'textfield',
+              'options' => '',
+              'value' => '0',
+              'lexicon' => 'babel:properties',
+              'area' => '',
+              'desc_trans' => 'Wel of niet tonen van link naar vertaling van de huidige taal',
+              'area_trans' => '',
+            ),
+            'includeUnlinked' => 
+            array (
+              'name' => 'includeUnlinked',
+              'desc' => 'babellinks.includeUnlinked',
+              'type' => 'textfield',
+              'options' => '',
+              'value' => '0',
+              'lexicon' => 'babel:properties',
+              'area' => '',
+              'desc_trans' => 'Flag whether to show unlinked context',
+              'area_trans' => '',
+            ),
+          ),
+          'moduleguid' => '',
+          'static' => false,
+          'static_file' => '',
+          'content' => '/**
+ * Babel
+ *
+ * Copyright 2010 by Jakob Class <jakob.class@class-zec.de>
+ *
+ * This file is part of Babel.
+ *
+ * Babel is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Babel is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Babel; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
+ * Suite 330, Boston, MA 02111-1307 USA
+ *
+ * @package babel
+ */
+/**
+ * BabelLinks snippet to display links to translated resources
+ *
+ * Based on ideas of Sylvain Aerni <enzyms@gmail.com>
+ *
+ * @author Jakob Class <jakob.class@class-zec.de>
+ *         goldsky <goldsky@virtudraft.com>
+ *
+ * @package babel
+ *
+ * @param resourceId        optional: id of resource of which links to translations should be displayed. Default: current resource
+ * @param tpl               optional: Chunk to display a language link. Default: babelLink
+ * @param activeCls         optional: CSS class name for the current active language. Default: active
+ * @param showUnpublished   optional: flag whether to show unpublished translations. Default: 0
+ * @param showCurrent       optional: flag whether to show a link to a translation of the current language. Default: 1
+ */
+$babel = $modx->getService(\'babel\',\'Babel\',$modx->getOption(\'babel.core_path\',null,$modx->getOption(\'core_path\').\'components/babel/\').\'model/babel/\',$scriptProperties);
+
+/* be sure babel and babel TV is loaded */
+if (!($babel instanceof Babel) || !$babel->babelTv) return;
+
+/* get snippet properties */
+$resourceId = intval($modx->getOption(\'resourceId\',$scriptProperties));
+if (empty($resourceId)) {
+    if (!empty($modx->resource) && is_object($modx->resource)) {
+        $resourceId = $modx->resource->get(\'id\');
+    } else {
+        return;
+    }
+}
+$tpl = $modx->getOption(\'tpl\',$scriptProperties,\'babelLink\');
+$wrapperTpl = $modx->getOption(\'wrapperTpl\',$scriptProperties);
+$activeCls = $modx->getOption(\'activeCls\',$scriptProperties,\'active\');
+$showUnpublished = $modx->getOption(\'showUnpublished\',$scriptProperties,0);
+$showCurrent = $modx->getOption(\'showCurrent\',$scriptProperties,0);
+$outputSeparator = $modx->getOption(\'outputSeparator\',$scriptProperties,"\\n");
+$includeUnlinked = $modx->getOption(\'includeUnlinked\',$scriptProperties,0);
+$ignoreSiteStatus = $modx->getOption(\'ignoreSiteStatus\',$scriptProperties,0);
+
+if(!empty($modx->resource) && is_object($modx->resource) && $resourceId === $modx->resource->get(\'id\')) {
+    $contextKeys = $babel->getGroupContextKeys($modx->resource->get(\'context_key\'));
+    $resource = $modx->resource;
+} else {
+    $resource = $modx->getObject(\'modResource\', $resourceId);
+    if(!$resource) {
+        return;
+    }
+    $contextKeys = $babel->getGroupContextKeys($resource->get(\'context_key\'));
+}
+
+$linkedResources = $babel->getLinkedResources($resourceId);
+
+$outputArray = array();
+foreach($contextKeys as $contextKey) {
+    if(!$showCurrent && $contextKey === $resource->get(\'context_key\')) {
+        continue;
+    }
+    if (!$includeUnlinked && !isset($linkedResources[$contextKey])) {
+        continue;
+    }
+    $context = $modx->getObject(\'modContext\', array(\'key\' => $contextKey));
+    if(!$context) {
+        $modx->log(modX::LOG_LEVEL_ERROR, \'Could not load context: \'.$contextKey);
+        continue;
+    }
+    $context->prepare();
+    if (!$context->getOption(\'site_status\', null, true) && !$ignoreSiteStatus) {
+        continue;
+    }
+    $cultureKey = $context->getOption(\'cultureKey\',$modx->getOption(\'cultureKey\'));
+    $translationAvailable = false;
+    if(isset($linkedResources[$contextKey])) {
+        $c = $modx->newQuery(\'modResource\');
+        $c->where(array(
+            \'id\' => $linkedResources[$contextKey],
+            \'deleted:!=\' => 1,
+            \'published:=\' => 1,
+        ));
+        if ($showUnpublished) {
+            $c->where(array(
+                \'OR:published:=\' => 0,
+            ));
+        }
+        $count = $modx->getCount(\'modResource\',$c);
+        if($count) {
+            $translationAvailable = true;
+        }
+    }
+    $getRequest = $_GET;
+    unset($getRequest[\'id\']);
+    unset($getRequest[$modx->getOption(\'request_param_alias\', null, \'q\')]);
+    unset($getRequest[\'cultureKey\']);
+    if($translationAvailable) {
+        $url = $context->makeUrl($linkedResources[$contextKey],$getRequest,\'full\');
+        $active = ($resource->get(\'context_key\') == $contextKey) ? $activeCls : \'\';
+        $placeholders = array(
+            \'cultureKey\' => $cultureKey,
+            \'url\' => $url,
+            \'active\' => $active,
+            \'id\' => $linkedResources[$contextKey]
+        );
+
+        if (!empty($toArray)) {
+            $outputArray[] = $placeholders;
+        } else {
+            $chunk = $babel->getChunk($tpl,$placeholders);
+            if(!empty($chunk)) {
+                $outputArray[] = $chunk;
+            }
+        }
+    } elseif ($includeUnlinked) {
+        $url = $context->makeUrl($context->getOption(\'site_start\'),$getRequest,\'full\');
+        $active = ($resource->get(\'context_key\') == $contextKey) ? $activeCls : \'\';
+        $placeholders = array(
+            \'cultureKey\' => $cultureKey,
+            \'url\' => $url,
+            \'active\' => $active,
+            \'id\' => $context->getOption(\'site_start\')
+        );
+
+        if (!empty($toArray)) {
+            $outputArray[] = $placeholders;
+        } else {
+            $chunk = $babel->getChunk($tpl,$placeholders);
+            if(!empty($chunk)) {
+                $outputArray[] = $chunk;
+            }
+        }
+    }
+}
+
+if (!empty($toArray)) {
+    return \'<pre>\'.  print_r($outputArray, 1).\'</pre>\';
+}
+
+$output = implode($outputSeparator, $outputArray);
+if (!empty($wrapperTpl)) {
+    $output = $babel->getChunk($wrapperTpl,array(
+        \'babelLinks\' => $output
+    ));
+}
+
+if (!empty($toPlaceholder)) {
+    $modx->setPlaceholder($toPlaceholder, $output);
+    return;
+}
+
+return $output;',
+        ),
+        'policies' => 
+        array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -3674,6 +4148,9 @@ return $output;',
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -3803,6 +4280,9 @@ return $thumbnail->render();',
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (
@@ -3840,6 +4320,9 @@ return $thumbnail->render();',
         ),
         'policies' => 
         array (
+          'web' => 
+          array (
+          ),
         ),
         'source' => 
         array (

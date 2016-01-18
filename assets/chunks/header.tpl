@@ -31,18 +31,7 @@
                         [[$Navigation Main? ]]
 
 						<ul class="offcanvas lang-menu">
-							<li><a href="/nl/" class="active">
-								<svg class="icon icon-nl"><use xlink:href="/assets/img/symbol-defs.svg#icon-nl"></use></svg>
-								<span class="mls">Nederlands</span>
-							</a></li>
-							<li><a href="/en/">
-								<svg class="icon icon-en"><use xlink:href="/assets/img/symbol-defs.svg#icon-en"></use></svg>
-								<span class="mls">English</span>
-							</a></li>
-							<li><a href="/de/">
-								<svg class="icon icon-de"><use xlink:href="/assets/img/symbol-defs.svg#icon-de"></use></svg>
-								<span class="mls">Deutsch</span>
-							</a></li>
+                                                        [[BabelLinks? &tpl=`language` &showCurrent=`1`]]
 						</ul>
 					</div>
 				</nav>
