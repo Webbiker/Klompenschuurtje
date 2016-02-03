@@ -1,1 +1,0 @@
-<?php include("assets/templates/product-detail.tpl"); ?>
