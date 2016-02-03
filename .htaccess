@@ -13,8 +13,8 @@ RewriteBase /
 
 # Rewrite www.domain.com -> domain.com -- used with SEO Strict URLs plugin
 #RewriteCond %{HTTP_HOST} .
-#RewriteCond %{HTTP_HOST} !^example-domain-please-change\.com [NC]
-#RewriteRule (.*) http://example-domain-please-change.com/$1 [R=301,L]
+#RewriteCond %{HTTP_HOST} !^klompenschuurtje.nl\.nl [NC]
+#RewriteRule (.*) http://klompenschuurtje.nl/$1 [R=301,L]
 #
 # or for the opposite domain.com -> www.domain.com use the following
 # DO NOT USE BOTH

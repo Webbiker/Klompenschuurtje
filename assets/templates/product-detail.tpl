@@ -1,7 +1,7 @@
 [[$Header? ]]
 <article>
     [[*content]]
-	<p class="right"><a href="[[~20]]?subject=[[*id]]" class="button">Vraag vrijblijvend<br>meer informatie aan</a></p>
+	<p class="right"><a href="[[++link_contact]]?subject=[[*id]]" class="button">[[++label_moreinfo]]</a></p>
 
 	<div class="photos">
 		<div>

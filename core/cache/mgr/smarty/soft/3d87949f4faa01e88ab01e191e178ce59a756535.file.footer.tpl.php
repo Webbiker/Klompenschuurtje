@@ -1,6 +1,6 @@
-<?php /* Smarty version Smarty-3.0.4, created on 2016-01-13 20:53:30
+<?php /* Smarty version Smarty-3.0.4, created on 2016-01-28 21:54:12
          compiled from "/Users/joostbrommert/Sites/GitHub/Klompenschuurtje/manager/templates/default/footer.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:3449258805696ab3a853796-71903138%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:152424740956aa7ff4838e22-56028650%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
@@ -11,7 +11,7 @@ $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '3449258805696ab3a853796-71903138',
+  'nocache_hash' => '152424740956aa7ff4838e22-56028650',
   'function' => 
   array (
   ),

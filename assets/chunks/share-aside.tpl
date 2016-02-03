@@ -1,5 +1,5 @@
 <div class="share">
-	<p><img src="/assets/img/brand.png" alt="Klompenschuurtje beeldmerk" class="brand"><span>Deel het Klompenschuurtje</span></p>
+	<p><img src="/assets/img/brand.png" class="brand"><span>[[++btn_share]]</span></p>
 	<ul>
 		<li><a href="http://twitter.com/home?status=Dit%20is%20een%20mooie%20website%20over%20klompen%3A%20http%3A%2F%2Fwww.klompenschuurtje.nl" target="_blank"><img src="/assets/img/share-twitter.png" alt="Twitter"></a></li>
 		<li><a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.klompenschuurtje.nl&t=Ik%20heb%20een%20leuke%20site%20over%20klompen%20gevonden!" target="_blank"><img src="/assets/img/share-facebook.png" alt="Facebook"></a></li>

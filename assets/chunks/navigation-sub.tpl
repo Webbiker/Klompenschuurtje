@@ -1,6 +1,6 @@
 <ul>
     [[Wayfinder?
-        &startId=`3`
+        &startId=`[[++tree_clogs]]`
         &level=`1`
         &firstClass=``
         &lastClass=``

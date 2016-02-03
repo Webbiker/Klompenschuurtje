@@ -2,7 +2,7 @@
 	<div class="slick">
 		<section class="slides">
             [[!getResources:default=`No results found`? 
-                  &parents=`23` 
+                  &parents=`[[++carousel_id]]` 
                   &showHidden=`1` 
                   &tpl=`Carousel Slide` 
                   &includeContent=`1`  

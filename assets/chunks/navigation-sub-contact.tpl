@@ -1,6 +1,6 @@
 <ul>
     [[Wayfinder?
-        &startId=`6`
+        &startId=`[[++tree_contact]]`
         &level=`1`
         &firstClass=``
         &lastClass=``

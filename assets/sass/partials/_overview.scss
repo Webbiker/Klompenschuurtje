@@ -1,9 +1,13 @@
 .list {
+	margin-top: 18px;
 	li {
 		@include column(1/2, 0, 2);
 		margin-bottom: 60px;
 		&:nth-last-of-type(-n+2) {
 			margin-bottom:30px;
+		}
+		&:after {
+			background: none;
 		}
 
 		padding: 6px;

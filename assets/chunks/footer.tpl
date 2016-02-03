@@ -3,8 +3,7 @@
 			<footer>
 				<div class="footerContent">				
 					<div class="info">				
-						<p><strong>Klompenschuurtje, Helmondseweg 3B, 5735 RA Aarle-Rixtel. KvK nummer: 17231776</strong><br>
-						Meer informatie bel 06 229 948 80 of e-mail nicole@klompenschuurtje.nl</p>
+						<p><strong>[[++footer_naw]]</strong><br>[[++footer_moreinfo]]</p>
 					</div>
 					<div class="webbiker">
 						<a href="http://www.webbiker.nl" target="_blank"><img src="/assets/img/logo-webbiker.png" alt="Webbiker"></a>

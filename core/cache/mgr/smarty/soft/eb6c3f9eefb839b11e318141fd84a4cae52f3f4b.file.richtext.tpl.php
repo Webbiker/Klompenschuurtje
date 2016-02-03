@@ -1,6 +1,6 @@
-<?php /* Smarty version Smarty-3.0.4, created on 2016-01-13 20:55:56
+<?php /* Smarty version Smarty-3.0.4, created on 2016-01-28 21:57:36
          compiled from "/Users/joostbrommert/Sites/GitHub/Klompenschuurtje/manager/templates/default/element/tv/renders/input/richtext.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:7512903545696abcc8c0482-11632312%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:124749423556aa80c0417836-33313251%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
@@ -11,7 +11,7 @@ $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '7512903545696abcc8c0482-11632312',
+  'nocache_hash' => '124749423556aa80c0417836-33313251',
   'function' => 
   array (
   ),
